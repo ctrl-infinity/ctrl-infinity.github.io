@@ -2,9 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import { Hero } from '../components/Hero';
 import { EngineerSpec } from '../components/EngineerSpec';
+import { CaseStudies } from '../components/CaseStudies';
 ---
 
 <Layout>
 	<Hero client:load />
 	<EngineerSpec />
+	<CaseStudies client:load />
 </Layout>
