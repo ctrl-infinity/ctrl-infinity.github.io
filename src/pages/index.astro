@@ -3,10 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import { Hero } from '../components/Hero';
 import { EngineerSpec } from '../components/EngineerSpec';
 import { CaseStudies } from '../components/CaseStudies';
+import { Services } from '../components/Services';
+import { SelectedWork } from '../components/SelectedWork';
+import { Footer } from '../components/Footer';
 ---
 
 <Layout>
 	<Hero client:load />
 	<EngineerSpec />
 	<CaseStudies client:load />
+	<Services client:load />
+	<SelectedWork client:load />
+	<Footer />
 </Layout>
