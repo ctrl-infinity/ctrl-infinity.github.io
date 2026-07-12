@@ -1,0 +1,43 @@
+---
+const milestones = [
+  {
+    year: "2024",
+    title: "Lead Engineer at Fintech Startup",
+    description: "Built a real-time event-sourced transaction engine using Node.js and Postgres, cutting latency by 90% and enabling instant ledger updates.",
+  },
+  {
+    year: "2022",
+    title: "Performance Consultant at E-Commerce Enterprise",
+    description: "Audited Next.js App Router migration architecture stuck on caching issues, fixed the cache invalidation strategy, and unblocked the team.",
+  },
+  {
+    year: "2020",
+    title: "Started building for the web",
+    description: "Began crafting web applications, learning modern frameworks, and helping clients solve complex technical challenges.",
+  },
+];
+---
+
+<section class="mb-24">
+  <h2 class="text-2xl font-bold tracking-tight text-foreground mb-8">Timeline</h2>
+  <div class="relative">
+    {/* Vertical line */}
+    <div class="absolute left-[3.5rem] top-0 bottom-0 w-px bg-black/10 hidden md:block" />
+
+    <div class="space-y-12">
+      {milestones.map((milestone) => (
+        <div class="flex gap-8 items-start">
+          <div class="shrink-0 w-14 text-right">
+            <span class="text-sm font-mono text-gray-400">{milestone.year}</span>
+          </div>
+          <div class="relative">
+            {/* Dot on the line */}
+            <div class="absolute -left-[1.15rem] top-1.5 w-2 h-2 bg-accent rounded-full hidden md:block" />
+            <h3 class="text-lg font-medium text-foreground">{milestone.title}</h3>
+            <p class="text-gray-600 mt-1 max-w-[50ch]">{milestone.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
