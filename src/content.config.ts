@@ -31,4 +31,17 @@ const now = defineCollection({
   })
 });
 
-export const collections = { work, now };
+const playground = defineCollection({
+  loader: glob({ pattern: "*.md", base: "./src/content/playground" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    tags: z.array(z.string()),
+    type: z.enum(['interactive', 'demo', 'snippet', 'external']),
+    link: z.string().url().optional(),
+    component: z.string().optional(),
+    order: z.number().default(99),
+  })
+});
+
+export const collections = { work, now, playground };
