@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { WorkPage } from '../components/WorkPage';
+import { getCollection } from 'astro:content';
+
+const workCollection = await getCollection('work');
+const sortedWork = workCollection
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((entry) => ({
+    title: entry.data.title,
+    description: entry.data.description,
+    role: entry.data.role,
+    category: entry.data.category,
+    tags: entry.data.tags,
+    image: entry.data.image,
+    client: entry.data.client,
+    duration: entry.data.duration,
+  }));
+---
+
+<Layout title="Work — Vinayak Gupta" description="Things I've built — professional work, side projects, and open source.">
+  <WorkPage projects={sortedWork} client:load />
+</Layout>
