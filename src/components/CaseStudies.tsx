@@ -1,23 +1,18 @@
 import { motion } from 'motion/react';
 
-const caseStudies = [
-  {
-    client: "Fintech Startup",
-    duration: "4 weeks",
-    title: "Rewriting the transaction engine.",
-    description: "Replaced an aging polling system with a real-time event-sourced architecture using Node.js and Postgres, cutting latency by 90% and enabling instant ledger updates.",
-    tags: ["Node.js", "PostgreSQL", "Event Sourcing"],
-  },
-  {
-    client: "E-Commerce Enterprise",
-    duration: "3 months",
-    title: "Un-blocking a headless migration.",
-    description: "The team was stuck on Next.js App Router caching issues. I audited the architecture, fixed the cache invalidation strategy, and shipped the migration 2 weeks ahead of the new schedule.",
-    tags: ["Next.js", "React", "Vercel"],
-  }
-];
+export interface CaseStudy {
+  client: string;
+  duration?: string;
+  title: string;
+  description: string;
+  tags: string[];
+}
 
-export function CaseStudies() {
+interface CaseStudiesProps {
+  caseStudies: CaseStudy[];
+}
+
+export function CaseStudies({ caseStudies }: CaseStudiesProps) {
   return (
     <section className="px-6 md:px-12 max-w-7xl mx-auto py-32 border-t border-black/10" id="case-studies">
       <div className="mb-24">

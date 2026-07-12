@@ -23,7 +23,7 @@ export function Hero() {
         
         <a 
           href="#contact"
-          className="inline-flex items-center justify-center px-8 py-4 bg-foreground text-base text-base text-white hover:bg-accent transition-colors duration-300"
+          className="inline-flex items-center justify-center px-8 py-4 bg-foreground text-base text-white hover:bg-accent transition-colors duration-300"
         >
           Book a call
         </a>

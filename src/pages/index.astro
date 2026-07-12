@@ -6,13 +6,20 @@ import { CaseStudies } from '../components/CaseStudies';
 import { Services } from '../components/Services';
 import { SelectedWork } from '../components/SelectedWork';
 import { Footer } from '../components/Footer';
+import { getCollection } from 'astro:content';
+
+const caseStudiesCollection = await getCollection('case-studies');
+const sortedCaseStudies = caseStudiesCollection.sort((a, b) => a.data.order - b.data.order).map(c => c.data);
+
+const projectsCollection = await getCollection('projects');
+const sortedProjects = projectsCollection.sort((a, b) => a.data.order - b.data.order).map(p => p.data);
 ---
 
 <Layout>
 	<Hero client:load />
 	<EngineerSpec />
-	<CaseStudies client:load />
+	<CaseStudies caseStudies={sortedCaseStudies} client:load />
 	<Services client:load />
-	<SelectedWork client:load />
+	<SelectedWork projects={sortedProjects} client:load />
 	<Footer />
 </Layout>

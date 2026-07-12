@@ -1,21 +1,17 @@
 import { motion } from 'motion/react';
 
-const projects = [
-  {
-    title: "Fintech Core Platform",
-    role: "Lead Engineer",
-    image: "/images/fintech-mockup.jpg",
-    tags: ["React", "TypeScript", "Tailwind"]
-  },
-  {
-    title: "Global E-Commerce Storefront",
-    role: "Performance Consultant",
-    image: "/images/ecommerce-mockup.jpg",
-    tags: ["Next.js", "Astro", "Commerce Layer"]
-  }
-];
+export interface Project {
+  title: string;
+  role: string;
+  image: string;
+  tags: string[];
+}
 
-export function SelectedWork() {
+interface SelectedWorkProps {
+  projects: Project[];
+}
+
+export function SelectedWork({ projects }: SelectedWorkProps) {
   return (
     <section className="px-6 md:px-12 max-w-7xl mx-auto py-32 border-t border-black/10">
       <div className="mb-16 flex items-baseline justify-between">

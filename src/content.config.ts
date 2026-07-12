@@ -5,8 +5,9 @@ const projects = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/content/projects" }),
   schema: z.object({
     title: z.string(),
-    description: z.string(),
-    techStack: z.array(z.string()),
+    role: z.string(),
+    image: z.string(),
+    tags: z.array(z.string()),
     link: z.string().url().optional(),
     featured: z.boolean().default(false),
     order: z.number().default(99),
@@ -17,7 +18,8 @@ const caseStudies = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/content/case-studies" }),
   schema: z.object({
     title: z.string(),
-    subtitle: z.string(),
+    client: z.string(),
+    description: z.string(),
     duration: z.string().optional(),
     tags: z.array(z.string()),
     link: z.string().url().optional(),
