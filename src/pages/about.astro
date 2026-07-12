@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AboutStory from '../components/about/AboutStory.astro';
+import AboutStack from '../components/about/AboutStack.astro';
+import AboutTimeline from '../components/about/AboutTimeline.astro';
+import AboutOutside from '../components/about/AboutOutside.astro';
+---
+
+<Layout title="About — Vinayak Gupta" description="Who I am, what I work with, and what I do outside of code.">
+  <section class="px-6 md:px-12 max-w-7xl mx-auto py-24">
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-16">
+      About Me
+    </h1>
+
+    {/* Reorder these components by moving the lines */}
+    <AboutStory />
+    <AboutStack />
+    <AboutTimeline />
+    <AboutOutside />
+  </section>
+</Layout>
