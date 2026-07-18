@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Prune Merged Branches",
+            "type": "shell",
+            "command": ".\\prune-branches.ps1",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "group": "none"
+        }
+    ]
+}
