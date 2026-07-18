@@ -57,8 +57,8 @@ jobs:
       - name: Compile LaTeX to PDF
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: src/resume/resume.tex
-          working_directory: ${{ env.BUILD_PATH }}
+          root_file: resume.tex
+          working_directory: src/resume
       - name: Move PDF to public folder
         run: |
           mkdir -p public/resume
