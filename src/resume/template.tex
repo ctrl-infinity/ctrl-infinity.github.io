@@ -1,0 +1,37 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{12pt}{8pt}
+
+% PDF info and links
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{center}
+    {\huge \textbf{{{NAME}}}}\vspace{0.2cm}\\
+    {{EMAIL}}
+\end{center}
+
+\section{Experience}
+{{EXPERIENCE}}
+
+\section{Education}
+{{EDUCATION}}
+
+\section{Skills}
+{{SKILLS}}
+
+\end{document}

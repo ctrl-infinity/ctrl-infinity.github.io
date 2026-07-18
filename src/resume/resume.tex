@@ -1,0 +1,64 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{12pt}{8pt}
+
+% PDF info and links
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{center}
+    {\huge \textbf{Vinayak Gupta}}\vspace{0.2cm}\\
+    hello@example.com
+\end{center}
+
+\section{Experience}
+\noindent\textbf{Fintech Startup} \hfill 2024 -- Present\\
+\textit{Lead Engineer}
+\begin{itemize}[leftmargin=*,nosep]
+    \item Built a real-time event-sourced transaction engine using Node.js and Postgres, cutting latency by 90\% and enabling instant ledger updates.
+    \item Replaced an aging polling system with a real-time event-sourced architecture to handle increased throughput.
+\end{itemize}
+\vspace{0.3cm}
+\noindent\textbf{E-Commerce Enterprise} \hfill 2022 -- 2024\\
+\textit{Performance Consultant}
+\begin{itemize}[leftmargin=*,nosep]
+    \item Audited the architecture of a Next.js App Router migration stuck on complex caching issues.
+    \item Fixed the cache invalidation strategy and shipped the migration 2 weeks ahead of schedule.
+\end{itemize}
+\vspace{0.3cm}
+\noindent\textbf{SaaS Company} \hfill 2020 -- 2022\\
+\textit{Software Engineer}
+\begin{itemize}[leftmargin=*,nosep]
+    \item Integrated an automated code-review agent into the Azure DevOps ecosystem using service hooks and PowerShell.
+    \item Unblocked developers by reducing manual review feedback loop times.
+\end{itemize}
+\vspace{0.3cm}
+
+
+\section{Education}
+\noindent\textbf{University of Technology} \hfill 2016 -- 2020\\
+B.S. Computer Science
+\vspace{0.3cm}
+
+
+\section{Skills}
+\noindent\textbf{Languages:} TypeScript, JavaScript, Python, Go, PowerShell\\
+\noindent\textbf{Frontend:} React, Next.js, Astro, Tailwind CSS\\
+\noindent\textbf{Backend \& Tools:} Node.js, PostgreSQL, Event Sourcing, Docker, Git\\
+
+
+\end{document}
