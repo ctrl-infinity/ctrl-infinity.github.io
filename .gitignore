@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # git worktrees
 .worktrees/
+
+# generated resume files
+src/resume/resume.tex
