@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const playground = await getCollection('playground');
+  return playground
+    .filter((entry) => entry.data.type !== 'external')
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={`${entry.data.title} — Playground`} description={entry.data.description}>
+  <article class="px-6 md:px-12 max-w-4xl mx-auto py-24">
+    <header class="mb-12">
+      <a href="/playground" class="text-sm font-mono text-gray-400 hover:text-accent transition-colors mb-6 inline-block">
+        ← Back to Playground
+      </a>
+
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-xs font-mono text-gray-400 uppercase tracking-wider px-2 py-1 bg-black/5">
+          {entry.data.type}
+        </span>
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
+        {entry.data.title}
+      </h1>
+
+      <p class="text-lg text-gray-600 leading-relaxed">
+        {entry.data.description}
+      </p>
+
+      <div class="flex flex-wrap gap-2 mt-6">
+        {entry.data.tags.map((tag: string) => (
+          <span class="px-3 py-1 bg-black/5 text-xs text-foreground/70 font-mono">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </header>
+
+    <div class="prose prose-gray max-w-none
+      [&_pre]:bg-[#1e1e1e] [&_pre]:text-gray-200 [&_pre]:p-6 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-relaxed
+      [&_code]:font-mono [&_code]:text-sm
+      [&_p]:text-gray-600 [&_p]:leading-relaxed
+      [&_h2]:text-foreground [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:mt-12 [&_h2]:mb-4
+      [&_h3]:text-foreground [&_h3]:font-medium [&_h3]:tracking-tight [&_h3]:mt-8 [&_h3]:mb-3
+      [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-4
+      [&_ul]:text-gray-600 [&_ol]:text-gray-600
+      [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:text-gray-500
+    ">
+      <Content />
+    </div>
+  </article>
+</Layout>

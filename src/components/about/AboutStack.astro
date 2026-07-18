@@ -1,0 +1,58 @@
+---
+const stack = [
+  {
+    category: "Languages",
+    items: [
+      { name: "TypeScript", note: "won't start a project without it" },
+      { name: "JavaScript", note: "" },
+      { name: "Python", note: "scripting and data work" },
+    ],
+  },
+  {
+    category: "Frontend",
+    items: [
+      { name: "React", note: "my default for anything interactive" },
+      { name: "Astro", note: "content sites, this one included" },
+      { name: "Tailwind CSS", note: "fast styling without the bikeshedding" },
+    ],
+  },
+  {
+    category: "Backend",
+    items: [
+      { name: "Node.js", note: "" },
+      { name: "PostgreSQL", note: "my default for anything with relational data" },
+    ],
+  },
+  {
+    category: "Tools",
+    items: [
+      { name: "Git", note: "" },
+      { name: "Docker", note: "" },
+      { name: "VS Code", note: "" },
+    ],
+  },
+];
+---
+
+<section class="mb-24">
+  <h2 class="text-2xl font-bold tracking-tight text-foreground mb-8">What I Work With</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    {stack.map((group) => (
+      <div>
+        <h3 class="text-sm font-mono uppercase tracking-[0.15em] text-gray-400 mb-4">
+          {group.category}
+        </h3>
+        <ul class="space-y-3">
+          {group.items.map((item) => (
+            <li class="text-foreground">
+              <span class="font-medium">{item.name}</span>
+              {item.note && (
+                <span class="text-gray-500 text-sm"> — {item.note}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

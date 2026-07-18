@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { NowGroup } from '../components/NowGroup';
+import { getCollection } from 'astro:content';
+
+const nowCollection = await getCollection('now');
+const sorted = nowCollection.sort((a, b) => a.data.order - b.data.order);
+
+const grouped = {
+  active: sorted.filter((e) => e.data.status === 'active').map((e) => ({
+    title: e.data.title,
+    description: e.data.description,
+    tags: e.data.tags,
+    startDate: e.data.startDate,
+    link: e.data.link,
+  })),
+  exploring: sorted.filter((e) => e.data.status === 'exploring').map((e) => ({
+    title: e.data.title,
+    description: e.data.description,
+    tags: e.data.tags,
+    startDate: e.data.startDate,
+    link: e.data.link,
+  })),
+  paused: sorted.filter((e) => e.data.status === 'paused').map((e) => ({
+    title: e.data.title,
+    description: e.data.description,
+    tags: e.data.tags,
+    startDate: e.data.startDate,
+    link: e.data.link,
+  })),
+};
+
+const today = new Date();
+const lastUpdated = today.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+---
+
+<Layout title="Now — Vinayak Gupta" description="What I'm currently working on, exploring, and thinking about.">
+  <section class="px-6 md:px-12 max-w-7xl mx-auto py-24">
+    <div class="mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
+        What I'm Up To
+      </h1>
+      <p class="text-sm font-mono text-gray-400">
+        Last updated: {lastUpdated}
+      </p>
+    </div>
+
+    <NowGroup status="active" entries={grouped.active} client:load />
+    <NowGroup status="exploring" entries={grouped.exploring} client:load />
+    <NowGroup status="paused" entries={grouped.paused} client:load />
+  </section>
+</Layout>
