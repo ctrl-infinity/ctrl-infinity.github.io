@@ -1,0 +1,61 @@
+{
+  "basics": {
+    "name": "Vinayak Gupta",
+    "email": "hello@example.com",
+    "summary": "Software Engineer building tools, platforms, and high-performance web applications with a focus on ownership and clarity."
+  },
+  "experience": [
+    {
+      "company": "Fintech Startup",
+      "role": "Lead Engineer",
+      "startDate": "2024",
+      "endDate": "Present",
+      "highlights": [
+        "Built a real-time event-sourced transaction engine using Node.js and Postgres, cutting latency by 90% and enabling instant ledger updates.",
+        "Replaced an aging polling system with a real-time event-sourced architecture to handle increased throughput."
+      ]
+    },
+    {
+      "company": "E-Commerce Enterprise",
+      "role": "Performance Consultant",
+      "startDate": "2022",
+      "endDate": "2024",
+      "highlights": [
+        "Audited the architecture of a Next.js App Router migration stuck on complex caching issues.",
+        "Fixed the cache invalidation strategy and shipped the migration 2 weeks ahead of schedule."
+      ]
+    },
+    {
+      "company": "SaaS Company",
+      "role": "Software Engineer",
+      "startDate": "2020",
+      "endDate": "2022",
+      "highlights": [
+        "Integrated an automated code-review agent into the Azure DevOps ecosystem using service hooks and PowerShell.",
+        "Unblocked developers by reducing manual review feedback loop times."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "school": "University of Technology",
+      "degree": "B.S. Computer Science",
+      "startDate": "2016",
+      "endDate": "2020"
+    }
+  ],
+  "skills": [
+    {
+      "category": "Languages",
+      "items": ["TypeScript", "JavaScript", "Python", "Go", "PowerShell"]
+    },
+    {
+      "category": "Frontend",
+      "items": ["React", "Next.js", "Astro", "Tailwind CSS"]
+    },
+    {
+      "category": "Backend & Tools",
+      "items": ["Node.js", "PostgreSQL", "Event Sourcing", "Docker", "Git"]
+    }
+  ]
+}
