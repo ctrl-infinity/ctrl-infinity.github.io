@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-18T06:28:47Z",
+  "generatedAt": "2026-07-18T12:15:00Z",
   "title": "Design System: Vinayak Gupta — Portfolio",
   "extensions": {
     "colorMeta": {
@@ -27,23 +27,28 @@
       "faint": { "role": "neutral", "displayName": "Faint Pencil", "canonical": "oklch(70% 0.01 260)", "tonalRamp": ["#6b7280", "#9ca3af", "#b0b7c0", "#c1c7d0", "#d1d5db", "#e0e3e7", "#eceef1", "#f3f4f6"] },
       "surface-muted": { "role": "neutral", "displayName": "Placeholder Gray", "canonical": "oklch(96% 0.002 260)", "tonalRamp": ["#d1d5db", "#e5e7eb", "#eceef1", "#f0f1f3", "#f3f4f6", "#f6f7f8", "#f9fafb", "#fbfbfc"] },
       "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "oklch(18% 0 0 / 0.1)", "tonalRamp": ["#00000005", "#0000000d", "#0000001a", "#00000026", "#00000033", "#0000004d", "#00000066", "#00000080"] },
+      "hairline-soft": { "role": "neutral", "displayName": "Hairline Soft", "canonical": "oklch(18% 0 0 / 0.05)", "tonalRamp": ["#00000003", "#00000005", "#0000000d", "#0000001a", "#00000026", "#00000033", "#0000004d", "#00000066"] },
       "tag-bg": { "role": "neutral", "displayName": "Tag Wash", "canonical": "oklch(18% 0 0 / 0.05)", "tonalRamp": ["#00000003", "#00000005", "#0000000d", "#0000001a", "#00000026", "#00000033", "#0000004d", "#00000066"] },
-      "foreground-soft": { "role": "neutral", "displayName": "Ink Soft", "canonical": "oklch(18% 0 0 / 0.8)", "tonalRamp": ["#111111", "#111111e6", "#111111cc", "#111111b3", "#11111199", "#11111180", "#11111166", "#1111114d"] }
+      "foreground-soft": { "role": "neutral", "displayName": "Ink Soft", "canonical": "oklch(18% 0 0 / 0.8)", "tonalRamp": ["#111111", "#111111e6", "#111111cc", "#111111b3", "#11111199", "#11111180", "#11111166", "#1111114d"] },
+      "surface": { "role": "neutral", "displayName": "Surface", "canonical": "oklch(100% 0 0)", "tonalRamp": ["#f3f4f6", "#f6f7f8", "#f9fafb", "#fbfbfc", "#fdfdfd", "#fefefe", "#ffffff", "#ffffff"] },
+      "nav-scrim": { "role": "neutral", "displayName": "Nav Scrim", "canonical": "oklch(98.5% 0 0 / 0.8)", "tonalRamp": ["#11111180", "#40404080", "#80808080", "#a6a6a680", "#d9d9d980", "#fafafa66", "#fafafa99", "#fafafacc"] }
     },
     "typographyMeta": {
       "display": { "displayName": "Display", "purpose": "Hero headline only, one per page." },
       "headline": { "displayName": "Headline", "purpose": "Section titles (e.g. 'Selected Work')." },
       "title": { "displayName": "Title", "purpose": "Card and case-study titles; brightens to Signal Blue on hover." },
       "body": { "displayName": "Body", "purpose": "Supporting copy, capped 25–60ch." },
-      "label": { "displayName": "Label", "purpose": "Mono uppercase-tracked metadata: eyebrows, client names, categories." }
+      "label": { "displayName": "Label", "purpose": "Mono uppercase-tracked metadata: eyebrows, client names, status, content type, dates." }
     },
     "shadows": [],
     "motion": [
       { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Default easing for all entrance and reveal animations site-wide." },
       { "name": "duration-load", "value": "800ms", "purpose": "Initial page-load fade/translate (Hero)." },
-      { "name": "duration-reveal", "value": "600-800ms", "purpose": "Scroll-triggered whileInView reveals, optionally staggered by idx * 100ms." },
+      { "name": "duration-reveal", "value": "500-800ms", "purpose": "Scroll-triggered whileInView reveals, optionally staggered by idx * 100ms." },
       { "name": "duration-hover-color", "value": "300-500ms", "purpose": "Text/button color transitions on hover." },
-      { "name": "duration-hover-image", "value": "1000ms", "purpose": "Work-card image scale(1.05) on hover." }
+      { "name": "duration-hover-image", "value": "1000ms", "purpose": "Work-card image scale(1.05) on hover." },
+      { "name": "duration-nav-toggle", "value": "200ms", "purpose": "Mobile nav menu open/close slide." },
+      { "name": "duration-filter-slide", "value": "300ms", "purpose": "Shared-element background sliding between active Work-page filter tabs." }
     ],
     "breakpoints": [
       { "name": "md", "value": "768px" },
@@ -71,47 +76,74 @@
       "name": "Work Card",
       "kind": "card",
       "refersTo": "work-card",
-      "description": "Image-and-title project card. No border, no shadow, no radius — image scales on hover, title shifts to Signal Blue.",
+      "description": "Image-and-title project card (List Card pattern). No border, no shadow, no radius — image scales on hover, title shifts to Signal Blue. Image is optional; text-only cards are valid.",
       "html": "<a class=\"ds-work-card\" href=\"#\"><div class=\"ds-work-card-media\"><img src=\"https://placehold.co/640x480\" alt=\"\" /></div><div class=\"ds-work-card-body\"><h3 class=\"ds-work-card-title\">Project Title</h3><p class=\"ds-work-card-role\">Full-stack engineer</p></div></a>",
-      "css": ".ds-work-card { display: flex; flex-direction: column; gap: 24px; text-decoration: none; } .ds-work-card-media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background-color: #f3f4f6; } .ds-work-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s; } .ds-work-card:hover .ds-work-card-media img { transform: scale(1.05); } .ds-work-card-title { font-size: 1.5rem; font-weight: 500; letter-spacing: -0.01em; color: #111111; transition: color 0.3s; } .ds-work-card:hover .ds-work-card-title { color: #2563eb; } .ds-work-card-role { color: #6b7280; }"
+      "css": ".ds-work-card { display: flex; flex-direction: column; gap: 24px; text-decoration: none; } .ds-work-card-media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background-color: #f3f4f6; } .ds-work-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s; } .ds-work-card:hover .ds-work-card-media img { transform: scale(1.05); } .ds-work-card-title { font-size: 1.5rem; font-weight: 500; letter-spacing: -0.01em; color: #111111; transition: color 0.3s; } .ds-work-card:hover .ds-work-card-title { color: #2563eb; } .ds-work-card-role { color: #6b7280; }"
+    },
+    {
+      "name": "Framed Card",
+      "kind": "card",
+      "refersTo": "framed-card",
+      "description": "Bordered white-surface card for heterogeneous grid items (Playground) — the system's second card pattern, distinct from the borderless List Card.",
+      "html": "<a class=\"ds-framed-card\" href=\"#\"><span class=\"ds-framed-card-type\">◆ INTERACTIVE</span><h3 class=\"ds-framed-card-title\">Experiment Title</h3><p class=\"ds-framed-card-desc\">One line describing the experiment.</p><div class=\"ds-framed-card-tags\"><span class=\"ds-tag\">Canvas</span><span class=\"ds-tag\">WebGL</span></div></a>",
+      "css": ".ds-framed-card { display: flex; flex-direction: column; gap: 16px; padding: 24px; background-color: #ffffff; border: 1px solid #0000000d; border-radius: 0; text-decoration: none; transition: border-color 0.3s; } .ds-framed-card:hover { border-color: #00000026; } .ds-framed-card-type { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #9ca3af; } .ds-framed-card-title { font-size: 1.25rem; font-weight: 500; color: #111111; transition: color 0.3s; } .ds-framed-card:hover .ds-framed-card-title { color: #2563eb; } .ds-framed-card-desc { font-size: 0.875rem; line-height: 1.6; color: #4b5563; } .ds-framed-card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 8px; }"
     },
     {
       "name": "Editorial Split Row",
       "kind": "custom",
       "refersTo": "case-study-row",
-      "description": "Signature 12-column layout: narrow metadata rail (client/date) on the left, wide content column on the right. Carries into future list-style pages like /work.",
+      "description": "Signature 12-column layout: narrow metadata rail (client/date) on the left, wide content column on the right.",
       "html": "<div class=\"ds-split-row\"><div class=\"ds-split-meta\"><p class=\"ds-split-client\">CLIENT NAME</p><p class=\"ds-split-date\">6 weeks</p></div><div class=\"ds-split-content\"><h3 class=\"ds-split-title\">Case study title</h3><p class=\"ds-split-desc\">One or two sentences describing the engagement and outcome.</p><div class=\"ds-split-tags\"><span class=\"ds-tag\">Astro</span><span class=\"ds-tag\">React</span></div></div></div>",
       "css": ".ds-split-row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 32px; } .ds-split-meta { grid-column: span 4; } .ds-split-client { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #6b7280; } .ds-split-date { color: #9ca3af; margin-top: 4px; } .ds-split-content { grid-column: span 8; display: flex; flex-direction: column; gap: 24px; } .ds-split-title { font-size: 2rem; font-weight: 500; letter-spacing: -0.01em; color: #111111; transition: color 0.5s; } .ds-split-row:hover .ds-split-title { color: #2563eb; } .ds-split-desc { font-size: 1.125rem; line-height: 1.6; color: #4b5563; max-width: 60ch; } .ds-split-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Fixed, translucent-blur header with wordmark, flat desktop link row, and mobile hamburger toggle. The system's one deliberately non-flat surface.",
+      "html": "<header class=\"ds-nav\"><nav class=\"ds-nav-inner\"><a class=\"ds-nav-wordmark\" href=\"/\">Vinayak Gupta</a><div class=\"ds-nav-links\"><a class=\"ds-nav-link\" href=\"/work\">Work</a><a class=\"ds-nav-link\" href=\"/now\">Now</a><a class=\"ds-nav-link\" href=\"/about\">About</a></div></nav></header>",
+      "css": ".ds-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background-color: #fafafacc; backdrop-filter: blur(12px); border-bottom: 1px solid #0000000d; } .ds-nav-inner { max-width: 80rem; margin: 0 auto; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; } .ds-nav-wordmark { font-weight: 600; letter-spacing: -0.01em; color: #111111; text-decoration: none; transition: color 0.3s; } .ds-nav-wordmark:hover { color: #2563eb; } .ds-nav-links { display: flex; align-items: center; gap: 32px; } .ds-nav-link { font-size: 0.875rem; font-weight: 500; color: #4b5563; text-decoration: none; transition: color 0.3s; } .ds-nav-link:hover { color: #111111; }"
+    },
+    {
+      "name": "Filter Tab",
+      "kind": "custom",
+      "refersTo": "filter-tab-active",
+      "description": "Flat text-button filter row with a shared-element (layoutId) background that slides to the active tab. Used on /work for category filtering.",
+      "html": "<div class=\"ds-filter-row\"><button class=\"ds-filter-tab ds-filter-tab-active\">All</button><button class=\"ds-filter-tab\">Professional</button><button class=\"ds-filter-tab\">Side Project</button></div>",
+      "css": ".ds-filter-row { display: flex; flex-wrap: wrap; gap: 8px; } .ds-filter-tab { position: relative; padding: 8px 16px; background: none; border: none; font-size: 0.875rem; font-weight: 500; color: #9ca3af; cursor: pointer; transition: color 0.3s; } .ds-filter-tab:hover { color: #6b7280; } .ds-filter-tab-active { color: #111111; background-color: #0000000d; }"
     }
   ],
   "narrative": {
     "northStar": "The Engineering Notebook",
-    "overview": "This site reads like annotations in a lab notebook, not a marketing brochure: monochrome type carrying nearly all the weight, a single utilitarian accent reserved for signal (links, primary actions, hover states), and structure built from whitespace and hairline rules rather than cards or shadows. Nothing is decorated to look impressive — it's arranged to be read quickly and trusted immediately, the same way a well-kept notebook earns trust through legibility, not polish.\n\nThe system explicitly rejects the consultant sales-deck register it's evolving away from (stats-grid \"proof\" sections, \"Book a call\" CTAs, service-tier offerings), the generic SaaS/AI aesthetic (purple gradients, glassmorphism, hero-metric templates), and the stiff formality of a corporate resume PDF. It is warm through voice and content, not through visual softness — the palette and shapes stay plain so the writing can carry the personality.",
+    "overview": "This site reads like annotations in a lab notebook, not a marketing brochure: monochrome type carrying nearly all the weight, a single utilitarian accent reserved for signal (links, primary actions, hover states), and structure built from whitespace and hairline rules rather than cards or shadows. Nothing is decorated to look impressive — it's arranged to be read quickly and trusted immediately, the same way a well-kept notebook earns trust through legibility, not polish.\n\nThe system explicitly rejects the consultant sales-deck register it's evolving away from (stats-grid \"proof\" sections, \"Book a call\" CTAs, service-tier offerings), the generic SaaS/AI aesthetic (purple gradients, glassmorphism, hero-metric templates), and the stiff formality of a corporate resume PDF. It is warm through voice and content, not through visual softness — the palette and shapes stay plain so the writing can carry the personality.\n\nNow implemented across six pages (/, /work, /now, /playground + detail routes, /about, /resume), all sharing this system through the persistent Nav and Footer.",
     "keyCharacteristics": [
       "Monochrome base (off-white / near-black) with one electric-blue signal color used sparingly",
-      "Zero border-radius anywhere — every shape is a sharp rectangle",
+      "Zero border-radius anywhere, with one narrow accepted exception for circular wayfinding dots on the /about timeline",
       "Flat by default — no shadows at rest; separation comes from whitespace and 1px hairline dividers",
       "Generous vertical rhythm (96–128px between sections) against tight, editorial line lengths",
-      "Motion is a confirmation, not a performance: fades and small upward translations, nothing bouncy"
+      "Motion is a confirmation, not a performance: fades and small upward translations, nothing bouncy",
+      "A persistent, translucent-blur navigation header sits above every page — the one deliberate break from the flat, opaque default, justified by needing to stay legible over scrolling content"
     ],
     "rules": [
-      { "name": "The One Signal Rule", "body": "Signal Blue appears in exactly one state at a time — a hover, a focus ring, a selection highlight. It never sits on the page at rest. If two elements are blue simultaneously, something is wrong.", "section": "colors" },
-      { "name": "The One Eyebrow Rule", "body": "Uppercase-tracked mono labels are reserved for genuine metadata (a client name, a status), never used as decorative section kickers. If a section doesn't have real label-shaped data, it gets a plain Headline with no eyebrow above it.", "section": "typography" },
-      { "name": "The Flat-at-Rest Rule", "body": "If it's part of the page's normal layout, it has no shadow and no radius. Shadows are earned only by content that overlays the page (modals, menus, tooltips) — never by a card, button, or section sitting in normal flow.", "section": "elevation" }
+      { "name": "The One Signal Rule", "body": "Signal Blue appears in exactly one state at a time — a hover, a focus ring, a selection highlight. It never sits on the page at rest, with one narrow exception: the /about timeline's wayfinding dots, which use blue as a permanent location mark, not decoration. That exception doesn't generalize.", "section": "colors" },
+      { "name": "The One Eyebrow Rule", "body": "Uppercase-tracked mono labels are reserved for genuine metadata (a client name, a status, a content type), never used as decorative section kickers. A status can also carry a single leading emoji (⚡🔭💤) as the system's one icon language for status — not a general invitation to decorate headings with emoji.", "section": "typography" },
+      { "name": "The Flat-at-Rest Rule", "body": "If it's part of the page's normal layout, it has no shadow, no radius, and no blur. Those are earned only by content that overlays the page in a real stacking sense — the fixed nav, a modal, a menu, a tooltip — never a card, button, or section in normal flow.", "section": "elevation" }
     ],
     "dos": [
-      "Do keep every corner sharp — zero border-radius anywhere, no exceptions for cards, buttons, tags, or images.",
-      "Do hold Signal Blue (#2563eb) in reserve for exactly one active state at a time — hover, focus, or selection — never at rest.",
-      "Do use the 1px Hairline (#0000001a) as the only section-separation device; prefer whitespace over any new visual boundary.",
+      "Do keep every corner sharp — zero border-radius anywhere, except the /about timeline's small circular wayfinding dots.",
+      "Do hold Signal Blue (#2563eb) in reserve for exactly one active state at a time — hover, focus, or selection — never at rest, except the timeline's permanent wayfinding dots.",
+      "Do use the 1px Hairline (#0000001a) or its lighter sibling Hairline Soft (#0000000d) as the section/list-separation device; prefer whitespace over any new visual boundary.",
       "Do cap body text between 25ch and 65ch depending on column width, and keep the mono Label style exclusive to genuine metadata.",
-      "Do let motion read as confirmation (fade + small upward translation, ease [0.16, 1, 0.3, 1]) — never bounce, elastic, or overshoot."
+      "Do let motion read as confirmation (fade + small upward translation, ease [0.16, 1, 0.3, 1]) — never bounce, elastic, or overshoot.",
+      "Do reserve backdrop-blur for the fixed nav specifically — it's functional, not a decorative material to reach for elsewhere."
     ],
     "donts": [
       "Don't reintroduce the consultant sales-deck register — no stats-grid \"proof\" sections, no \"Book a call\" CTA, no service-tier offering lists.",
-      "Don't use purple/multi-color gradients, glassmorphism, or a hero-metric template (big number + small label + gradient accent) — the generic SaaS/AI look this system explicitly rejects.",
+      "Don't use purple/multi-color gradients, glassmorphism as decoration, or a hero-metric template (big number + small label + gradient accent) — the generic SaaS/AI look this system explicitly rejects.",
       "Don't let the site read like a stiff, formal resume PDF — copy stays first-person and conversational even where structure is dense.",
-      "Don't add a drop shadow or colored border-stripe to any card, button, or list item sitting in normal page flow — reserve shadow for genuinely overlaid surfaces only (modals, dropdowns, tooltips).",
-      "Don't apply an uppercase mono eyebrow to every section head as decoration — it's reserved for sections with real label-shaped metadata (client, status, date)."
+      "Don't add a drop shadow or colored border-stripe to any card, button, or list item sitting in normal page flow — reserve shadow/blur for genuinely overlaid surfaces only (the fixed nav, modals, dropdowns, tooltips).",
+      "Don't apply an uppercase mono eyebrow to every section head as decoration — it's reserved for sections with real label-shaped metadata (client, status, date, content type).",
+      "Don't use the Framed Card's white surface and border as a substitute for the plain List Card pattern — it's for grids of heterogeneous items and framed external content, not a general card upgrade."
     ]
   }
 }

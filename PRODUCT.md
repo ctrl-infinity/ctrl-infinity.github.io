@@ -25,7 +25,7 @@ Judge me by what's live right now. This isn't a static resume dressed up as a we
 - Primary and secondary CTA: Get in touch (email) is primary. "See what I've built → /work" is the fallback for visitors not ready to email yet.
 - The line a visitor remembers after 10 seconds: Ships real work, and owns the whole picture — not just their slice of it.
 - Belief ladder: (1) this is real, shipped production work, not toy demos or vague claims — (2) beyond writing code, he takes end-to-end ownership, thinking in terms of the whole problem rather than his assigned slice of it — (3) he's building right now, not just listing past credentials — (4) reaching out is worth a hiring manager's time.
-- Proof on hand: existing case studies and project write-ups in `src/content/case-studies/` and `src/content/projects/` (slated to migrate into a unified `/work` collection per `docs/superpowers/specs/2026-07-12-portfolio-expansion-design.md`). A couple more case studies and experiences will be added over time. GitHub activity (github.com/ctrl-infinity) may be surfaced later; nothing wired up yet.
+- Proof on hand: case studies and project write-ups live in the unified `src/content/work/` collection, rendered on `/work` with category filtering (professional / side-project / open-source). A couple more case studies and experiences will be added over time. GitHub activity (github.com/ctrl-infinity) may be surfaced later; nothing wired up yet.
 
 ## Brand Personality
 
