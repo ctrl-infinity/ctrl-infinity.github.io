@@ -51,6 +51,9 @@ jobs:
       - name: Generate resume.tex
         run: node scripts/build-tex.js
         working-directory: ${{ env.BUILD_PATH }}
+      - name: Validate resume files
+        run: node scripts/validate-resume.js
+        working-directory: ${{ env.BUILD_PATH }}
       - name: Compile LaTeX to PDF
         uses: xu-cheng/latex-action@v3
         with:
