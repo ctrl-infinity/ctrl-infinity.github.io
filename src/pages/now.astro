@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { NowGroup } from '../components/NowGroup';
+import NowGroup from '../components/NowGroup.astro';
 import { getCollection } from 'astro:content';
 
 const nowCollection = await getCollection('now');
@@ -45,8 +45,8 @@ const lastUpdated = today.toLocaleDateString('en-US', { month: 'long', year: 'nu
       </p>
     </div>
 
-    <NowGroup status="active" entries={grouped.active} client:load />
-    <NowGroup status="exploring" entries={grouped.exploring} client:load />
-    <NowGroup status="paused" entries={grouped.paused} client:load />
+    <NowGroup status="active" entries={grouped.active} />
+    <NowGroup status="exploring" entries={grouped.exploring} />
+    <NowGroup status="paused" entries={grouped.paused} />
   </section>
 </Layout>

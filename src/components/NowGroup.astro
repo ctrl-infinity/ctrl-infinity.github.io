@@ -1,0 +1,38 @@
+---
+import NowEntry from './NowEntry.astro';
+import type { Props as NowEntryProps } from './NowEntry.astro';
+
+interface Props {
+  status: string;
+  entries: NowEntryProps[];
+}
+
+const { status, entries } = Astro.props;
+
+const statusConfig: Record<string, { icon: string; label: string }> = {
+  active: { icon: '⚡', label: 'Currently Active' },
+  exploring: { icon: '🔭', label: 'Exploring' },
+  paused: { icon: '💤', label: 'Paused' },
+};
+
+const config = statusConfig[status] || { icon: '•', label: status };
+---
+
+{
+  entries.length > 0 && (
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-2 pb-4 border-b border-black/10">
+        <span class="text-lg">{config.icon}</span>
+        <h2 class="text-sm font-mono uppercase tracking-[0.15em] text-gray-500">
+          {config.label}
+        </h2>
+      </div>
+
+      <div class="flex flex-col divide-y divide-black/5">
+        {entries.map((entry) => (
+          <NowEntry {...entry} />
+        ))}
+      </div>
+    </div>
+  )
+}

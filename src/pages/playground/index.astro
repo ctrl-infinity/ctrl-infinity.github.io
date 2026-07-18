@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { PlaygroundCard } from '../../components/PlaygroundCard';
+import PlaygroundCard from '../../components/PlaygroundCard.astro';
 import { getCollection } from 'astro:content';
 
 const playgroundCollection = await getCollection('playground');
@@ -29,7 +29,7 @@ const entries = sorted.map((entry) => ({
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {entries.map((entry) => (
-        <PlaygroundCard {...entry} client:load />
+        <PlaygroundCard {...entry} />
       ))}
     </div>
   </section>
