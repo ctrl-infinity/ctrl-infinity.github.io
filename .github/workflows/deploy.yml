@@ -48,6 +48,22 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
         working-directory: ${{ env.BUILD_PATH }}
+      - name: Generate resume.tex
+        run: node scripts/build-tex.js
+        working-directory: ${{ env.BUILD_PATH }}
+      - name: Validate resume files
+        run: node scripts/validate-resume.js
+        working-directory: ${{ env.BUILD_PATH }}
+      - name: Compile LaTeX to PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: src/resume/resume.tex
+          working_directory: ${{ env.BUILD_PATH }}
+      - name: Move PDF to public folder
+        run: |
+          mkdir -p public/resume
+          mv src/resume/resume.pdf public/resume/vinayak-gupta-resume.pdf
+        working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Astro
         run: |
           ${{ steps.detect-package-manager.outputs.runner }} astro build \

@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# git worktrees
+.worktrees/
+
+# generated resume files
+src/resume/resume.tex

@@ -1,0 +1,109 @@
+{
+  "basics": {
+    "name": "Vinayak Gupta",
+    "email": "vinayakgupta.13.6@gmail.com",
+    "phone": "+919896276989",
+    "location": "Noida, India",
+    "linkedin": "https://www.linkedin.com/in/vinayak-gupta30/",
+    "github": "https://github.com/ctrl-infinity",
+    "summary": "Software Engineer and ML Engineer with experience building Python-based Generative AI and Large Language Models (LLMs) applications for enterprise use cases. Delivered Retrieval-Augmented Generation (RAG) solutions, standardized LLMOps practices, and production-grade data and AI workflows across Azure, Docker, Kubernetes, SQL, and GitHub Actions environments. Brings strong problem solving, experimentation, and end-to-end delivery experience across data ingestion, preprocessing, model evaluation, and deployment."
+  },
+  "skills": [
+    {
+      "category": "Programming Languages",
+      "items": ["Python", "JavaScript", "Go"]
+    },
+    {
+      "category": "Generative AI & ML",
+      "items": ["Large Language Models (LLMs)", "Retrieval-Augmented Generation (RAG)", "Prompt Flow", "TensorFlow", "Random Forest", "SVM", "CNN", "RNN"]
+    },
+    {
+      "category": "Data Engineering",
+      "items": ["SQL", "NumPy", "Databricks", "Azure Data Factory", "Power BI", "Excel", "Apache Spark"]
+    },
+    {
+      "category": "Cloud / LLMOps",
+      "items": ["Azure", "Azure ML SDK", "Docker", "Kubernetes", "Git", "GitHub Actions", "Terraform", "Bicep"]
+    },
+    {
+      "category": "Web Technologies",
+      "items": ["Django", "Flask", "ReactJS", "Markdown"]
+    },
+    {
+      "category": "Soft Skills",
+      "items": ["Collaboration", "Communication", "Problem Solving", "Logical Thinking"]
+    }
+  ],
+  "experience": [
+    {
+      "company": "SimCorp",
+      "location": "Noida, Uttar Pradesh",
+      "role": "Senior Software Engineer - MLOps",
+      "startDate": "July 2024",
+      "endDate": "Present",
+      "highlights": [
+        "Built a Python-based Retrieval-Augmented Generation (RAG) application with a custom document index for a mobile payments use case, improving information retrieval and response accuracy by 20% and reducing response time by 60% through API load balancing and prompt flow orchestration.",
+        "Standardized Git-based LLMOps practices for prompt flow experimentation, evaluation, and deployment using Azure ML SDK, streamlining repeatable delivery across Docker images, Kubernetes clusters, and Azure ML endpoints."
+      ]
+    },
+    {
+      "company": "Tiger Analytics",
+      "location": "Chennai, Tamil Nadu",
+      "role": "Senior Analyst - MLE",
+      "startDate": "January 2024",
+      "endDate": "June 2024",
+      "highlights": [
+        "Delivered a Python-based Retrieval-Augmented Generation (RAG) application with a custom document index for a mobile payments service, improving retrieval accuracy by 20% and lowering response time by 60% through API load balancing and efficient prompt flow design.",
+        "Established a company-wide, Git-based LLMOps workflow in Azure ML SDK for prompt flow experimentation and evaluation, simplifying deployment across Docker images, Kubernetes clusters, and Azure ML endpoints."
+      ]
+    },
+    {
+      "company": "Tiger Analytics",
+      "location": "Chennai, Tamil Nadu",
+      "role": "Analyst - MLE",
+      "startDate": "September 2022",
+      "endDate": "December 2023",
+      "highlights": [
+        "Enhanced a product portfolio management platform for a global FMCG client by designing automated data ingestion and preprocessing pipelines that integrated high-volume data into SQL databases using Azure Data Factory and SQL-based transformations to deliver application-ready data models.",
+        "Built end-to-end analytics solutions using automated Databricks pipelines and Power BI dashboards with scheduled refresh and KPI computation, improving the reliability and repeatability of business reporting workflows.",
+        "Migrated the codebase and its CI/CD pipelines from Azure DevOps to GitHub Actions, implementing infrastructure-as-code, versioning, and quality checks to strengthen deployment consistency and engineering standards."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Wireless Charging System",
+      "technologies": ["Python", "SketchUp", "YOLO", "OpenCV"],
+      "description": "Worked on a wireless charging system that will charge electric vehicles on the go. Conceptualized and designed the whole charging process which was based on the principles of electromagnetic induction. Implemented Object Detection to create an Autonomous Vehicle Driving System using TensorFlow and OpenCV. Developed an Automatic Number Plate Recognition (ANPR) system to read a vehicle’s number plate in real time."
+    },
+    {
+      "title": "Image Segmentation",
+      "technologies": ["Python", "NumPy", "OpenCV"],
+      "github": "https://github.com/ctrl-infinity/custom_image_segmentation",
+      "description": "Implemented an 8-neighboring algorithm for image segmentation. Dividing the image into pixel blocks, it compared each block's color features with its 8 surrounding neighbors. Based on similarity scores, colors were assigned to each block, effectively segmenting the image based on color patterns."
+    },
+    {
+      "title": "Semantics-based IR System",
+      "technologies": ["Python", "NLP", "GloVe Embeddings"],
+      "description": "Built a semantics-driven information retrieval system in Python that preprocesses search queries and documents, assigns relevance scores, and returns the most relevant documents based on semantic similarity rather than keyword matching."
+    }
+  ],
+  "education": [
+    {
+      "school": "Indian Institute of Information Technology and Management",
+      "location": "Trivandrum, Kerala",
+      "degree": "MSc Computer Science (Machine Intelligence)",
+      "gpa": "8.02",
+      "startDate": "September 2020",
+      "endDate": "June 2022"
+    },
+    {
+      "school": "Deen Dayal Upadhyaya College",
+      "location": "Delhi, India",
+      "degree": "BSc. Computer Science",
+      "gpa": "7.67",
+      "startDate": "June 2017",
+      "endDate": "July 2020"
+    }
+  ]
+}
