@@ -1,8 +1,13 @@
 ---
 import '../styles/global.css';
-import '@fontsource/geist-sans';
-import { Nav } from '../components/Nav';
-import { Footer } from '../components/Footer';
+import '@fontsource/geist-sans/400.css';
+import '@fontsource/geist-sans/500.css';
+import '@fontsource/geist-sans/600.css';
+import '@fontsource/geist-sans/700.css';
+import geist400 from '@fontsource/geist-sans/files/geist-sans-latin-400-normal.woff2?url';
+import geist700 from '@fontsource/geist-sans/files/geist-sans-latin-700-normal.woff2?url';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
 	title?: string;
@@ -23,12 +28,14 @@ const {
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="preload" as="font" type="font/woff2" href={geist400} crossorigin />
+		<link rel="preload" as="font" type="font/woff2" href={geist700} crossorigin />
 
 		<title>{title}</title>
 		<meta name="description" content={description} />
 	</head>
 	<body class="bg-base text-foreground antialiased selection:bg-accent selection:text-white">
-		<Nav client:load />
+		<Nav />
 		<main class="pt-16">
 			<slot />
 		</main>
