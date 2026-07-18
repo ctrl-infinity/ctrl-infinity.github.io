@@ -1,37 +1,98 @@
-\documentclass[11pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[margin=0.75in]{geometry}
-\usepackage{hyperref}
-\usepackage{enumitem}
-\usepackage{titlesec}
+\documentclass[a4paper]{article}
+    \usepackage{fullpage}
+    \usepackage{fontawesome}
+    \usepackage{amsmath}
+    \usepackage{hyperref}
+    \usepackage{verbatim}
+    \usepackage{amssymb}
+    \usepackage{textcomp}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \textheight=10in
+    \pagestyle{empty}
+    \raggedright
+    \usepackage[left=0.5in,right=0.5in,bottom=0.5in,top=0.5in]{geometry}
 
-% Section formatting
-\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{12pt}{8pt}
+\def\bull{\vrule height 0.8ex width .7ex depth -.1ex }
 
-% PDF info and links
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=blue,
+% DEFINITIONS FOR RESUME %%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\area} [2] {
+    \vspace*{-9pt}
+    \begin{verse}
+        \textbf{#1}   #2
+    \end{verse}
 }
 
-\begin{document}
-\pagestyle{empty}
+\newcommand{\lineunder} {
+    \vspace*{-8pt} \\
+    \hspace*{-18pt} \hrulefill \\
+}
 
+\newcommand{\header} [1] {
+    {\hspace*{-18pt}\vspace*{6pt} \textsc{#1}}
+    \vspace*{-6pt} \lineunder
+}
+
+\newcommand{\employer} [3] {
+    { \textbf{#1} (#2)\\ \underline{\textbf{\emph{#3}}}\\  }
+}
+
+\newcommand{\contact} [3] {
+    \vspace*{-10pt}
+    \begin{center}
+        {\Huge \scshape {#1}}\\
+        #2 \\ #3
+    \end{center}
+    \vspace*{-8pt}
+}
+
+\newenvironment{achievements}{
+    \begin{list}
+        {$\bullet$}{\topsep 0pt \itemsep -2pt}}{\vspace*{4pt}
+    \end{list}
+}
+
+\newcommand{\schoolwithcourses} [4] {
+    \textbf{#1} #2 $\bullet$ #3\\
+    #4 \\
+    \vspace*{5pt}
+}
+
+\newcommand{\school} [4] {
+    \textbf{#1} #2 $\bullet$ #3\\
+    #4 \\
+}
+% END RESUME DEFINITIONS %%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\vspace*{-40pt}
+
+%==== Profile ====%
+\vspace*{-10pt}
 \begin{center}
-    {\huge \textbf{{{NAME}}}}\vspace{0.2cm}\\
-    {{EMAIL}}
+	{\Huge \scshape {{{NAME}}}}\\
+	{{CONTACT}}\\
 \end{center}
 
-\section{Experience}
+\header{About}
+\vspace{1mm}
+{{ABOUT}}
+\vspace{2mm}
+
+\header{Skills}
+{{SKILLS}}
+\vspace{2mm}
+
+\header{Work Experience}
+\vspace{1mm}
 {{EXPERIENCE}}
 
-\section{Education}
-{{EDUCATION}}
+\header{Projects}
+{{PROJECTS}}
 
-\section{Skills}
-{{SKILLS}}
+\header{Education}
+{{EDUCATION}}
+\vspace{2mm}
 
 \end{document}

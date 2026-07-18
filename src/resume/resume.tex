@@ -1,64 +1,144 @@
-\documentclass[11pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[margin=0.75in]{geometry}
-\usepackage{hyperref}
-\usepackage{enumitem}
-\usepackage{titlesec}
+\documentclass[a4paper]{article}
+    \usepackage{fullpage}
+    \usepackage{fontawesome}
+    \usepackage{amsmath}
+    \usepackage{hyperref}
+    \usepackage{verbatim}
+    \usepackage{amssymb}
+    \usepackage{textcomp}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \textheight=10in
+    \pagestyle{empty}
+    \raggedright
+    \usepackage[left=0.5in,right=0.5in,bottom=0.5in,top=0.5in]{geometry}
 
-% Section formatting
-\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{12pt}{8pt}
+\def\bull{\vrule height 0.8ex width .7ex depth -.1ex }
 
-% PDF info and links
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=blue,
+% DEFINITIONS FOR RESUME %%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\area} [2] {
+    \vspace*{-9pt}
+    \begin{verse}
+        \textbf{#1}   #2
+    \end{verse}
 }
 
-\begin{document}
-\pagestyle{empty}
+\newcommand{\lineunder} {
+    \vspace*{-8pt} \\
+    \hspace*{-18pt} \hrulefill \\
+}
 
+\newcommand{\header} [1] {
+    {\hspace*{-18pt}\vspace*{6pt} \textsc{#1}}
+    \vspace*{-6pt} \lineunder
+}
+
+\newcommand{\employer} [3] {
+    { \textbf{#1} (#2)\\ \underline{\textbf{\emph{#3}}}\\  }
+}
+
+\newcommand{\contact} [3] {
+    \vspace*{-10pt}
+    \begin{center}
+        {\Huge \scshape {#1}}\\
+        #2 \\ #3
+    \end{center}
+    \vspace*{-8pt}
+}
+
+\newenvironment{achievements}{
+    \begin{list}
+        {$\bullet$}{\topsep 0pt \itemsep -2pt}}{\vspace*{4pt}
+    \end{list}
+}
+
+\newcommand{\schoolwithcourses} [4] {
+    \textbf{#1} #2 $\bullet$ #3\\
+    #4 \\
+    \vspace*{5pt}
+}
+
+\newcommand{\school} [4] {
+    \textbf{#1} #2 $\bullet$ #3\\
+    #4 \\
+}
+% END RESUME DEFINITIONS %%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\vspace*{-40pt}
+
+%==== Profile ====%
+\vspace*{-10pt}
 \begin{center}
-    {\huge \textbf{Vinayak Gupta}}\vspace{0.2cm}\\
-    hello@example.com
+	{\Huge \scshape {Vinayak Gupta}}\\
+	Noida, India | vinayakgupta.13.6@gmail.com | +919896276989 | \\ \href{https://www.linkedin.com/in/vinayak-gupta30/}{\faLinkedin} | \href{https://github.com/ctrl-infinity}{\faGithub}\\
 \end{center}
 
-\section{Experience}
-\noindent\textbf{Fintech Startup} \hfill 2024 -- Present\\
-\textit{Lead Engineer}
-\begin{itemize}[leftmargin=*,nosep]
-    \item Built a real-time event-sourced transaction engine using Node.js and Postgres, cutting latency by 90\% and enabling instant ledger updates.
-    \item Replaced an aging polling system with a real-time event-sourced architecture to handle increased throughput.
+\header{About}
+\vspace{1mm}
+Software Engineer and ML Engineer with experience building Python-based Generative AI and Large Language Models (LLMs) applications for enterprise use cases. Delivered Retrieval-Augmented Generation (RAG) solutions, standardized LLMOps practices, and production-grade data and AI workflows across Azure, Docker, Kubernetes, SQL, and GitHub Actions environments. Brings strong problem solving, experimentation, and end-to-end delivery experience across data ingestion, preprocessing, model evaluation, and deployment.
+\vspace{2mm}
+
+\header{Skills}
+\begin{tabular}{ l l }
+    \textbf{Programming Languages} & Python | JavaScript | Go \\
+    \textbf{Generative AI \& ML} & Large Language Models (LLMs) | Retrieval-Augmented Generation (RAG) | Prompt Flow | TensorFlow | Random Forest | SVM | CNN | RNN \\
+    \textbf{Data Engineering} & SQL | NumPy | Databricks | Azure Data Factory | Power BI | Excel | Apache Spark \\
+    \textbf{Cloud / LLMOps} & Azure | Azure ML SDK | Docker | Kubernetes | Git | GitHub Actions | Terraform | Bicep \\
+    \textbf{Web Technologies} & Django | Flask | ReactJS | Markdown \\
+    \textbf{Soft Skills} & Collaboration | Communication | Problem Solving | Logical Thinking \\
+\end{tabular}
+\vspace{2mm}
+
+\header{Work Experience}
+\vspace{1mm}
+\textbf{SimCorp} \hfill Noida, Uttar Pradesh\\
+\textit{Senior Software Engineer - MLOps} \hfill July 2024 - Present\\
+\vspace{-1mm}
+\begin{itemize} \itemsep 1pt
+    \item Built a Python-based Retrieval-Augmented Generation (RAG) application with a custom document index for a mobile payments use case, improving information retrieval and response accuracy by 20\% and reducing response time by 60\% through API load balancing and prompt flow orchestration.
+    \item Standardized Git-based LLMOps practices for prompt flow experimentation, evaluation, and deployment using Azure ML SDK, streamlining repeatable delivery across Docker images, Kubernetes clusters, and Azure ML endpoints.
 \end{itemize}
-\vspace{0.3cm}
-\noindent\textbf{E-Commerce Enterprise} \hfill 2022 -- 2024\\
-\textit{Performance Consultant}
-\begin{itemize}[leftmargin=*,nosep]
-    \item Audited the architecture of a Next.js App Router migration stuck on complex caching issues.
-    \item Fixed the cache invalidation strategy and shipped the migration 2 weeks ahead of schedule.
+\vspace{1.5mm}
+\textbf{Tiger Analytics} \hfill Chennai, Tamil Nadu\\
+\textit{Senior Analyst - MLE} \hfill January 2024 - June 2024\\
+\vspace{-1mm}
+\begin{itemize} \itemsep 1pt
+    \item Delivered a Python-based Retrieval-Augmented Generation (RAG) application with a custom document index for a mobile payments service, improving retrieval accuracy by 20\% and lowering response time by 60\% through API load balancing and efficient prompt flow design.
+    \item Established a company-wide, Git-based LLMOps workflow in Azure ML SDK for prompt flow experimentation and evaluation, simplifying deployment across Docker images, Kubernetes clusters, and Azure ML endpoints.
 \end{itemize}
-\vspace{0.3cm}
-\noindent\textbf{SaaS Company} \hfill 2020 -- 2022\\
-\textit{Software Engineer}
-\begin{itemize}[leftmargin=*,nosep]
-    \item Integrated an automated code-review agent into the Azure DevOps ecosystem using service hooks and PowerShell.
-    \item Unblocked developers by reducing manual review feedback loop times.
+\vspace{1.5mm}
+\textbf{Tiger Analytics} \hfill Chennai, Tamil Nadu\\
+\textit{Analyst - MLE} \hfill September 2022 - December 2023\\
+\vspace{-1mm}
+\begin{itemize} \itemsep 1pt
+    \item Enhanced a product portfolio management platform for a global FMCG client by designing automated data ingestion and preprocessing pipelines that integrated high-volume data into SQL databases using Azure Data Factory and SQL-based transformations to deliver application-ready data models.
+    \item Built end-to-end analytics solutions using automated Databricks pipelines and Power BI dashboards with scheduled refresh and KPI computation, improving the reliability and repeatability of business reporting workflows.
+    \item Migrated the codebase and its CI/CD pipelines from Azure DevOps to GitHub Actions, implementing infrastructure-as-code, versioning, and quality checks to strengthen deployment consistency and engineering standards.
 \end{itemize}
-\vspace{0.3cm}
+\vspace{1.5mm}
 
 
-\section{Education}
-\noindent\textbf{University of Technology} \hfill 2016 -- 2020\\
-B.S. Computer Science
-\vspace{0.3cm}
+\header{Projects}
+\begin{itemize}
+    \item {\textbf{Wireless Charging System}} {\sl Python, SketchUp, YOLO, OpenCV} \\
+Worked on a wireless charging system that will charge electric vehicles on the go. Conceptualized and designed the whole charging process which was based on the principles of electromagnetic induction. Implemented Object Detection to create an Autonomous Vehicle Driving System using TensorFlow and OpenCV. Developed an Automatic Number Plate Recognition (ANPR) system to read a vehicle’s number plate in real time.\\
+    \item {\textbf{Image Segmentation}} {\sl Python, NumPy, OpenCV} \href{https://github.com/ctrl-infinity/custom_image_segmentation}{\faGithub} \\
+Implemented an 8-neighboring algorithm for image segmentation. Dividing the image into pixel blocks, it compared each block's color features with its 8 surrounding neighbors. Based on similarity scores, colors were assigned to each block, effectively segmenting the image based on color patterns.\\
+    \item {\textbf{Semantics-based IR System}} {\sl Python, NLP, GloVe Embeddings} \\
+Built a semantics-driven information retrieval system in Python that preprocesses search queries and documents, assigns relevance scores, and returns the most relevant documents based on semantic similarity rather than keyword matching.\\
+\end{itemize}
 
 
-\section{Skills}
-\noindent\textbf{Languages:} TypeScript, JavaScript, Python, Go, PowerShell\\
-\noindent\textbf{Frontend:} React, Next.js, Astro, Tailwind CSS\\
-\noindent\textbf{Backend \& Tools:} Node.js, PostgreSQL, Event Sourcing, Docker, Git\\
+\header{Education}
+\textbf{Indian Institute of Information Technology and Management}\hfill Trivandrum, Kerala\\
+MSc Computer Science (Machine Intelligence) \textit{GPA: 8.02} \hfill September 2020 - June 2022\\
+\vspace{2mm}
+\textbf{Deen Dayal Upadhyaya College}\hfill Delhi, India\\
+BSc. Computer Science \textit{GPA: 7.67} \hfill June 2017 - July 2020\\
+\vspace{2mm}
 
+\vspace{2mm}
 
 \end{document}

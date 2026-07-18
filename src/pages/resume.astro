@@ -3,14 +3,23 @@ import Layout from '../layouts/Layout.astro';
 import resumeData from '../content/resume.json';
 
 const pdfPath = '/resume/vinayak-gupta-resume.pdf';
+
+const formatHighlight = (text: string) => {
+  return text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>');
+};
 ---
 
-<Layout title="Resume — Vinayak Gupta" description="Vinayak Gupta's resume. Software Engineer & Builder.">
+<Layout title="Resume — Vinayak Gupta" description="Vinayak Gupta's resume. Software Engineer & ML Engineer.">
   <section class="px-6 md:px-12 max-w-7xl mx-auto py-24">
-    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-24">
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-        Resume
-      </h1>
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-20">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
+          Resume
+        </h1>
+        <p class="text-gray-500 font-mono text-xs uppercase tracking-widest">
+          {resumeData.basics.location} &middot; {resumeData.basics.email}
+        </p>
+      </div>
       <a
         href={pdfPath}
         download
@@ -21,6 +30,11 @@ const pdfPath = '/resume/vinayak-gupta-resume.pdf';
     </div>
 
     <div class="max-w-4xl">
+      <!-- About / Summary Section -->
+      <div class="border-t border-black/10 pt-12 pb-12" data-reveal>
+        <p class="text-gray-600 leading-relaxed text-lg max-w-[70ch]" set:html={formatHighlight(resumeData.basics.summary)} />
+      </div>
+
       <!-- Experience Section -->
       <div class="border-t border-black/10 pt-16 pb-16">
         <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-12">Experience</h2>
@@ -28,16 +42,84 @@ const pdfPath = '/resume/vinayak-gupta-resume.pdf';
           {resumeData.experience.map((job) => (
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4" data-reveal>
               <div class="md:col-span-4 flex flex-col gap-1">
-                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4]">{job.startDate} — {job.endDate}</span>
-                <span class="text-sm font-mono tracking-[0.15em] uppercase text-gray-500 font-medium">{job.company}</span>
+                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4]">
+                  {job.startDate} — {job.endDate}
+                </span>
+                <span class="text-sm font-mono tracking-[0.15em] uppercase text-gray-500 font-medium">
+                  {job.company}
+                </span>
+                <span class="text-xs text-gray-400 font-mono">
+                  {job.location}
+                </span>
               </div>
               <div class="md:col-span-8">
                 <h3 class="text-xl font-medium text-foreground mb-4">{job.role}</h3>
                 <ul class="flex flex-col gap-3">
                   {job.highlights.map((highlight) => (
-                    <li class="text-gray-600 leading-relaxed">— {highlight}</li>
+                    <li class="text-gray-600 leading-relaxed list-none pl-4 relative">
+                      <span class="absolute left-0 text-gray-400 font-mono">—</span>
+                      <span set:html={formatHighlight(highlight)} />
+                    </li>
                   ))}
                 </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Projects Section -->
+      <div class="border-t border-black/10 pt-16 pb-16">
+        <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-12">Projects</h2>
+        <div class="flex flex-col gap-16">
+          {resumeData.projects.map((proj) => (
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4" data-reveal>
+              <div class="md:col-span-4 flex flex-col gap-1">
+                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4] mb-2">
+                  Stack
+                </span>
+                <div class="flex flex-wrap gap-1.5">
+                  {proj.technologies.map((tech) => (
+                    <span class="px-2 py-0.5 bg-black/5 text-[10px] text-foreground/70 font-mono rounded-none">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div class="md:col-span-8">
+                <div class="flex items-baseline gap-3 mb-4">
+                  <h3 class="text-xl font-medium text-foreground">{proj.title}</h3>
+                  {proj.github && (
+                    <a
+                      href={proj.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-xs font-mono text-gray-400 hover:text-accent transition-colors duration-300"
+                    >
+                      GitHub &nearr;
+                    </a>
+                  )}
+                </div>
+                <p class="text-gray-600 leading-relaxed" set:html={formatHighlight(proj.description)} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Skills Section -->
+      <div class="border-t border-black/10 pt-16 pb-16">
+        <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-12">Skills</h2>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4">
+          {resumeData.skills.map((skillGroup) => (
+            <div class="md:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4 mb-8 last:mb-0" data-reveal>
+              <div class="md:col-span-4">
+                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4]">
+                  {skillGroup.category}
+                </span>
+              </div>
+              <div class="md:col-span-8">
+                <p class="text-gray-600 leading-relaxed">{skillGroup.items.join(' | ')}</p>
               </div>
             </div>
           ))}
@@ -47,32 +129,22 @@ const pdfPath = '/resume/vinayak-gupta-resume.pdf';
       <!-- Education Section -->
       <div class="border-t border-black/10 pt-16 pb-16">
         <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-12">Education</h2>
-        <div class="flex flex-col gap-16">
+        <div class="flex flex-col gap-12">
           {resumeData.education.map((edu) => (
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4" data-reveal>
               <div class="md:col-span-4 flex flex-col gap-1">
-                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4]">{edu.startDate} — {edu.endDate}</span>
+                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4]">
+                  {edu.startDate} — {edu.endDate}
+                </span>
+                <span class="text-xs text-gray-400 font-mono">
+                  {edu.location}
+                </span>
               </div>
               <div class="md:col-span-8">
                 <h3 class="text-xl font-medium text-foreground mb-1">{edu.school}</h3>
-                <p class="text-gray-600">{edu.degree}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      <!-- Skills Section -->
-      <div class="border-t border-black/10 pt-16 pb-16">
-        <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-12">Skills</h2>
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4">
-          {resumeData.skills.map((skillGroup) => (
-            <div class="md:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4 mb-8 last:mb-0" data-reveal>
-              <div class="md:col-span-4">
-                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4]">{skillGroup.category}</span>
-              </div>
-              <div class="md:col-span-8">
-                <p class="text-gray-600 leading-relaxed">{skillGroup.items.join(', ')}</p>
+                <p class="text-gray-600">
+                  {edu.degree} &middot; <span class="font-mono text-sm text-gray-500">GPA: {edu.gpa}</span>
+                </p>
               </div>
             </div>
           ))}
