@@ -1,0 +1,48 @@
+---
+interface Step {
+  title: string;
+  role: string;
+}
+
+const steps: Step[] = [
+  { title: 'PR created or updated', role: 'A developer opens or pushes to a pull request' },
+  { title: 'ADO service hook fires', role: 'Azure DevOps emits the pull request event' },
+  { title: 'Pipeline runs', role: 'A build pipeline picks up the event' },
+  { title: 'Headless Claude reviews', role: 'PowerShell invokes a headless Claude command against the diff' },
+  { title: 'Comments posted to PR', role: "Feedback lands back on the PR via Azure DevOps' REST API" },
+];
+
+type Cell =
+  | { kind: 'node'; step: Step; index: number }
+  | { kind: 'connector' };
+
+const cells: Cell[] = steps.flatMap((step, index) =>
+  index === 0
+    ? [{ kind: 'node', step, index } as Cell]
+    : [{ kind: 'connector' } as Cell, { kind: 'node', step, index } as Cell]
+);
+---
+
+<figure class="my-12" data-reveal>
+  <div class="flex flex-col md:flex-row md:items-stretch">
+    {cells.map((cell) =>
+      cell.kind === 'connector' ? (
+        <div class="flex items-center justify-center text-gray-300 shrink-0 py-1 md:py-0 md:px-1" aria-hidden="true">
+          <span class="hidden md:inline">→</span>
+          <span class="md:hidden">↓</span>
+        </div>
+      ) : (
+        <div class="group md:flex-1 border border-black/10 px-5 py-4 flex flex-col gap-2 hover:border-accent transition-colors duration-300">
+          <span class="font-mono text-xs text-gray-400 group-hover:text-accent transition-colors duration-300">
+            0{cell.index + 1}
+          </span>
+          <span class="text-sm font-medium text-foreground">{cell.step.title}</span>
+          <span class="text-xs text-gray-500 leading-relaxed">{cell.step.role}</span>
+        </div>
+      )
+    )}
+  </div>
+  <figcaption class="mt-4 text-xs font-mono text-gray-500">
+    Runs entirely inside Azure DevOps — no external services, secrets never leave ADO.
+  </figcaption>
+</figure>
