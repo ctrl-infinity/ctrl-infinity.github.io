@@ -44,9 +44,9 @@ The pipeline step is a small PowerShell script that shells out to a headless Cla
 # review-pr.ps1 — runs inside the ADO pipeline
 $diff = git diff "origin/$env:SYSTEM_PULLREQUEST_TARGETBRANCH...HEAD"
 
-$review = claude -p "Review this diff for bugs, security issues, and
+$review = $diff | claude -p "Review this diff for bugs, security issues, and
   convention violations. Be specific and concise." `
-  --output-format json <<< $diff | ConvertFrom-Json
+  --output-format json | ConvertFrom-Json
 
 $body = @{
   comments = @(@{ content = $review.summary })
