@@ -65,7 +65,7 @@ export function WorkCard({ title, description, role, tags, image, client, durati
         </div>
 
         {hasDetail && slug && (
-          <span className="text-sm font-mono text-gray-400 group-hover:text-accent transition-colors duration-300 mt-1">
+          <span className="text-sm font-mono text-gray-500 group-hover:text-accent transition-colors duration-300 mt-1">
             Case study →
           </span>
         )}

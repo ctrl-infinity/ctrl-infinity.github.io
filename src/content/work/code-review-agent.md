@@ -53,6 +53,10 @@ $body = @{
   status   = 1
 } | ConvertTo-Json -Depth 5
 
+$headers = @{
+  Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
+}
+
 Invoke-RestMethod `
   -Uri "$env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$env:SYSTEM_TEAMPROJECT/_apis/git/repositories/$env:BUILD_REPOSITORY_NAME/pullRequests/$env:SYSTEM_PULLREQUEST_PULLREQUESTID/threads?api-version=7.1" `
   -Method Post -Headers $headers -Body $body -ContentType "application/json"
