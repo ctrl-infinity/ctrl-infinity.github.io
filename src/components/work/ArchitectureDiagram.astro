@@ -4,13 +4,22 @@ interface Step {
   role: string;
 }
 
-const steps: Step[] = [
+interface Props {
+  steps?: Step[];
+  caption?: string;
+}
+
+const defaultSteps: Step[] = [
   { title: 'PR created or updated', role: 'A developer opens or pushes to a pull request' },
   { title: 'ADO service hook fires', role: 'Azure DevOps emits the pull request event' },
   { title: 'Pipeline runs', role: 'A build pipeline picks up the event' },
   { title: 'Headless Claude reviews', role: 'PowerShell invokes a headless Claude command against the diff' },
   { title: 'Comments posted to PR', role: "Feedback lands back on the PR via Azure DevOps' REST API" },
 ];
+
+const defaultCaption = 'Runs entirely inside Azure DevOps — no external services, secrets never leave ADO.';
+
+const { steps = defaultSteps, caption = defaultCaption } = Astro.props;
 
 type Cell =
   | { kind: 'node'; step: Step; index: number }
@@ -43,6 +52,6 @@ const cells: Cell[] = steps.flatMap((step, index) =>
     )}
   </div>
   <figcaption class="mt-4 text-xs font-mono text-gray-500">
-    Runs entirely inside Azure DevOps — no external services, secrets never leave ADO.
+    {caption}
   </figcaption>
 </figure>

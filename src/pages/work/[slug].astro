@@ -22,6 +22,21 @@ const categoryLabels: Record<string, string> = {
   'side-project': 'Side Project',
   'open-source': 'Open Source',
 };
+
+const architectureDiagrams: Record<string, { steps: { title: string; role: string }[]; caption: string }> = {
+  'code-review-agent': {
+    steps: [
+      { title: 'PR created or updated', role: 'A developer opens or pushes to a pull request' },
+      { title: 'ADO service hook fires', role: 'Azure DevOps emits the pull request event' },
+      { title: 'Pipeline runs', role: 'A build pipeline picks up the event' },
+      { title: 'Headless Claude reviews', role: 'PowerShell invokes a headless Claude command against the diff' },
+      { title: 'Comments posted to PR', role: "Feedback lands back on the PR via Azure DevOps' REST API" },
+    ],
+    caption: 'Runs entirely inside Azure DevOps — no external services, secrets never leave ADO.',
+  },
+};
+
+const architectureDiagram = architectureDiagrams[entry.id];
 ---
 
 <Layout title={`${title} — Vinayak Gupta`} description={description}>
@@ -89,7 +104,9 @@ const categoryLabels: Record<string, string> = {
       </aside>
 
       <div class="md:col-span-8">
-        <ArchitectureDiagram />
+        {architectureDiagram && (
+          <ArchitectureDiagram steps={architectureDiagram.steps} caption={architectureDiagram.caption} />
+        )}
 
         <div class="prose prose-gray max-w-none
           [&_pre]:bg-[#1e1e1e] [&_pre]:text-gray-200 [&_pre]:p-6 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-relaxed
