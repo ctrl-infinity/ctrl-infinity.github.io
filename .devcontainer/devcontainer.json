@@ -12,6 +12,9 @@
   "mounts": [
     "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume"
   ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude"
+  },
 
   // Runs once when the codespace/container is first created.
   "postCreateCommand": "bash .devcontainer/setup.sh",
