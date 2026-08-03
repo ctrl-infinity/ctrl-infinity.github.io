@@ -6,7 +6,7 @@ category: "professional"
 tags: ["Azure ML SDK", "LLMOps", "Git", "Docker", "Kubernetes", "GitHub Actions", "Terraform"]
 client: "SimCorp / Tiger Analytics"
 duration: "2024"
-order: 3
+order: 4
 metrics:
   - label: "Practice"
     value: "Git-based LLMOps"

@@ -6,7 +6,7 @@ category: "side-project"
 tags: ["Python", "TensorFlow", "OpenCV", "YOLO", "SketchUp"]
 client: "IIITM Research Project"
 duration: "2022"
-order: 5
+order: 6
 metrics:
   - label: "Object Detection"
     value: "YOLO / TensorFlow"

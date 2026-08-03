@@ -6,7 +6,7 @@ category: "open-source"
 tags: ["Python", "NLP", "GloVe Embeddings", "Vector Similarity"]
 client: "Open Source Research"
 duration: "2022"
-order: 6
+order: 7
 metrics:
   - label: "Vector Space"
     value: "GloVe Embeddings"
