@@ -57,11 +57,11 @@ template = template.replace('{{CONTACT}}', contactLine);
 template = template.replace('{{ABOUT}}', formatBold(escapeTex(data.basics.summary)));
 
 // Build Skills
-let skillsTex = '\\begin{tabular}{ l l }\n';
+let skillsTex = '\\begin{tabularx}{\\textwidth}{@{} l X @{}}\n';
 data.skills.forEach(skill => {
-    skillsTex += `    \\textbf{${escapeTex(skill.category)}} & ${escapeTex(skill.items.join(' | '))} \\\\\n`;
+    skillsTex += `    \\textbf{${escapeTex(skill.category)}} & ${escapeTex(skill.items.join(' | '))} \\\\[3pt]\n`;
 });
-skillsTex += '\\end{tabular}';
+skillsTex += '\\end{tabularx}';
 template = template.replace('{{SKILLS}}', skillsTex);
 
 // Build Experience
