@@ -11,11 +11,11 @@
   "skills": [
     {
       "category": "Programming Languages",
-      "items": ["Python", "JavaScript", "Go"]
+      "items": ["Python", "JavaScript", "Go", "C#"]
     },
     {
       "category": "Generative AI & ML",
-      "items": ["Large Language Models (LLMs)", "Retrieval-Augmented Generation (RAG)", "Prompt Flow", "TensorFlow", "Random Forest", "SVM", "CNN", "RNN"]
+      "items": ["Large Language Models (LLMs)", "Retrieval-Augmented Generation (RAG)", "Multi-Agent Systems (Agent2Agent / A2A)", "Autonomous AI Agents (Claude Code)", "Azure OpenAI", "Prompt Flow", "TensorFlow", "Random Forest", "SVM", "CNN", "RNN"]
     },
     {
       "category": "Data Engineering",
@@ -23,7 +23,7 @@
     },
     {
       "category": "Cloud / LLMOps",
-      "items": ["Azure", "Azure ML SDK", "Docker", "Kubernetes", "Git", "GitHub Actions", "Terraform", "Bicep"]
+      "items": ["Azure", "Azure DevOps", "Azure ML SDK", "Microsoft Agent Framework", "Azure Container Apps", "Cosmos DB", "OpenTelemetry", "Docker", "Kubernetes", "Git", "GitHub Actions", "Terraform", "Bicep"]
     },
     {
       "category": "Web Technologies",
@@ -42,8 +42,10 @@
       "startDate": "July 2024",
       "endDate": "Present",
       "highlights": [
-        "Built a Python-based Retrieval-Augmented Generation (RAG) application with a custom document index for a mobile payments use case, improving information retrieval and response accuracy by 20% and reducing response time by 60% through API load balancing and prompt flow orchestration.",
-        "Standardized Git-based LLMOps practices for prompt flow experimentation, evaluation, and deployment using Azure ML SDK, streamlining repeatable delivery across Docker images, Kubernetes clusters, and Azure ML endpoints."
+        "Architected and deployed a zero-configuration AI code reviewer across all Azure DevOps repositories. Triggered via webhooks, the system enriches PR diffs with work item acceptance criteria and file context to output structured, severity-ranked reviews. Designed with strict security governance (read-only access) and smart comment fingerprinting to update existing discussion threads idempotently without spamming PRs.",
+        "Contributed to a production multi-agent orchestration system (Microsoft Agent Framework, .NET, Azure OpenAI) that classifies and routes end-user requests to independently-built domain agents across teams via the open Agent2Agent (A2A) protocol, with zero-code-change extensibility through dynamic agent discovery and a resilient dispatch layer (circuit breakers, retry-with-jitter, LLM-proposed fallback).",
+        "Engineered multi-tenant, secure-by-default request handling — end-to-end Azure AD B2C identity propagation, per-tenant data isolation, and cross-service distributed tracing (OpenTelemetry/Azure Monitor) — and owned the platform's Bicep-provisioned cloud infrastructure (Azure Container Apps, Cosmos DB, Key Vault) and multi-environment, approval-gated CI/CD in Azure DevOps.",
+        "Member of the AI Center of Excellence; tasked as an advisor to 10+ participating teams in an internal AI hackathon, guiding their solutions on cloud infrastructure and AI/ML design decisions."
       ]
     },
     {

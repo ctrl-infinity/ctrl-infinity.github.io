@@ -6,7 +6,7 @@ category: "professional"
 tags: ["Python", "RAG", "Azure ML SDK", "Prompt Flow", "Docker", "Kubernetes", "API Load Balancing"]
 client: "SimCorp / Mobile Payments Enterprise"
 duration: "2024"
-order: 2
+order: 3
 metrics:
   - label: "Retrieval Accuracy"
     value: "+20%"
