@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, description, role, category, client, duration, tags, metrics } = entry.data;
+const { title, description, role, category, client, duration, tags, metrics, problem } = entry.data;
 
 const categoryLabels: Record<string, string> = {
   professional: 'Professional',
@@ -23,14 +23,43 @@ const categoryLabels: Record<string, string> = {
   'open-source': 'Open Source',
 };
 
-const architectureDiagrams: Record<string, { steps: { title: string; role: string }[]; caption: string }> = {
+interface DiagramStep {
+  title: string;
+  description: string;
+  status?: 'live' | 'planned';
+}
+
+const architectureDiagrams: Record<string, { phases: { name: string; steps: DiagramStep[] }[]; caption: string }> = {
   'code-review-agent': {
-    steps: [
-      { title: 'PR created or updated', role: 'A developer opens or pushes to a pull request' },
-      { title: 'ADO service hook fires', role: 'Azure DevOps emits the pull request event' },
-      { title: 'Pipeline runs', role: 'A build pipeline picks up the event' },
-      { title: 'Headless Claude reviews', role: 'PowerShell invokes a headless Claude command against the diff' },
-      { title: 'Comments posted to PR', role: "Feedback lands back on the PR via Azure DevOps' REST API" },
+    phases: [
+      {
+        name: 'Trigger',
+        steps: [
+          { title: 'PR opened or updated', description: 'In any repository in the project — no per-repo setup, ever.' },
+          { title: 'Project-wide service hook fires', description: 'Azure DevOps posts git.pullrequest.updated to one webhook, which triggers the central pipeline for every current and future repo automatically.' },
+          { title: 'Guard against spurious triggers, then clone', description: 'Confirms the PR is real before doing any work, then dynamically clones the triggering repo — its identity is only known at runtime.' },
+        ],
+      },
+      {
+        name: 'Gather Context',
+        steps: [
+          { title: 'Diff the pull request', description: 'target...source, size-capped by bytes and lines — an oversized PR gets a "please split this up" note instead of a runaway run.' },
+          { title: 'Pull the linked work item', description: 'Title, state, and acceptance criteria, so the reviewer judges whether the change does what the story asked, not just whether the code is clean.' },
+        ],
+      },
+      {
+        name: 'Review',
+        steps: [
+          { title: 'Claude runs the code-reviewer subagent', description: 'One version-controlled ruleset drives both CI and local reviews. Tool access is read-only and scoped — Read, Grep, Glob, git-only Bash — no writes, no commits, no pushes.' },
+          { title: 'Findings come back as strict JSON', description: 'Severity, category, verdict — one entry per finding, so the same output renders the same way every run.' },
+        ],
+      },
+      {
+        name: 'Publish',
+        steps: [
+          { title: 'One sticky summary comment', description: 'A hidden marker lets the pipeline find its own last comment and update it in place — every push refreshes the same thread instead of spawning a new one.' },
+        ],
+      },
     ],
     caption: 'Runs entirely inside Azure DevOps — no external services, secrets never leave ADO.',
   },
@@ -104,8 +133,18 @@ const architectureDiagram = architectureDiagrams[entry.id];
       </aside>
 
       <div class="md:col-span-8">
+        {problem && (
+          <div class="mb-12">
+            <h2 class="text-foreground font-semibold tracking-tight text-2xl mb-4">The Problem</h2>
+            <p class="text-gray-600 leading-relaxed">{problem}</p>
+          </div>
+        )}
+
         {architectureDiagram && (
-          <ArchitectureDiagram steps={architectureDiagram.steps} caption={architectureDiagram.caption} />
+          <div class="mb-12">
+            <h2 class="text-foreground font-semibold tracking-tight text-2xl mb-4">How it Works</h2>
+            <ArchitectureDiagram phases={architectureDiagram.phases} caption={architectureDiagram.caption} />
+          </div>
         )}
 
         <div class="prose prose-gray max-w-none

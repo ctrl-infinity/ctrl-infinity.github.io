@@ -13,6 +13,7 @@ const work = defineCollection({
     link: z.string().url().optional(),
     client: z.string().optional(),
     duration: z.string().optional(),
+    problem: z.string().optional(),
     featured: z.boolean().default(false),
     order: z.number().default(99),
     metrics: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
