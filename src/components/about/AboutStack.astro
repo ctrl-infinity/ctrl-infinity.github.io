@@ -1,34 +1,40 @@
 ---
 const stack = [
   {
-    category: "Languages",
+    category: "Generative AI & ML",
     items: [
-      { name: "TypeScript", note: "won't start a project without it" },
-      { name: "JavaScript", note: "" },
-      { name: "Python", note: "scripting and data work" },
+      { name: "Retrieval-Augmented Generation (RAG)", note: "custom vector indexing & prompt flow" },
+      { name: "Large Language Models (LLMs)", note: "evaluation & fine-tuning" },
+      { name: "Prompt Flow", note: "orchestration & load balancing" },
+      { name: "TensorFlow & PyTorch", note: "deep learning models" },
+      { name: "Computer Vision & NLP", note: "YOLO, OpenCV, GloVe embeddings" },
     ],
   },
   {
-    category: "Frontend",
+    category: "Cloud / LLMOps",
     items: [
-      { name: "React", note: "my default for anything interactive" },
-      { name: "Astro", note: "content sites, this one included" },
-      { name: "Tailwind CSS", note: "fast styling without the bikeshedding" },
+      { name: "Azure & Azure ML SDK", note: "workspace & endpoint deployments" },
+      { name: "Docker & Kubernetes", note: "containerized microservices" },
+      { name: "GitHub Actions", note: "CI/CD & automated testing" },
+      { name: "Terraform & Bicep", note: "infrastructure as code" },
     ],
   },
   {
-    category: "Backend",
+    category: "Data Engineering",
     items: [
-      { name: "Node.js", note: "" },
-      { name: "PostgreSQL", note: "my default for anything with relational data" },
+      { name: "PySpark & Databricks", note: "high-throughput analytics pipelines" },
+      { name: "Azure Data Factory", note: "ETL & automated data ingestion" },
+      { name: "SQL & PostreSQL", note: "data modeling & transformations" },
+      { name: "Power BI", note: "automated executive reporting" },
     ],
   },
   {
-    category: "Tools",
+    category: "Programming & Web",
     items: [
-      { name: "Git", note: "" },
-      { name: "Docker", note: "" },
-      { name: "VS Code", note: "" },
+      { name: "Python", note: "primary language for AI/ML & scripting" },
+      { name: "JavaScript / TypeScript", note: "web applications & tools" },
+      { name: "Go", note: "high-performance backend services" },
+      { name: "Astro & React", note: "content & interactive interfaces" },
     ],
   },
 ];
@@ -39,7 +45,7 @@ const stack = [
   <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
     {stack.map((group) => (
       <div>
-        <h3 class="text-sm font-mono uppercase tracking-[0.15em] text-gray-400 mb-4">
+        <h3 class="text-xs font-mono uppercase tracking-[0.15em] text-gray-400 mb-4">
           {group.category}
         </h3>
         <ul class="space-y-3">
