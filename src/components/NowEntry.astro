@@ -10,9 +10,9 @@ export interface Props {
 const { title, description, tags, startDate, link } = Astro.props;
 ---
 
-<div class="flex flex-col gap-2 py-6" data-reveal>
+<div class="bento-tile p-6 rounded-[16px] my-3 flex flex-col gap-3 transition-all duration-300" data-reveal>
   <div class="flex items-baseline justify-between gap-4">
-    <h3 class="text-lg font-medium text-foreground">
+    <h3 class="text-lg font-bold text-foreground">
       {
         link ? (
           <a
@@ -30,19 +30,19 @@ const { title, description, tags, startDate, link } = Astro.props;
     </h3>
     {
       startDate && (
-        <span class="text-xs font-mono text-gray-400 shrink-0">{startDate}</span>
+        <span class="text-xs font-mono text-gray-500 shrink-0">{startDate}</span>
       )
     }
   </div>
 
-  <p class="text-gray-600 leading-relaxed max-w-[60ch]">
+  <p class="text-gray-600 leading-relaxed max-w-[65ch]">
     {description}
   </p>
 
-  <div class="flex flex-wrap gap-2 mt-1">
+  <div class="flex flex-wrap gap-2 mt-2 pt-3 border-t border-black/5">
     {
       tags.map((tag) => (
-        <span class="px-2 py-0.5 bg-black/5 text-xs text-foreground/70 font-mono">
+        <span class="chip">
           {tag}
         </span>
       ))

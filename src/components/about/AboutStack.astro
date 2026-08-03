@@ -42,18 +42,18 @@ const stack = [
 
 <section class="mb-24">
   <h2 class="text-2xl font-bold tracking-tight text-foreground mb-8">What I Work With</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     {stack.map((group) => (
-      <div>
-        <h3 class="text-xs font-mono uppercase tracking-[0.15em] text-gray-400 mb-4">
+      <div class="bento-tile p-6 sm:p-8 rounded-[20px] flex flex-col gap-4" data-reveal>
+        <h3 class="text-xs font-mono uppercase tracking-[0.15em] text-accent font-semibold">
           {group.category}
         </h3>
         <ul class="space-y-3">
           {group.items.map((item) => (
             <li class="text-foreground">
-              <span class="font-medium">{item.name}</span>
+              <span class="font-medium text-base">{item.name}</span>
               {item.note && (
-                <span class="text-gray-500 text-sm"> — {item.note}</span>
+                <span class="text-gray-500 text-sm block md:inline font-mono"> — {item.note}</span>
               )}
             </li>
           ))}

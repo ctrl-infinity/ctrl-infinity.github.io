@@ -62,45 +62,47 @@ const architectureDiagram = architectureDiagrams[entry.id];
     </header>
 
     <div class="border-t border-black/10 pt-12 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
-      <aside class="md:col-span-4 md:sticky md:top-24 self-start flex flex-col gap-6 h-fit" data-reveal>
-        <div class="flex flex-col gap-5">
-          <div>
-            <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-1">Role</div>
-            <div class="text-foreground">{role}</div>
+      <aside class="md:col-span-4 md:sticky md:top-24 self-start" data-reveal>
+        <div class="bento-tile p-6 rounded-[20px] flex flex-col gap-6">
+          <div class="flex flex-col gap-5">
+            <div>
+              <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-1">Role</div>
+              <div class="text-foreground font-semibold">{role}</div>
+            </div>
+            {client && (
+              <div>
+                <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-1">Client</div>
+                <div class="text-foreground font-semibold">{client}</div>
+              </div>
+            )}
+            {duration && (
+              <div>
+                <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-1">Timeline</div>
+                <div class="text-foreground font-mono text-sm">{duration}</div>
+              </div>
+            )}
+            <div>
+              <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-2">Stack</div>
+              <div class="flex flex-wrap gap-2">
+                {tags.map((tag: string) => (
+                  <span class="chip">{tag}</span>
+                ))}
+              </div>
+            </div>
           </div>
-          {client && (
-            <div>
-              <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-1">Client</div>
-              <div class="text-foreground">{client}</div>
-            </div>
-          )}
-          {duration && (
-            <div>
-              <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-1">Timeline</div>
-              <div class="text-foreground font-mono text-sm">{duration}</div>
-            </div>
-          )}
-          <div>
-            <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-2">Stack</div>
-            <div class="flex flex-wrap gap-2">
-              {tags.map((tag: string) => (
-                <span class="px-3 py-1 bg-black/5 text-xs text-foreground/80 font-mono">{tag}</span>
+
+          {metrics && metrics.length > 0 && (
+            <div class="flex flex-col gap-3 border-t border-black/10 pt-6">
+              <div class="text-xs font-mono text-gray-500 uppercase tracking-wider">Impact</div>
+              {metrics.map((metric: { label: string; value: string }) => (
+                <div class="flex items-baseline justify-between gap-4">
+                  <span class="text-xs font-mono text-gray-500 uppercase tracking-wider">{metric.label}</span>
+                  <span class="text-foreground font-medium text-right">{metric.value}</span>
+                </div>
               ))}
             </div>
-          </div>
+          )}
         </div>
-
-        {metrics && metrics.length > 0 && (
-          <div class="flex flex-col gap-3 border-t border-black/10 pt-6">
-            <div class="text-xs font-mono text-gray-500 uppercase tracking-wider">Impact</div>
-            {metrics.map((metric: { label: string; value: string }) => (
-              <div class="flex items-baseline justify-between gap-4">
-                <span class="text-xs font-mono text-gray-500 uppercase tracking-wider">{metric.label}</span>
-                <span class="text-foreground font-medium text-right">{metric.value}</span>
-              </div>
-            ))}
-          </div>
-        )}
       </aside>
 
       <div class="md:col-span-8">

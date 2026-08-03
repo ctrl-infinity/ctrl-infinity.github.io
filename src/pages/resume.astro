@@ -23,7 +23,7 @@ const formatHighlight = (text: string) => {
       <a
         href={pdfPath}
         download
-        class="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-white text-sm font-medium hover:bg-accent transition-colors duration-300 rounded-none cursor-pointer"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-white text-sm font-medium hover:bg-accent transition-all duration-300 rounded-[12px] shadow-sm hover:shadow-md cursor-pointer"
       >
         Download PDF ↓
       </a>
@@ -80,7 +80,7 @@ const formatHighlight = (text: string) => {
                 </span>
                 <div class="flex flex-wrap gap-1.5">
                   {proj.technologies.map((tech) => (
-                    <span class="px-2 py-0.5 bg-black/5 text-[10px] text-foreground/70 font-mono rounded-none">
+                    <span class="chip">
                       {tech}
                     </span>
                   ))}

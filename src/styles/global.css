@@ -2,15 +2,27 @@
 
 @theme {
   --color-base: #fafafa;
+  --color-canvas: #f4f4f6;
   --color-foreground: #111111;
   --color-accent: #2563eb; /* Electric Blue Accent */
-  
+  --color-accent-glow: rgba(37, 99, 235, 0.15);
+  --color-glass: rgba(255, 255, 255, 0.75);
+  --color-glass-border: rgba(0, 0, 0, 0.08);
+
   --font-sans: 'Geist', 'Geist Sans', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+
+  --shadow-tile-rest: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+  --shadow-tile-hover: 0 12px 32px -4px rgba(0, 0, 0, 0.10), 0 4px 12px -2px rgba(0, 0, 0, 0.05);
 }
 
 @layer base {
   body {
-    background-color: var(--color-base);
+    background-color: var(--color-canvas);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -20,6 +32,38 @@
   ::selection {
     background-color: var(--color-accent);
     color: #ffffff;
+  }
+}
+
+@layer components {
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(17, 17, 17, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+  }
+
+  .bento-tile {
+    background-color: var(--color-glass);
+    border: 1px solid var(--color-glass-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-tile-rest);
+    border-radius: var(--radius-md);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .bento-tile:hover {
+    transform: translateY(-2px) scale(1.015);
+    box-shadow: var(--shadow-tile-hover);
+    border-color: rgba(37, 99, 235, 0.2);
   }
 }
 

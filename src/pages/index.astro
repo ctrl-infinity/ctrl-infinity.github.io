@@ -1,12 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import BentoGrid from '../components/bento/BentoGrid.astro';
+import BentoTile from '../components/bento/BentoTile.astro';
+import BentoTileReact from '../components/bento/BentoTile';
 import { getCollection } from 'astro:content';
 
 const workCollection = await getCollection('work');
-const featuredWork = workCollection
+const nowCollection = await getCollection('now');
+
+const featuredList = workCollection.filter((w) => w.data.featured);
+const featuredWork = (featuredList.length >= 3 ? featuredList : workCollection)
   .sort((a, b) => a.data.order - b.data.order)
   .slice(0, 3);
+
+const activeNow = nowCollection.find((n) => n.data.status === 'active');
+
+const categoryLabels: Record<string, string> = {
+  professional: 'Professional',
+  'side-project': 'Side Project',
+  'open-source': 'Open Source',
+};
 ---
 
 <Layout title="Vinayak Gupta — Senior Software Engineer (MLOps)">
@@ -14,35 +28,112 @@ const featuredWork = workCollection
 
   <section class="px-6 md:px-12 max-w-7xl mx-auto pb-24 border-t border-black/10 pt-16">
     <div class="flex items-center justify-between mb-12">
-      <h2 class="text-xs font-mono uppercase tracking-[0.2em] text-gray-500">
-        Featured Production Work
-      </h2>
+      <div>
+        <span class="text-xs font-mono uppercase tracking-[0.2em] text-accent font-semibold">Modular Showcase</span>
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-foreground mt-1">
+          Featured Production Work
+        </h2>
+      </div>
       <a href="/work" class="text-sm font-mono text-gray-500 hover:text-accent transition-colors duration-300">
         View all work ({workCollection.length}) →
       </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-      {featuredWork.map((project) => (
-        <article class="flex flex-col gap-4">
-          <span class="text-xs font-mono uppercase text-gray-400">{project.data.category}</span>
-          <h3 class="text-xl font-bold tracking-tight text-foreground">
-            <a href={`/work/${project.id}`} class="hover:text-accent transition-colors duration-300">
-              {project.data.title}
-            </a>
-          </h3>
-          <p class="text-sm text-gray-600 leading-relaxed max-w-[45ch]">
-            {project.data.description}
-          </p>
-          <div class="flex flex-wrap gap-2 mt-auto pt-4">
-            {project.data.tags.slice(0, 3).map((tag: string) => (
-              <span class="px-2 py-0.5 bg-black/5 text-xs font-mono text-foreground/80">
-                {tag}
-              </span>
-            ))}
+    <BentoGrid class="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {featuredWork.map((project, idx) => {
+        const hasDetail = Boolean(project.body && project.body.trim().length > 0);
+        const href = hasDetail ? `/work/${project.id}` : project.data.link;
+
+        if (idx === 0) {
+          return (
+            <div class="md:col-span-2 lg:col-span-2 lg:row-span-2">
+              <BentoTileReact client:load href={href} glow={true} className="h-full min-h-[380px] group">
+                <div class="flex flex-col h-full justify-between gap-6">
+                  <div>
+                    <div class="flex items-center justify-between gap-4 mb-4">
+                      <span class="chip font-mono uppercase tracking-wider text-xs">
+                        {categoryLabels[project.data.category] ?? project.data.category}
+                      </span>
+                      <span class="text-xs font-mono text-accent font-medium">★ Flagship Work</span>
+                    </div>
+
+                    <h3 class="text-2xl md:text-4xl font-bold tracking-tight text-foreground mb-4 group-hover:text-accent transition-colors">
+                      {project.data.title}
+                    </h3>
+                    <p class="text-base md:text-lg text-gray-600 leading-relaxed max-w-[55ch]">
+                      {project.data.description}
+                    </p>
+                  </div>
+
+                  <div class="mt-auto pt-6 border-t border-black/5 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-wrap gap-2">
+                      {project.data.tags.map((tag: string) => (
+                        <span class="chip">{tag}</span>
+                      ))}
+                    </div>
+                    {href && (
+                      <span class="text-sm font-mono font-medium text-foreground group-hover:text-accent flex items-center gap-1 transition-colors">
+                        {hasDetail ? 'Read Case Study' : 'View Project'} →
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </BentoTileReact>
+            </div>
+          );
+        }
+
+        return (
+          <div class="col-span-1">
+            <BentoTile href={href} size="md" glow={false} class="h-full group">
+              <div class="flex flex-col h-full justify-between gap-4">
+                <div>
+                  <span class="chip font-mono uppercase text-xs mb-3 inline-block">
+                    {categoryLabels[project.data.category] ?? project.data.category}
+                  </span>
+                  <h3 class="text-xl font-bold tracking-tight text-foreground mb-2 group-hover:text-accent transition-colors">
+                    {project.data.title}
+                  </h3>
+                  <p class="text-sm text-gray-600 leading-relaxed line-clamp-3">
+                    {project.data.description}
+                  </p>
+                </div>
+
+                <div class="pt-4 border-t border-black/5 flex flex-wrap gap-1.5 mt-auto">
+                  {project.data.tags.slice(0, 3).map((tag: string) => (
+                    <span class="chip">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </BentoTile>
           </div>
-        </article>
-      ))}
-    </div>
+        );
+      })}
+
+      {activeNow && (
+        <div class="col-span-1 md:col-span-2 lg:col-span-3">
+          <BentoTile href="/now" size="lg" glow={true} class="bg-blue-50/40 border-blue-500/20">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span class="text-xs font-mono uppercase tracking-wider text-gray-500">Currently Active</span>
+                </div>
+                <h4 class="text-lg font-bold text-foreground">{activeNow.data.title}</h4>
+                <p class="text-sm text-gray-600 max-w-[70ch] mt-1">{activeNow.data.description}</p>
+              </div>
+              <span class="text-xs font-mono font-medium text-accent hover:underline whitespace-nowrap">
+                Check /now log →
+              </span>
+            </div>
+          </BentoTile>
+        </div>
+      )}
+    </BentoGrid>
   </section>
 </Layout>
+
+<script>
+  import { setupReveal } from '../scripts/reveal';
+  setupReveal();
+</script>

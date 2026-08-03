@@ -32,13 +32,13 @@ Judge me by what's live right now. This isn't a static resume dressed up as a we
 
 - Unified `src/content/work/` collection rendered on `/work` with category filtering (professional / side-project / open-source).
 - Key site sections include `/work`, `/now`, `/playground`, and `/about`.
-- Technical stack: Astro (no generic SaaS / AI aesthetic).
-- **Anti-references:** Consultant sales-deck framing (stats-grid "engineer spec" sections, "Book a call" CTAs, service tiers), purple gradients, glassmorphism as decoration, hero-metric templates, stiff formal resume PDF energy.
+- Technical stack: Astro.
+- **Anti-references:** Consultant sales-deck framing (stats-grid "engineer spec" sections, "Book a call" CTAs, service tiers), purple gradients, hero-metric templates, stiff formal resume PDF energy.
 
 ## Brand Commitments
 
 - **Tone & Voice:** Hacker/builder with warmth — functional and human, not flashy or salesy. Copy is first-person and conversational. Confident without performing confidence; the work is the proof, not the adjectives describing it.
-- **Visual Identity Constraints:** All corners remain sharp (zero `border-radius` except specific timeline dots). Signal Blue (`#2563eb`) held in reserve for single active state at a time. Hairline borders (`#0000001a` / `#0000000d`) for separation.
+- **Visual Identity Constraints:** Bento Grid / Modular Canvas identity anchored in Apple product landing pages and Framer portfolio templates. 16–24px radius scale, soft translucent glassmorphism surfaces, elevated shadow states. Signal Blue (`#2563eb`) used for hover accents and highlights. Hairline borders (`#0000001a` / `#0000000d`) for subtle structural separation.
 
 ## Evidence on Hand
 

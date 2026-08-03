@@ -1,0 +1,31 @@
+---
+interface Props {
+  class?: string;
+  href?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'flagship';
+  glow?: boolean;
+  [key: string]: any;
+}
+
+const {
+  class: className = "",
+  href,
+  size = 'md',
+  glow = false,
+  ...rest
+} = Astro.props;
+
+const radiusClass = size === 'xl' || size === 'flagship' ? 'rounded-[24px]' : size === 'lg' ? 'rounded-[20px]' : 'rounded-[16px]';
+const glowClass = glow ? 'relative overflow-hidden before:absolute before:-inset-px before:rounded-[inherit] before:bg-gradient-to-br before:from-blue-500/15 before:to-transparent before:opacity-50 hover:before:opacity-100 before:transition-opacity' : '';
+
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+  href={href}
+  class={`bento-tile block p-6 flex flex-col justify-between ${radiusClass} ${glowClass} ${className}`}
+  data-reveal
+  {...rest}
+>
+  <slot />
+</Tag>

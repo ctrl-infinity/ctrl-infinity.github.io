@@ -41,12 +41,12 @@ const cells: Cell[] = steps.flatMap((step, index) =>
           <span class="md:hidden">↓</span>
         </div>
       ) : (
-        <div class="group md:flex-1 border border-black/10 px-5 py-4 flex flex-col gap-2 hover:border-accent transition-colors duration-300">
-          <span class="font-mono text-xs text-gray-500 group-hover:text-accent transition-colors duration-300">
+        <div class="group md:flex-1 bento-tile p-5 rounded-[16px] flex flex-col gap-2 transition-all duration-300">
+          <span class="font-mono text-xs text-accent font-semibold">
             0{cell.index + 1}
           </span>
-          <span class="text-sm font-medium text-foreground">{cell.step.title}</span>
-          <span class="text-xs text-gray-500 leading-relaxed">{cell.step.role}</span>
+          <span class="text-sm font-bold text-foreground group-hover:text-accent transition-colors">{cell.step.title}</span>
+          <span class="text-xs text-gray-600 leading-relaxed">{cell.step.role}</span>
         </div>
       )
     )}

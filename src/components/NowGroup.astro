@@ -28,7 +28,7 @@ const config = statusConfig[status] || { icon: '•', label: status };
         </h2>
       </div>
 
-      <div class="flex flex-col divide-y divide-black/5">
+      <div class="flex flex-col gap-4">
         {entries.map((entry) => (
           <NowEntry {...entry} />
         ))}

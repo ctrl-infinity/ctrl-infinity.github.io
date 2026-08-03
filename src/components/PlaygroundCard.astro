@@ -25,16 +25,16 @@ const href = isExternal && link ? link : `/playground/${slug}`;
   href={href}
   target={isExternal ? '_blank' : undefined}
   rel={isExternal ? 'noopener noreferrer' : undefined}
-  class="group flex flex-col gap-4 p-6 border border-black/5 hover:border-black/15 transition-colors duration-300 bg-white"
+  class="group bento-tile flex flex-col gap-4 p-6 sm:p-8 rounded-[20px] transition-all duration-300"
   data-reveal
 >
   <div class="flex items-center justify-between">
-    <span class="text-xs font-mono text-gray-400 uppercase tracking-wider">
+    <span class="text-xs font-mono text-accent font-semibold uppercase tracking-wider">
       {typeLabels[type] || type}
     </span>
   </div>
 
-  <h3 class="text-xl font-medium text-foreground group-hover:text-accent transition-colors duration-300">
+  <h3 class="text-xl font-bold tracking-tight text-foreground group-hover:text-accent transition-colors duration-300">
     {title}
   </h3>
 
@@ -42,10 +42,10 @@ const href = isExternal && link ? link : `/playground/${slug}`;
     {description}
   </p>
 
-  <div class="flex flex-wrap gap-2 mt-auto pt-2">
+  <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-black/5">
     {
       tags.map((tag) => (
-        <span class="px-2 py-0.5 bg-black/5 text-xs text-foreground/70 font-mono">
+        <span class="chip">
           {tag}
         </span>
       ))
