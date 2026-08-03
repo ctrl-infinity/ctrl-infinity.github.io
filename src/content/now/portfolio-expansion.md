@@ -1,8 +1,8 @@
 ---
-title: "Expanding my portfolio site"
-description: "Rebuilding my portfolio from a consultant-style site into a personal builder's portfolio. Adding new sections, playground experiments, and making it feel more like me."
+title: "Expanding Portfolio & Technical Writing"
+description: "Rebuilding my personal developer portfolio with Astro, documenting production MLOps patterns, RAG architectures, and AI agent experiments."
 status: "active"
-tags: ["astro", "react", "tailwind"]
+tags: ["Astro", "Tailwind", "MLOps", "Writing"]
 startDate: "Jul 2026"
-order: 1
+order: 2
 ---
