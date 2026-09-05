@@ -6,8 +6,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.resolve(__dirname, '..');
-const jsonPath = path.join(projectRoot, 'src/content/resume.json');
-const texPath = path.join(projectRoot, 'src/resume/resume.tex');
+// Optional overrides: node scripts/validate-resume.js --json <file> --tex <file>
+const argv = process.argv.slice(2);
+const argValue = (flag) => { const i = argv.indexOf(flag); return i >= 0 && argv[i + 1] ? path.resolve(argv[i + 1]) : null; };
+const jsonPath = argValue('--json') ?? path.join(projectRoot, 'src/content/resume.json');
+const texPath = argValue('--tex') ?? path.join(projectRoot, 'src/resume/resume.tex');
 
 function logError(msg) {
   console.error(`\x1b[31m[Validation Error] ${msg}\x1b[0m`);

@@ -1,0 +1,168 @@
+{
+  "basics": {
+    "name": "Vinayak Gupta",
+    "email": "vinayakgupta.13.6@gmail.com",
+    "phone": "+919896276989",
+    "location": "Noida, India (open to relocation to Singapore)",
+    "linkedin": "https://www.linkedin.com/in/vinayak-gupta30/",
+    "github": "https://github.com/ctrl-infinity",
+    "summary": "Senior AI Engineer with 4 years delivering AI systems end to end, and an owner's mindset about what I ship: if it runs in production, I run it, watch it, and keep it reliable. I go deep before I choose a solution and take initiative on unclaimed problems; a gap I noticed became an autonomous review agent that now handles every pull request in the organisation and cut first-review turnaround by 70%, and a workflow I designed for prompt experimentation became a company-wide standard. I hold a high bar for reliability, security, and responsible use, and I like raising the bar for the engineers around me through reviews and mentoring. I use AI coding agents daily as a force multiplier and work independently through ambiguity to deliver."
+  },
+  "skills": [
+    {
+      "category": "Programming Languages",
+      "items": [
+        "Python",
+        "C# / .NET",
+        "Go",
+        "JavaScript",
+        "SQL"
+      ]
+    },
+    {
+      "category": "Generative AI & ML",
+      "items": [
+        "Large Language Models (LLMs)",
+        "Retrieval-Augmented Generation (RAG)",
+        "Embeddings, Vector & Hybrid Search",
+        "Azure AI Search",
+        "Pinecone",
+        "Multi-Agent Systems (Agent2Agent / A2A, Microsoft Agent Framework)",
+        "LLM Guardrails & Responsible AI",
+        "Model Evaluation & Hyperparameter Tuning",
+        "Azure OpenAI",
+        "Prompt Flow",
+        "TensorFlow",
+        "Random Forest",
+        "SVM",
+        "CNN",
+        "RNN"
+      ]
+    },
+    {
+      "category": "Data Engineering",
+      "items": [
+        "Databricks",
+        "Apache Spark / PySpark",
+        "Azure Data Factory",
+        "SQL",
+        "Ingestion, Embedding & Indexing Pipelines",
+        "Cosmos DB",
+        "Power BI"
+      ]
+    },
+    {
+      "category": "Cloud / LLMOps",
+      "items": [
+        "CI/CD for ML (GitHub Actions, Azure DevOps)",
+        "MLflow (experiment tracking, model registry)",
+        "Model & Prompt Versioning",
+        "Azure ML SDK",
+        "Model Serving (Docker, Kubernetes, Azure Container Apps)",
+        "Monitoring & Tracing (OpenTelemetry, Azure Monitor)",
+        "Bicep",
+        "Terraform",
+        "Key Vault",
+        "SAST / SCA (SonarQube, Mend)"
+      ]
+    },
+    {
+      "category": "Web Technologies",
+      "items": [
+        "Django",
+        "Flask",
+        "ReactJS",
+        "Markdown"
+      ]
+    },
+    {
+      "category": "Soft Skills",
+      "items": [
+        "Ownership",
+        "Independent Delivery",
+        "Mentoring & Code Review",
+        "Cross-functional Collaboration",
+        "Communication"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "SimCorp",
+      "location": "Noida, Uttar Pradesh",
+      "role": "Senior Software Engineer - MLOps",
+      "startDate": "July 2024",
+      "endDate": "Present",
+      "highlights": [
+        "Architected and deployed a zero-configuration AI code reviewer across all Azure DevOps repositories. Triggered via webhooks, the system enriches PR diffs with work item acceptance criteria and file context to output structured, severity-ranked reviews. Designed with strict security governance (read-only access) and smart comment fingerprinting to update existing discussion threads idempotently without spamming PRs. Operates under production guardrails: least-privilege access, secretless auth, cost and turn budgets with per-run spend logging, and fail-open behaviour. 400+ PRs reviewed, first-review turnaround down 70%, code quality raised for 15+ engineers.",
+        "Contributed to a production multi-agent orchestration system (Microsoft Agent Framework, .NET, Azure OpenAI) that classifies and routes end-user requests to independently-built domain agents across teams via the open Agent2Agent (A2A) protocol, with zero-code-change extensibility through dynamic agent discovery and a resilient dispatch layer (circuit breakers, retry-with-jitter, LLM-proposed fallback). The dispatch layer's circuit breakers and retries, plus per-request telemetry, keep the platform stable and make incidents triageable across team boundaries.",
+        "Engineered multi-tenant, secure-by-default request handling — end-to-end Azure AD B2C identity propagation, per-tenant data isolation, and cross-service distributed tracing (OpenTelemetry/Azure Monitor) — and owned the platform's Bicep-provisioned cloud infrastructure (Azure Container Apps, Cosmos DB, Key Vault) and multi-environment, approval-gated CI/CD in Azure DevOps. CI/CD includes automated tests, SAST/SCA scanning (SonarQube, Mend), post-deploy smoke and integration tests, and build-to-resource traceability for auditability; least-privilege managed identities and Key Vault back the security posture.",
+        "Built the retrieval layer for a production RAG use case on Azure AI Search: automated document ingestion, embedding, and indexing pipelines, semantic configuration, hybrid (vector and keyword) search, and metadata-based indexing for filtered retrieval.",
+        "Member of the AI Center of Excellence; tasked as an advisor to 10+ participating teams in an internal AI hackathon, guiding their solutions on cloud infrastructure and AI/ML design decisions. Mentor engineers through design and code reviews."
+      ]
+    },
+    {
+      "company": "Tiger Analytics",
+      "location": "Chennai, Tamil Nadu",
+      "role": "Senior Analyst - MLE",
+      "startDate": "January 2024",
+      "endDate": "June 2024",
+      "highlights": [
+        "Delivered a Python-based Retrieval-Augmented Generation (RAG) application with a custom document index for a mobile payments service, improving retrieval accuracy by 20% and lowering response time by 60% through API load balancing and efficient prompt flow design. Built the ingestion, chunking, and embedding pipeline over financial API specs and integration guides, and validated retrieval quality against a labelled query set before each release.",
+        "Established a company-wide, Git-based LLMOps workflow in Azure ML SDK for prompt flow experimentation and evaluation, simplifying deployment across Docker images, Kubernetes clusters, and Azure ML endpoints. Versioned prompts with pull-request review, tracked experiments and registered models in MLflow, ran automated evaluation (precision, recall, safety) in CI on every change, and kept an audit trail linking production responses to prompt version and evaluation score for reproducibility."
+      ]
+    },
+    {
+      "company": "Tiger Analytics",
+      "location": "Chennai, Tamil Nadu",
+      "role": "Analyst - MLE",
+      "startDate": "September 2022",
+      "endDate": "December 2023",
+      "highlights": [
+        "Enhanced a product portfolio management platform for a global FMCG client by designing automated data ingestion and preprocessing pipelines that integrated high-volume data into SQL databases using Azure Data Factory and SQL-based transformations to deliver application-ready data models and reusable feature tables for downstream analytics and modelling.",
+        "Built end-to-end analytics solutions using automated Databricks pipelines and Power BI dashboards with scheduled refresh and KPI computation, improving the reliability and repeatability of business reporting workflows, with data-quality checks and refresh monitoring.",
+        "Migrated the codebase and its CI/CD pipelines from Azure DevOps to GitHub Actions, implementing infrastructure-as-code, versioning, automated tests, quality checks, and security scanning to strengthen deployment consistency and engineering standards."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Image Segmentation",
+      "technologies": [
+        "Python",
+        "NumPy",
+        "OpenCV"
+      ],
+      "github": "https://github.com/ctrl-infinity/custom_image_segmentation",
+      "description": "Implemented an 8-neighboring algorithm for image segmentation. Dividing the image into pixel blocks, it compared each block's color features with its 8 surrounding neighbors. Based on similarity scores, colors were assigned to each block, effectively segmenting the image based on color patterns."
+    },
+    {
+      "title": "Semantics-based IR System",
+      "technologies": [
+        "Python",
+        "NLP",
+        "GloVe Embeddings"
+      ],
+      "description": "Built a semantics-driven information retrieval system in Python that preprocesses search queries and documents, assigns relevance scores, and returns the most relevant documents based on semantic similarity rather than keyword matching.",
+      "github": "https://github.com/ctrl-infinity/sem-search-project"
+    }
+  ],
+  "education": [
+    {
+      "school": "Indian Institute of Information Technology and Management",
+      "location": "Trivandrum, Kerala",
+      "degree": "MSc Computer Science (Machine Intelligence)",
+      "gpa": "8.02",
+      "startDate": "September 2020",
+      "endDate": "June 2022"
+    },
+    {
+      "school": "Deen Dayal Upadhyaya College",
+      "location": "Delhi, India",
+      "degree": "BSc. Computer Science",
+      "gpa": "7.67",
+      "startDate": "June 2017",
+      "endDate": "July 2020"
+    }
+  ]
+}

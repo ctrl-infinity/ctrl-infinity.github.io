@@ -28,3 +28,7 @@ pnpm-debug.log*
 
 # generated resume files
 src/resume/resume.tex
+
+# tailored resume variants (rebuild with: npm run resume:variant -- --all)
+docs/applications/build/
+docs/applications/pdf/

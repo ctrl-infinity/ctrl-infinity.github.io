@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How the Code Review Agent Works</title>
+<style>
+  :root {
+    --paper: #eef1f5;
+    --surface: #ffffff;
+    --ink: #1a2230;
+    --ink-soft: #4c5768;
+    --ink-faint: #7c8494;
+    --line: #cdd3dc;
+    --accent-live: #b5651d;
+    --accent-live-soft: #b5651d1a;
+    --accent-planned: #6f7390;
+    --accent-planned-soft: #6f73901a;
+    --shadow: 0 1px 2px rgba(26, 34, 48, 0.06), 0 8px 24px rgba(26, 34, 48, 0.05);
+
+    --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, "Liberation Mono", monospace;
+    --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #10141c;
+      --surface: #171d28;
+      --ink: #e7eaf0;
+      --ink-soft: #9aa3b5;
+      --ink-faint: #6c7688;
+      --line: #2b3242;
+      --accent-live: #e0954f;
+      --accent-live-soft: #e0954f26;
+      --accent-planned: #9498b8;
+      --accent-planned-soft: #9498b826;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #10141c;
+    --surface: #171d28;
+    --ink: #e7eaf0;
+    --ink-soft: #9aa3b5;
+    --ink-faint: #6c7688;
+    --line: #2b3242;
+    --accent-live: #e0954f;
+    --accent-live-soft: #e0954f26;
+    --accent-planned: #9498b8;
+    --accent-planned-soft: #9498b826;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+  :root[data-theme="light"] {
+    --paper: #eef1f5;
+    --surface: #ffffff;
+    --ink: #1a2230;
+    --ink-soft: #4c5768;
+    --ink-faint: #7c8494;
+    --line: #cdd3dc;
+    --accent-live: #b5651d;
+    --accent-live-soft: #b5651d1a;
+    --accent-planned: #6f7390;
+    --accent-planned-soft: #6f73901a;
+    --shadow: 0 1px 2px rgba(26, 34, 48, 0.06), 0 8px 24px rgba(26, 34, 48, 0.05);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--accent-live-soft);
+    color: var(--ink);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+  }
+
+  .page {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 4.5rem 1.5rem 5rem;
+  }
+
+  /* ---------- Header ---------- */
+  .hero { margin-bottom: 3.5rem; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.9rem;
+  }
+  h1 {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.9rem;
+    text-wrap: balance;
+  }
+  .dek {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 38rem;
+    margin: 0 0 1.75rem;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 0.85rem 0;
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.55rem; }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%; flex: none; display: inline-block;
+  }
+  .dot-live { background: var(--accent-live); border: 2px solid var(--accent-live); }
+  .dot-planned {
+    background: transparent;
+    border: 2px dashed var(--accent-planned);
+  }
+
+  /* ---------- Pipeline ---------- */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    position: relative;
+    margin-bottom: 4rem;
+  }
+  .phase-label {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.6rem;
+  }
+  .phase-label:first-child { margin-top: 0; }
+  .phase-marker {
+    width: 14px; height: 14px;
+    background: var(--surface);
+    border: 2px solid var(--ink-faint);
+    transform: rotate(45deg);
+    justify-self: center;
+  }
+  .phase-label h2 {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .phase-label .phase-index {
+    color: var(--ink-faint);
+    font-weight: 400;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 1rem;
+    position: relative;
+  }
+  .stage-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    justify-self: center;
+    margin-top: 0.3rem;
+    background: var(--surface);
+    z-index: 1;
+  }
+  .stage-dot.dot-live { border: 2.5px solid var(--accent-live); }
+  .stage-dot.dot-planned { border: 2px dashed var(--accent-planned); }
+
+  .stage-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    box-shadow: var(--shadow);
+  }
+  .stage-planned .stage-card {
+    background: transparent;
+    border: 1.5px dashed var(--line);
+    box-shadow: none;
+  }
+  .stage-card h3 {
+    font-family: var(--font-mono);
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .stage-card p {
+    margin: 0;
+    font-size: 0.97rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    line-height: 1.4;
+  }
+  .tag-live { color: var(--accent-live); background: var(--accent-live-soft); }
+  .tag-planned { color: var(--accent-planned); background: var(--accent-planned-soft); border: 1px dashed var(--accent-planned); }
+
+  /* ---------- Sample contract ---------- */
+  .sample { margin-bottom: 4rem; }
+  .sample h2, .guardrails h2 {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    letter-spacing: 0.03em;
+    margin: 0 0 1.1rem;
+  }
+  .sample-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 640px) { .sample-grid { grid-template-columns: 1fr; } }
+  .col-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.6rem;
+  }
+  pre {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    margin: 0;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+  .mini-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.82rem;
+    background: var(--surface);
+  }
+  .mini-table th, .mini-table td {
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .mini-table td:last-child, .mini-table th:last-child { white-space: normal; }
+  .mini-table thead th {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border-bottom: 1px solid var(--line);
+  }
+  .mini-table tbody tr:last-child td { border-bottom: none; }
+
+  /* ---------- Guardrail rail ---------- */
+  .guardrails { margin-bottom: 3.5rem; }
+  .rail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 560px) { .rail-grid { grid-template-columns: 1fr; } }
+  .rail-card {
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+  .rail-card.rail-planned {
+    background: transparent;
+    border: 1.5px dashed var(--line);
+    box-shadow: none;
+  }
+  .rail-card .tag { margin-bottom: 0.55rem; display: inline-block; }
+  .rail-card h3 {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    margin: 0 0 0.35rem;
+  }
+  .rail-card p {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Footer ---------- */
+  .page-footer {
+    border-top: 1px solid var(--line);
+    padding-top: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .stage-card, .rail-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .stage-card:hover, .rail-card:hover { transform: translateY(-1px); }
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="hero">
+    <p class="eyebrow">pipelines/code-review-agent — architecture overview</p>
+    <h1>How the Code Review Agent Works</h1>
+    <p class="dek">One webhook covers every repository in the project. Claude Code reviews each pull request headlessly and posts back a structured, reproducible verdict — no per-repo setup, ever.</p>
+    <div class="legend">
+      <span class="legend-item"><span class="dot dot-live"></span>Live — shipped, running today</span>
+      <span class="legend-item"><span class="dot dot-planned"></span>Planned — designed, not yet shipped</span>
+    </div>
+  </header>
+
+  <section class="pipeline" aria-label="Review pipeline, in order">
+
+    <div class="phase-label"><span class="phase-marker"></span><h2><span class="phase-index">Phase A</span>Trigger</h2></div>
+
+    <div class="stage stage-live">
+      <div class="stage-dot dot-live"></div>
+      <div class="stage-card">
+        <h3>PR opened or updated <span class="tag tag-live">LIVE</span></h3>
+        <p>In any repository in the project — no per-repo setup, ever.</p>
+      </div>
+    </div>
+
+    <div class="stage stage-live">
+      <div class="stage-dot dot-live"></div>
+      <div class="stage-card">
+        <h3>Project-wide service hook fires <span class="tag tag-live">LIVE</span></h3>
+        <p>Azure DevOps posts <code>git.pullrequest.updated</code> to one Incoming Webhook, which triggers the central pipeline — covering every current and future repo automatically, since Azure Repos has no native way to attach a policy to "all repos."</p>
+      </div>
+    </div>
+
+    <div class="stage stage-live">
+      <div class="stage-dot dot-live"></div>
+      <div class="stage-card">
+        <h3>Guard against spurious triggers, then clone <span class="tag tag-live">LIVE</span></h3>
+        <p>The public webhook endpoint also receives service-hook test payloads and stray POSTs. The pipeline confirms the PR is real before doing any work, then dynamically clones the triggering repo — its identity is only known at runtime.</p>
+      </div>
+    </div>
+
+    <div class="phase-label"><span class="phase-marker"></span><h2><span class="phase-index">Phase B</span>Gather context</h2></div>
+
+    <div class="stage stage-live">
+      <div class="stage-dot dot-live"></div>
+      <div class="stage-card">
+        <h3>Diff the pull request <span class="tag tag-live">LIVE</span></h3>
+        <p><code>target...source</code>, size-capped by bytes and lines — an oversized PR gets a "please split this up" note instead of a runaway run.</p>
+      </div>
+    </div>
+
+    <div class="stage stage-live">
+      <div class="stage-dot dot-live"></div>
+      <div class="stage-card">
+        <h3>Pull the linked work item <span class="tag tag-live">LIVE</span></h3>
+        <p>Title, state, and acceptance criteria, fetched via a reusable skill — so the reviewer can judge whether the change actually does what the story asked, not just whether the code is clean.</p>
+      </div>
+    </div>
+
+    <div class="stage stage-planned">
+      <div class="stage-dot dot-planned"></div>
+      <div class="stage-card">
+        <h3>Attach full file content <span class="tag tag-planned">PLANNED</span></h3>
+        <p>Changed files pasted in full, not just diff hunks, so the model reasons over real surrounding code — pre-attached once, at zero extra agent turns.</p>
+      </div>
+    </div>
+
+    <div class="stage stage-planned">
+      <div class="stage-dot dot-planned"></div>
+      <div class="stage-card">
+        <h3>Read the existing PR discussion <span class="tag tag-planned">PLANNED</span></h3>
+        <p>Prior human comments and the bot's own last review, so it stops repeating itself — instead reporting each earlier finding as fixed, still open, or unclear.</p>
+      </div>
+    </div>
+
+    <div class="stage stage-planned">
+      <div class="stage-dot dot-planned"></div>
+      <div class="stage-card">
+        <h3>Check repo conventions &amp; config <span class="tag tag-planned">PLANNED</span></h3>
+        <p><code>CLAUDE.md</code> and lint config, read once with no agent turns spent finding them — plus a per-repo <code>.code-review.yml</code> a team can drop in to tune caps, severity floor, or opt out entirely.</p>
+      </div>
+    </div>
+
+    <div class="phase-label"><span class="phase-marker"></span><h2><span class="phase-index">Phase C</span>Review</h2></div>
+
+    <div class="stage stage-live">
+      <div class="stage-dot dot-live"></div>
+      <div class="stage-card">
+        <h3>Claude runs the <code>code-reviewer</code> subagent <span class="tag tag-live">LIVE</span></h3>
+        <p>One version-controlled ruleset drives both CI and local reviews. Tool access is read-only and scoped — <code>Read</code>, <code>Grep</code>, <code>Glob</code>, git-only <code>Bash</code> — no writes, no commits, no pushes.</p>
+      </div>
+    </div>
+
+    <div class="stage stage-live">
+      <div class="stage-dot dot-live"></div>
+      <div class="stage-card">
+        <h3>Findings come back as strict JSON <span class="tag tag-live">LIVE</span></h3>
+        <p>Severity, category, verdict, one entry per finding — no prose, no markdown fences, so the same output renders the same way every run. See the contract below.</p>
+      </div>
+    </div>
+
+    <div class="phase-label"><span class="phase-marker"></span><h2><span class="phase-index">Phase D</span>Publish</h2></div>
+
+    <div class="stage stage-live">
+      <div class="stage-dot dot-live"></div>
+      <div class="stage-card">
+        <h3>One sticky summary comment <span class="tag tag-live">LIVE</span></h3>
+        <p>A hidden marker lets the pipeline find its own last comment and update it in place — every push refreshes the same thread instead of spawning a new one.</p>
+      </div>
+    </div>
+
+    <div class="stage stage-planned">
+      <div class="stage-dot dot-planned"></div>
+      <div class="stage-card">
+        <h3>Inline, line-anchored threads <span class="tag tag-planned">PLANNED</span></h3>
+        <p>Each finding attaches directly to its changed lines. A fingerprint per finding lets re-runs update or skip instead of duplicating.</p>
+      </div>
+    </div>
+
+    <div class="stage stage-planned">
+      <div class="stage-dot dot-planned"></div>
+      <div class="stage-card">
+        <h3>Resolve-on-fix <span class="tag tag-planned">PLANNED</span></h3>
+        <p>A thread the agent raised auto-resolves once the line it flagged is gone — never reopened over a human's dismissal.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="sample" aria-label="The output contract">
+    <h2>The contract, in one glance</h2>
+    <div class="sample-grid">
+      <div class="sample-col">
+        <p class="col-label">The agent returns</p>
+        <pre>{
+  "verdict": "comment",
+  "findings": [
+    {
+      "severity": "major",
+      "category": "security",
+      "file": "OrderService.cs",
+      "line": 42,
+      "issue": "Hardcoded connection
+        string.",
+      "suggestion": "Move to Key Vault."
+    }
+  ]
+}</pre>
+      </div>
+      <div class="sample-col">
+        <p class="col-label">The pipeline renders</p>
+        <div class="table-wrap">
+          <table class="mini-table">
+            <thead>
+              <tr><th>Severity</th><th>Category</th><th>Location</th><th>Issue</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>🟠 major</td>
+                <td>security</td>
+                <td><code>OrderService.cs:42</code></td>
+                <td>Hardcoded connection string.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="guardrails" aria-label="Guardrails running throughout the pipeline">
+    <h2>Running underneath every stage</h2>
+    <div class="rail-grid">
+      <div class="rail-card rail-live">
+        <p class="tag tag-live">LIVE</p>
+        <h3>Cost &amp; size caps</h3>
+        <p>Diff-size and turn-budget limits; per-run spend is logged in the comment footer.</p>
+      </div>
+      <div class="rail-card rail-live">
+        <p class="tag tag-live">LIVE</p>
+        <h3>Secretless auth</h3>
+        <p>Workload Identity Federation for the pipeline's service principal — no client secret stored anywhere.</p>
+      </div>
+      <div class="rail-card rail-live">
+        <p class="tag tag-live">LIVE</p>
+        <h3>Fail-open</h3>
+        <p>Any step's failure posts "a human review is recommended" rather than breaking the pipeline.</p>
+      </div>
+      <div class="rail-card rail-live">
+        <p class="tag tag-live">LIVE</p>
+        <h3>Auditable runs</h3>
+        <p>Every run is stamped with repo, PR, branches, and trigger type, so a spurious run is obvious at a glance.</p>
+      </div>
+      <div class="rail-card rail-planned">
+        <p class="tag tag-planned">PLANNED</p>
+        <h3>Hard spend ceiling</h3>
+        <p>A per-run USD cap that stops the agent, rather than only reporting cost after the fact.</p>
+      </div>
+      <div class="rail-card rail-planned">
+        <p class="tag tag-planned">PLANNED</p>
+        <h3>Blocking gate</h3>
+        <p>The verdict becomes a PR status/vote that can block merge — advisory today, gating later.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    <p>Source: <code>pipelines/code-review-agent</code> · ruleset: <code>.claude/agents/code-reviewer.md</code></p>
+  </footer>
+
+</main>
+</body>
+</html>

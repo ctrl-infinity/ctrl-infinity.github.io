@@ -63,3 +63,27 @@ When you push changes to `main`, the GitHub Actions workflow [.github/workflows/
 4. Moves the resulting PDF into `public/resume/vinayak-gupta-resume.pdf` right before running `astro build`.
 
 This guarantees that the PDF is always compiled fresh from your JSON updates on every deployment without requiring binaries to be checked into your git history.
+
+---
+
+## Tailored variants (per job application)
+
+The public resume stays the single source of truth at `src/content/resume.json`. Per-role variants live outside the site build:
+
+```
+docs/applications/<company>-<role>.md          # job description + notes (create with /jd-intake)
+docs/applications/resumes/<slug>.json          # tailored resume, same schema as resume.json
+docs/applications/reports/<slug>.md            # match report: coverage, changes, gaps
+docs/applications/build/<slug>.tex             # generated, git-ignored
+docs/applications/pdf/<slug>.pdf               # generated, git-ignored
+```
+
+Build one or all variants (renders LaTeX from the JSON and compiles via the public API):
+
+```bash
+npm run resume:variant -- <slug>
+npm run resume:variant -- --all
+npm run resume:variant -- <slug> --no-pdf   # .tex only
+```
+
+`build-tex.js`, `compile-tex-api.js`, and `validate-resume.js` also accept `--input` / `--output` (or `--json` / `--tex` for validation) so they can run against any file; with no flags they behave exactly as before, which is what CI relies on.
