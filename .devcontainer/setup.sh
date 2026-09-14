@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# The mounted ~/.claude volume is created root-owned on first container
-# start; fix ownership so the non-root "node" user can persist auth.
+# Mounted volumes are created root-owned on first container start;
+# fix ownership so the non-root "node" user can persist auth.
 sudo chown -R node:node /home/node/.claude
+sudo chown -R node:node /home/node/.gemini
+
+sudo apt-get update
 
 npm install
 

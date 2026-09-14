@@ -4,13 +4,15 @@
 
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/sshd:1": { "version": "latest" },
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
 
   // Persists Claude Code auth/settings/history across container rebuilds
   // (plain stop/start already persists it, but a rebuild wipes the home dir otherwise).
   "mounts": [
-    "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume"
+    "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume",
+    "source=gemini-config-${devcontainerId},target=/home/node/.gemini,type=volume"
   ],
   "containerEnv": {
     "CLAUDE_CONFIG_DIR": "/home/node/.claude"
