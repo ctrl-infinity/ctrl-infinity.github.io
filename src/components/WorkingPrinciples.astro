@@ -1,0 +1,37 @@
+---
+const principles = [
+  {
+    title: 'Explore with a purpose.',
+    description: 'I enjoy learning new technologies and frameworks. I look for the fastest practical path from exploration to something useful for the team, not novelty for its own sake.',
+  },
+  {
+    title: 'Own the outcome, not just the task.',
+    description: 'I take initiative and go beyond my immediate responsibilities when that is what the solution needs. The finish line is an end-to-end result that genuinely helps its users.',
+  },
+  {
+    title: 'Think clearly. Build together.',
+    description: 'I break problems down and shape the solution as I learn more. I enjoy brainstorming with teammates, working through the logic and helping find a path forward.',
+  },
+];
+---
+
+<section class="section-rule editorial-split" id="about" aria-labelledby="about-heading">
+  <div class="section-intro">
+    <h2 id="about-heading">How I think and work</h2>
+    <p class="statement">I like turning an unclear problem into a practical next step.</p>
+    <p class="human-note">That means connecting the data, the intelligence, and the delivery—not stopping at the part that happens to be mine.</p>
+    <div class="collaboration-note">
+      <h3>Better thinking is a team sport.</h3>
+      <p>As a member of the AI Center of Excellence, I advised more than 10 teams in an internal AI hackathon on cloud infrastructure and AI/ML design decisions.</p>
+      <a class="text-link" href="/resume">More about my experience &rarr;</a>
+    </div>
+  </div>
+  <div class="principles">
+    {principles.map((principle) => (
+      <div>
+        <h3>{principle.title}</h3>
+        <p>{principle.description}</p>
+      </div>
+    ))}
+  </div>
+</section>

@@ -4,5 +4,7 @@ description: "Building and operating the production orchestrator that classifies
 status: "active"
 tags: [".NET", "Azure OpenAI", "Agent2Agent (A2A)", "Azure DevOps"]
 startDate: "2026"
+updated: "2026-09-27"
+link: "/work/multi-agent-orchestration-platform"
 order: 2
 ---

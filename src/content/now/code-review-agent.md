@@ -4,5 +4,7 @@ description: "Operating and extending the org-wide, webhook-triggered AI code re
 status: "active"
 tags: ["Claude Code", "Azure DevOps", "LLM Agents", "CI/CD"]
 startDate: "2024"
+updated: "2026-09-27"
+link: "/work/code-review-agent"
 order: 1
 ---
