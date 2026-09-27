@@ -1,172 +1,81 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import ArchitectureDiagram from '../../components/work/ArchitectureDiagram.astro';
-import { getCollection, render } from 'astro:content';
+import ReviewSystem from '../../components/work/ReviewSystem.astro';
+import { ProjectVisual } from '../../components/work/ProjectVisual';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const work = await getCollection('work');
-  return work
-    .filter((entry) => entry.body?.trim())
-    .map((entry) => ({
-      params: { slug: entry.id },
-      props: { entry },
-    }));
+  return work.filter((entry) => entry.body?.trim()).map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
 }
 
+interface Props { entry: CollectionEntry<'work'>; }
 const { entry } = Astro.props;
-const { Content } = await render(entry);
-const { title, description, role, category, client, duration, tags, metrics, problem } = entry.data;
-
-const categoryLabels: Record<string, string> = {
-  professional: 'Professional',
-  'side-project': 'Side Project',
-  'open-source': 'Open Source',
-};
-
-interface DiagramStep {
-  title: string;
-  description: string;
-  status?: 'live' | 'planned';
-}
-
-const architectureDiagrams: Record<string, { phases: { name: string; steps: DiagramStep[] }[]; caption: string }> = {
-  'code-review-agent': {
-    phases: [
-      {
-        name: 'Trigger',
-        steps: [
-          { title: 'PR opened or updated', description: 'In any repository in the project — no per-repo setup, ever.' },
-          { title: 'Project-wide service hook fires', description: 'Azure DevOps posts git.pullrequest.updated to one webhook, which triggers the central pipeline for every current and future repo automatically.' },
-          { title: 'Guard against spurious triggers, then clone', description: 'Confirms the PR is real before doing any work, then dynamically clones the triggering repo — its identity is only known at runtime.' },
-        ],
-      },
-      {
-        name: 'Gather Context',
-        steps: [
-          { title: 'Diff the pull request', description: 'target...source, size-capped by bytes and lines — an oversized PR gets a "please split this up" note instead of a runaway run.' },
-          { title: 'Pull the linked work item', description: 'Title, state, and acceptance criteria, so the reviewer judges whether the change does what the story asked, not just whether the code is clean.' },
-        ],
-      },
-      {
-        name: 'Review',
-        steps: [
-          { title: 'Claude runs the code-reviewer subagent', description: 'One version-controlled ruleset drives both CI and local reviews. Tool access is read-only and scoped — Read, Grep, Glob, git-only Bash — no writes, no commits, no pushes.' },
-          { title: 'Findings come back as strict JSON', description: 'Severity, category, verdict — one entry per finding, so the same output renders the same way every run.' },
-        ],
-      },
-      {
-        name: 'Publish',
-        steps: [
-          { title: 'One sticky summary comment', description: 'A hidden marker lets the pipeline find its own last comment and update it in place — every push refreshes the same thread instead of spawning a new one.' },
-        ],
-      },
-    ],
-    caption: 'Runs entirely inside Azure DevOps — no external services, secrets never leave ADO.',
-  },
-};
-
-const architectureDiagram = architectureDiagrams[entry.id];
+const { Content, headings } = await render(entry);
+const { title, description, summary, contribution, visual, status, role, client, duration, tags, metrics, facts, problem, outcome } = entry.data;
+const isReview = entry.id === 'code-review-agent';
 ---
 
-<Layout title={`${title} — Vinayak Gupta`} description={description}>
-  <article class="px-6 md:px-12 max-w-6xl mx-auto py-24">
-    <header class="mb-12">
-      <a href="/work" class="text-sm font-mono text-gray-400 hover:text-accent transition-colors mb-6 inline-block">
-        ← Back to Work
-      </a>
-
-      <div class="mb-4">
-        <span class="text-xs font-mono text-gray-400 uppercase tracking-wider px-2 py-1 bg-black/5">
-          {categoryLabels[category] ?? category}
-        </span>
+<Layout title={`${title} — Vinayak Gupta`} description={summary ?? description}>
+  <!-- THESIS: Show decisions and operating boundaries before the long-form write-up.
+    OWN-WORLD: Sharp, monochrome notebook with inspectable diagrams and real metadata.
+    STORY: Understand the problem, follow the mechanism, inspect choices and evidence.
+    FIRST VIEWPORT: Project title, personal scope, and a meaningful system artifact.
+    FORM: User-approved visual case study with progressively disclosed detail. -->
+  <article class="site-shell">
+    <header class="case-heading">
+      <a href="/work" class="text-link">&larr; All work</a>
+      <h1>{isReview ? 'A useful first review. Not another wall of comments.' : title}</h1>
+      <p>{summary ?? description}</p>
+      <div class="metadata mt-5">
+        {isReview && <span>{title}</span>}
+        {client && <span>{client}</span>}
+        {duration && <span>{duration}</span>}
+        {status && <span>{status === 'production' ? 'In production' : status === 'built' ? 'Built for the team' : 'Experiment'}</span>}
       </div>
-
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4 text-balance">
-        {title}
-      </h1>
-
-      <p class="text-lg text-gray-600 leading-relaxed max-w-[60ch]">
-        {description}
-      </p>
     </header>
 
-    <div class="border-t border-black/10 pt-12 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
-      <aside class="md:col-span-4 md:sticky md:top-24 self-start flex flex-col gap-6 h-fit" data-reveal>
-        <div class="flex flex-col gap-5">
-          <div>
-            <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-1">Role</div>
-            <div class="text-foreground">{role}</div>
-          </div>
-          {client && (
-            <div>
-              <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-1">Client</div>
-              <div class="text-foreground">{client}</div>
-            </div>
-          )}
-          {duration && (
-            <div>
-              <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-1">Timeline</div>
-              <div class="text-foreground font-mono text-sm">{duration}</div>
-            </div>
-          )}
-          <div>
-            <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mb-2">Stack</div>
-            <div class="flex flex-wrap gap-2">
-              {tags.map((tag: string) => (
-                <span class="px-3 py-1 bg-black/5 text-xs text-foreground/80 font-mono">{tag}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {metrics && metrics.length > 0 && (
-          <div class="flex flex-col gap-3 border-t border-black/10 pt-6">
-            <div class="text-xs font-mono text-gray-500 uppercase tracking-wider">Impact</div>
-            {metrics.map((metric: { label: string; value: string }) => (
-              <div class="flex items-baseline justify-between gap-4">
-                <span class="text-xs font-mono text-gray-500 uppercase tracking-wider">{metric.label}</span>
-                <span class="text-foreground font-medium text-right">{metric.value}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </aside>
-
-      <div class="md:col-span-8">
-        {problem && (
-          <div class="mb-12">
-            <h2 class="text-foreground font-semibold tracking-tight text-2xl mb-4">The Problem</h2>
-            <p class="text-gray-600 leading-relaxed">{problem}</p>
-          </div>
-        )}
-
-        {architectureDiagram && (
-          <div class="mb-12">
-            <h2 class="text-foreground font-semibold tracking-tight text-2xl mb-4">How it Works</h2>
-            <ArchitectureDiagram phases={architectureDiagram.phases} caption={architectureDiagram.caption} />
-          </div>
-        )}
-
-        <div class="prose prose-gray max-w-none
-          [&_pre]:bg-[#1e1e1e] [&_pre]:text-gray-200 [&_pre]:p-6 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-relaxed
-          [&_code]:font-mono [&_code]:text-sm
-          [&_p]:text-gray-600 [&_p]:leading-relaxed
-          [&_h2]:text-foreground [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:mt-12 [&_h2]:mb-4
-          [&_h3]:text-foreground [&_h3]:font-medium [&_h3]:tracking-tight [&_h3]:mt-8 [&_h3]:mb-3
-          [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-4
-          [&_ul]:text-gray-600 [&_ol]:text-gray-600
-          [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:text-gray-500
-          [&_img]:border [&_img]:border-black/10
-          [&_figcaption]:font-mono [&_figcaption]:text-xs [&_figcaption]:text-gray-500 [&_figcaption]:mt-2
-        ">
-          <Content />
-        </div>
+    <div class:list={['case-overview', { 'case-overview--text': !visual }]}>
+      <div class="case-scope">
+        <h2>{problem ? 'The friction I saw' : 'My part in the work'}</h2>
+        <p>{problem ?? contribution ?? description}</p>
+        <dl>
+          <div><dt>My scope</dt><dd>{contribution ?? role}</dd></div>
+          {outcome && <div><dt>The useful change</dt><dd>{outcome}</dd></div>}
+          <div><dt>Built with</dt><dd>{tags.join(' / ')}</dd></div>
+        </dl>
       </div>
+      {visual && <ProjectVisual kind={visual} />}
     </div>
+
+    {isReview && <ReviewSystem />}
+
+    {facts && facts.length > 0 && (
+      <section class="case-section" aria-labelledby="system-facts">
+        <h2 id="system-facts">System facts</h2>
+        <dl class="results-list">{facts.map((fact) => <div><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
+      </section>
+    )}
+
+    <div class="case-body">
+      <nav class="case-contents" aria-label="Case study contents">
+        {isReview && <a href="#system">System & decisions</a>}
+        {headings.filter((heading) => heading.depth === 2).map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+        {metrics && metrics.length > 0 && <a href="#reported-results">Reported results</a>}
+      </nav>
+      <div class="case-writing"><Content /></div>
+    </div>
+
+    {metrics && metrics.length > 0 && (
+      <section class="case-section mt-12" id="reported-results">
+        <h2>Reported results</h2>
+        <p>Figures from the original project write-up, not a live dashboard. The measurement period and evaluation methodology are not included in this public case study.</p>
+        <dl class="results-list">{metrics.map((metric) => <div><dt>{metric.label}</dt><dd>{metric.value}</dd></div>)}</dl>
+      </section>
+    )}
+    <div class="section-rule text-links"><a href="/work">Explore more work &rarr;</a><a href="/playground">Try a small experiment &rarr;</a></div>
   </article>
 </Layout>
-
-<script>
-  import { setupReveal } from '../../scripts/reveal';
-  setupReveal();
-</script>

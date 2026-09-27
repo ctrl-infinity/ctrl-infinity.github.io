@@ -1,13 +1,18 @@
 ---
 title: "Multi-Agent Orchestration Platform"
 description: "Built the production orchestrator that classifies and routes end-user requests to independently built domain agents over the open Agent2Agent (A2A) protocol — zero-code-change extensibility for new teams, multi-tenant security, and full ownership of the cloud infrastructure and CI/CD behind it."
+summary: "One entry point for domain agents built by different teams. I owned the orchestrator, cloud infrastructure, and delivery pipeline."
+contribution: "Orchestration, infrastructure, tenant identity, and CI/CD."
+outcome: "New agents connect through discovery, without an orchestrator redeploy."
+visual: "orchestration"
+status: "production"
 role: "Senior Software Engineer - MLOps"
 category: "professional"
 tags: [".NET", "Azure OpenAI", "Agent2Agent (A2A)", "Azure Container Apps", "Bicep", "Azure DevOps"]
 client: "SimCorp / Enterprise Team"
 duration: "2026"
-order: 1
-metrics:
+order: 3
+facts:
   - label: "Protocol"
     value: "Agent2Agent (A2A)"
   - label: "Runtime"
