@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection, render } from 'astro:content';
+import DispatchLab from '../../components/DispatchLab.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const playground = await getCollection('playground');
@@ -12,6 +13,7 @@ export async function getStaticPaths() {
     }));
 }
 
+interface Props { entry: CollectionEntry<'playground'>; }
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
@@ -46,7 +48,9 @@ const { Content } = await render(entry);
       </div>
     </header>
 
-    <div class="prose prose-gray max-w-none
+    {entry.data.component === 'dispatch-lab' && <div class="mb-12"><DispatchLab /></div>}
+
+    <div class="case-writing prose prose-gray max-w-none
       [&_pre]:bg-[#1e1e1e] [&_pre]:text-gray-200 [&_pre]:p-6 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:leading-relaxed
       [&_code]:font-mono [&_code]:text-sm
       [&_p]:text-gray-600 [&_p]:leading-relaxed

@@ -25,8 +25,7 @@ const href = isExternal && link ? link : `/playground/${slug}`;
   href={href}
   target={isExternal ? '_blank' : undefined}
   rel={isExternal ? 'noopener noreferrer' : undefined}
-  class="group flex flex-col gap-4 p-6 border border-black/5 hover:border-black/15 transition-colors duration-300 bg-white"
-  data-reveal
+  class="editorial-card group flex flex-col gap-4"
 >
   <div class="flex items-center justify-between">
     <span class="text-xs font-mono text-gray-400 uppercase tracking-wider">
@@ -52,8 +51,3 @@ const href = isExternal && link ? link : `/playground/${slug}`;
     }
   </div>
 </a>
-
-<script>
-  import { setupReveal } from '../scripts/reveal';
-  setupReveal();
-</script>

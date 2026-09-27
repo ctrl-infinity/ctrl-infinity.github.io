@@ -1,42 +1,33 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import DispatchLab from '../../components/DispatchLab.astro';
 import PlaygroundCard from '../../components/PlaygroundCard.astro';
 import { getCollection } from 'astro:content';
 
-const playgroundCollection = await getCollection('playground');
-const sorted = playgroundCollection.sort((a, b) => a.data.order - b.data.order);
-
-const entries = sorted.map((entry) => ({
-  title: entry.data.title,
-  description: entry.data.description,
-  tags: entry.data.tags,
-  type: entry.data.type,
-  slug: entry.id,
-  link: entry.data.link,
-}));
+const entries = (await getCollection('playground')).sort((a, b) => a.data.order - b.data.order);
+const more = entries.filter((entry) => entry.id !== 'dispatch-lab');
 ---
 
-<Layout title="Playground — Vinayak Gupta" description="Small experiments, code toys, and things I built to learn something new.">
-  <section class="px-6 md:px-12 max-w-7xl mx-auto py-24">
-    <div class="mb-16">
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-        Playground
-      </h1>
-      <p class="text-gray-500 max-w-[50ch]">
-        Small experiments, code toys, and things I built to learn something new.
-      </p>
-    </div>
-
-    {entries.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {entries.map((entry) => (
-          <PlaygroundCard {...entry} />
-        ))}
+<Layout title="Playground — Vinayak Gupta" description="Small, inspectable experiments. Change an input, follow the outcome, and explore the boundary of a system.">
+  <div class="site-shell page-content">
+    <header class="page-heading">
+      <h1>A small experiment.<br />A clearer mental model.</h1>
+      <p>A place to make an idea tangible. Change an input, follow what happens, and look for the boundary.</p>
+    </header>
+    <section class="lab-layout">
+      <div class="lab-intro">
+        <h2>When an agent cannot answer.</h2>
+        <p>A happy path is only part of a system. What changes when identity is missing, a route is unknown, or the primary agent times out?</p>
+        <p>Try removing tenant identity while leaving a fallback available. Notice which rule wins.</p>
+        <div class="text-links"><a href="/playground/dispatch-lab">Read the experiment notes &rarr;</a><a href="/work/multi-agent-orchestration-platform">Connect it to real work &rarr;</a></div>
       </div>
-    ) : (
-      <div class="border-t border-black/10 pt-12">
-        <p class="font-mono text-sm text-gray-500">Interactive demos coming soon.</p>
-      </div>
+      <DispatchLab />
+    </section>
+    {more.length > 0 && (
+      <section class="section-rule">
+        <div class="section-top"><h2>More experiments</h2></div>
+        <div class="work-gallery">{more.map((entry) => <PlaygroundCard {...entry.data} slug={entry.id} />)}</div>
+      </section>
     )}
-  </section>
+  </div>
 </Layout>

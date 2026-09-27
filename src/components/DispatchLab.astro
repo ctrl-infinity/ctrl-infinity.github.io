@@ -1,0 +1,79 @@
+---
+import { decideDispatch } from '../lib/dispatch';
+const initial = decideDispatch({ tenantVerified: true, routeKnown: true, primary: 'ready', fallbackAvailable: true });
+---
+
+<div class="lab-panel editorial-card editorial-card--stationary" data-dispatch-lab>
+  <form>
+    <fieldset disabled>
+      <legend>Change the conditions.</legend>
+      <label><input type="checkbox" name="tenant" checked /> Tenant identity is verified</label>
+      <label><input type="checkbox" name="route" checked /> A matching domain route exists</label>
+      <label class="select-label">Primary agent
+        <select name="primary">
+          <option value="ready">Ready to respond</option>
+          <option value="timeout">Timing out</option>
+          <option value="unavailable">Unavailable</option>
+        </select>
+      </label>
+      <label><input type="checkbox" name="fallback" checked /> A known fallback is available</label>
+      <button class="text-link self-start" type="reset">Reset conditions &larr;</button>
+    </fieldset>
+  </form>
+  <div class="lab-output" role="status" aria-live="polite" aria-atomic="true">
+    <strong data-result-title>{initial.title}</strong>
+    <p data-result-explanation>{initial.explanation}</p>
+    <ol data-result-trace aria-label="Decision trace">{initial.trace.map((step) => <li>{step}</li>)}</ol>
+  </div>
+  <small class="lab-disclaimer">Illustrative, deterministic simulation. Runs only in your browser. No AI model, API calls, or production telemetry.</small>
+  <p class="lab-disclaimer" data-lab-static>Static example. The controls need JavaScript to load before you can change these conditions.</p>
+</div>
+
+<script>
+  import { decideDispatch } from '../lib/dispatch';
+
+  document.querySelectorAll<HTMLElement>('[data-dispatch-lab]').forEach((lab) => {
+    const form = lab.querySelector('form');
+    const fieldset = lab.querySelector('fieldset');
+    const tenant = lab.querySelector<HTMLInputElement>('[name="tenant"]');
+    const route = lab.querySelector<HTMLInputElement>('[name="route"]');
+    const primary = lab.querySelector<HTMLSelectElement>('[name="primary"]');
+    const fallback = lab.querySelector<HTMLInputElement>('[name="fallback"]');
+    const title = lab.querySelector<HTMLElement>('[data-result-title]');
+    const explanation = lab.querySelector<HTMLElement>('[data-result-explanation]');
+    const trace = lab.querySelector<HTMLOListElement>('[data-result-trace]');
+    const staticNote = lab.querySelector<HTMLElement>('[data-lab-static]');
+    if (!form || !fieldset || !tenant || !route || !primary || !fallback || !title || !explanation || !trace || !staticNote) {
+      throw new Error('Dispatch lab is missing a required control or output.');
+    }
+
+    const update = () => {
+      const state = primary.value;
+      if (state !== 'ready' && state !== 'timeout' && state !== 'unavailable') {
+        title.textContent = 'Unsupported agent state.';
+        explanation.textContent = 'Reset the conditions to continue.';
+        trace.replaceChildren();
+        return;
+      }
+      const result = decideDispatch({
+        tenantVerified: tenant.checked,
+        routeKnown: route.checked,
+        primary: state,
+        fallbackAvailable: fallback.checked,
+      });
+      title.textContent = result.title;
+      explanation.textContent = result.explanation;
+      trace.replaceChildren(...result.trace.map((step) => {
+        const item = document.createElement('li');
+        item.textContent = step;
+        return item;
+      }));
+    };
+
+    fieldset.disabled = false;
+    staticNote.hidden = true;
+    form.addEventListener('change', update);
+    form.addEventListener('submit', (event) => event.preventDefault());
+    form.addEventListener('reset', () => setTimeout(update, 0));
+  });
+</script>
