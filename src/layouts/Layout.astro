@@ -34,9 +34,10 @@ const {
 		<title>{title}</title>
 		<meta name="description" content={description} />
 	</head>
-	<body class="bg-base text-foreground antialiased selection:bg-accent selection:text-white">
+	<body id="top" class="bg-base text-foreground antialiased selection:bg-accent selection:text-white">
+		<a href="#main-content" class="skip-link">Skip to content</a>
 		<Nav />
-		<main class="pt-16">
+		<main id="main-content" class="pt-16" tabindex="-1">
 			<slot />
 		</main>
 		<Footer />
