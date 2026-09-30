@@ -1,17 +1,23 @@
 ---
 title: "Enterprise Mobile Payments RAG Engine"
 description: "Built a Python-based Retrieval-Augmented Generation (RAG) application with a custom document index for a mobile payments use case, improving information retrieval accuracy by 20% and reducing latency by 60% via API load balancing and prompt flow orchestration."
-role: "Senior Software Engineer - MLOps"
+summary: "Making fragmented technical documentation useful through custom indexing, retrieval, and API load balancing."
+contribution: "Document indexing, prompt orchestration, and deployment."
+outcome: "20% better retrieval accuracy and 60% lower latency, as reported in the project write-up."
+visual: "retrieval"
+status: "production"
+role: "Senior Analyst - MLE"
 category: "professional"
 tags: ["Python", "RAG", "Azure ML SDK", "Prompt Flow", "Docker", "Kubernetes", "API Load Balancing"]
-client: "SimCorp / Mobile Payments Enterprise"
+client: "Tiger Analytics / Mobile Payments Enterprise"
 duration: "2024"
-order: 3
+order: 4
 metrics:
   - label: "Retrieval Accuracy"
     value: "+20%"
   - label: "Response Latency"
     value: "-60%"
+facts:
   - label: "Orchestration"
     value: "Prompt Flow"
   - label: "Deployment"

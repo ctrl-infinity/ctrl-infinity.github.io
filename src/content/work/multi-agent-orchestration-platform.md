@@ -1,13 +1,18 @@
 ---
 title: "Multi-Agent Orchestration Platform"
-description: "Built the production orchestrator that classifies and routes end-user requests to independently built domain agents over the open Agent2Agent (A2A) protocol — zero-code-change extensibility for new teams, multi-tenant security, and full ownership of the cloud infrastructure and CI/CD behind it."
+description: "Led DevOps and secure cloud operations for a production multi-agent orchestrator, and contributed to multi-agent planning, an MCP gateway for internal APIs, and evaluation regression gates."
+summary: "One entry point for domain agents built by different teams. I led DevOps and secure cloud operations, and contributed to the agent logic."
+contribution: "DevOps leadership; contributions to multi-agent planning, the MCP gateway, and evaluation regression gates."
+outcome: "New agents connect through discovery, without an orchestrator redeploy."
+visual: "orchestration"
+status: "production"
 role: "Senior Software Engineer - MLOps"
 category: "professional"
 tags: [".NET", "Azure OpenAI", "Agent2Agent (A2A)", "Azure Container Apps", "Bicep", "Azure DevOps"]
 client: "SimCorp / Enterprise Team"
 duration: "2026"
-order: 1
-metrics:
+order: 3
+facts:
   - label: "Protocol"
     value: "Agent2Agent (A2A)"
   - label: "Runtime"
@@ -24,13 +29,15 @@ No single team can own every domain an end user might ask about, and no orchestr
 
 ## How it Works
 
+**My part in the system.** I led DevOps for the orchestrator, from deployment and secure infrastructure to ongoing operations. Alongside that ownership, I contributed to multi-agent planning, an MCP gateway that makes internal APIs available through the orchestrator, and evaluations used as regression gates. The architecture below describes the wider system, not a claim of sole authorship.
+
 **Routing and streaming.** A production multi-agent orchestration system, built on the Microsoft Agent Framework (.NET, Azure OpenAI), classifies each end-user request and routes it to the right domain agent over the open Agent2Agent (A2A) protocol — the interoperability layer that lets agents built by separate teams, on separate stacks, talk to the orchestrator through one contract. A separate AG-UI streaming layer serves the client, so the user sees a live response stream regardless of which domain agent is doing the work underneath.
 
 **Built for cross-team extensibility.** Domain agents plug in through dynamic discovery — polled agent-card endpoints or a central AI registry service — so a new team ships a new agent with zero changes to the orchestrator itself. Underneath that, a resilient dispatch layer keeps a bad or slow agent from taking down the whole system: LLM-proposed agent fallback when the first choice fails, circuit breakers, and retry-with-jitter on every downstream call.
 
 **Multi-tenant, secure by default.** Azure AD B2C identity propagates end-to-end on every request — no service-identity impersonation standing in for the real caller — with per-tenant data isolation enforced throughout. Cross-service distributed tracing (OpenTelemetry / Azure Monitor) stitches one trace across the orchestrator and every downstream agent's own telemetry, so a single request stays debuggable across team boundaries.
 
-**Infrastructure and delivery.** Bicep provisions the platform — autoscaled Azure Container Apps, Cosmos DB, Key Vault, and Cognitive Services — behind least-privilege managed identities, with the shared Azure Front Door + Application Gateway edge layer fronting the service for public ingress. CI/CD runs multi-environment, approval-gated (DEV → STA → PRD) in Azure DevOps, with SAST/SCA scanning (SonarQube, Mend), automated post-deploy smoke/integration tests, and full build-to-resource traceability tagging for auditability.
+**Infrastructure and delivery.** I led the DevOps work that deploys and operates the orchestrator on secure infrastructure designed for high availability. Bicep provisions the platform — autoscaled Azure Container Apps, Cosmos DB, Key Vault, and Cognitive Services — behind least-privilege managed identities, with Azure Front Door, Application Gateway with WAF, and VNets providing secure access and network boundaries. CI/CD runs multi-environment, approval-gated (DEV → STA → PRD) in Azure DevOps, with SAST/SCA scanning (SonarQube, Mend), automated post-deploy smoke/integration tests, and full build-to-resource traceability tagging for auditability.
 
 ## Results
 

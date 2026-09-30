@@ -18,6 +18,14 @@ A personal developer portfolio whose primary goal is landing a job or role. It e
 
 Judge me by what's live right now. This isn't a static resume dressed up as a website — `/now` and `/playground` prove an actively building engineer, not a portfolio that stopped updating the day it shipped.
 
+**I build AI tools that help people.** A self-directed engineer who spots useful
+opportunities, learns what is needed, and takes ownership of an end-to-end result.
+Show the connection between user needs, technical decisions, collaboration, and
+delivery; do not advertise an aspirational title or self-rated aptitude.
+
+The agreed page-by-page narrative, visual evidence strategy, and content
+boundaries are recorded in [the portfolio design brief](docs/portfolio-design.md).
+
 ## Operating Context
 
 - **Primary CTA:** Email / Get in touch.
@@ -43,7 +51,14 @@ Judge me by what's live right now. This isn't a static resume dressed up as a we
 ## Evidence on Hand
 
 - Case studies and project write-ups in `src/content/work/`.
-- Active building proof via `/now` and `/playground`.
+- A person-first Home merges About and a compact Currently notebook. Navigation
+  is Home, Work, Playground, Resume; old About/Now links remain compatible.
+- Active building proof via the homepage Currently section and `/playground`.
+- Vinayak confirmed an interactive developer experience for the review agent and
+  a story-to-PR workflow for trivial, refined user stories. The latter's exact
+  stack and measured impact are not yet documented.
+- Illustrative conversations and browser-only simulations are teaching artifacts,
+  not production recordings or live AI integrations. Label them wherever shown.
 - Absence note: GitHub activity integration (`github.com/ctrl-infinity`) is not yet wired up; future work must not fabricate GitHub metrics until connected.
 
 ## Product Principles

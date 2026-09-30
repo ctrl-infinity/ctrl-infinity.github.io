@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { AnimatePresence } from 'motion/react';
+import { useEffect, useState } from 'react';
 import { WorkCard, type WorkCardProps } from './WorkCard';
 import { WorkFilter } from './WorkFilter';
 
@@ -9,36 +8,21 @@ interface WorkPageProps {
 
 export function WorkPage({ projects }: WorkPageProps) {
   const [activeCategory, setActiveCategory] = useState('all');
-
-  const categories = ['all', ...new Set(projects.map((p) => p.category))];
-
-  const filtered =
-    activeCategory === 'all'
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
+  const categories = ['all', ...new Set(projects.map((project) => project.category))];
+  const filtered = activeCategory === 'all' ? projects : projects.filter((project) => project.category === activeCategory);
 
   return (
-    <section className="px-6 md:px-12 max-w-7xl mx-auto py-24">
-      <div className="mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-          Things I've Built
-        </h1>
-        <p className="text-gray-500 max-w-[50ch] mb-8">
-          A mix of professional work, side projects, and open source.
-        </p>
-        <WorkFilter
-          categories={categories}
-          active={activeCategory}
-          onChange={setActiveCategory}
-        />
-      </div>
-
-      <div className="flex flex-col gap-16">
-        <AnimatePresence mode="popLayout">
-          {filtered.map((project) => (
-            <WorkCard key={project.title} {...project} />
-          ))}
-        </AnimatePresence>
+    <section className="site-shell page-content">
+      <header className="page-heading">
+        <h1>Useful ideas.<br />Working systems.</h1>
+        <p>Tools for developers. Systems for teams. A closer look at the problems, the decisions, and my part in making them work.</p>
+      </header>
+      <WorkFilter categories={categories} active={activeCategory} onChange={setActiveCategory} disabled={!ready} />
+      <p className="work-count" role="status" aria-live="polite">{filtered.length} {filtered.length === 1 ? 'project' : 'projects'}</p>
+      <div className="work-gallery">
+        {filtered.map((project) => <WorkCard key={project.slug ?? project.title} {...project} />)}
       </div>
     </section>
   );

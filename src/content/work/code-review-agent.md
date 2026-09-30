@@ -1,6 +1,11 @@
 ---
 title: "Code Review Agent for Azure DevOps"
 description: "Designed and shipped an org-wide, autonomous AI code-review agent (Claude Code) that reviews every pull request across all Azure DevOps repos via a webhook-triggered CI pipeline — zero per-repo configuration, schema-constrained findings, and idempotent, marker-based comment reconciliation."
+summary: "An AI code reviewer with an interactive developer experience, built to help teammates discuss findings and move forward."
+contribution: "Agent design, project-wide integration, and delivery."
+outcome: "A consistent first pass without per-repository setup."
+visual: "review"
+status: "production"
 role: "Senior Engineer - MLOps"
 category: "professional"
 tags: ["PowerShell", "Azure DevOps", "Claude Code", "Service Hooks", "LLM Agents", "CI/CD"]
@@ -13,16 +18,7 @@ problem: >-
   Rolling this out org-wide meant it also had to work identically across every repo, with no
   per-team setup, and it had to be trustworthy enough to run unattended with real write access to
   PR threads.
-order: 2
-metrics:
-  - label: "Turnaround"
-    value: "-70%"
-  - label: "PRs reviewed"
-    value: "400+"
-  - label: "Engineers"
-    value: "15+"
-  - label: "Flagged early"
-    value: "35%"
+order: 1
 ---
 
 ## Running Underneath Every Stage
@@ -34,4 +30,4 @@ metrics:
 
 ## Results
 
-First-review turnaround dropped by **70%**, the agent has reviewed **over 400 pull requests** across **15+ engineers** on the team, and it catches real issues **35%** of the time before a human reviewer even opens the diff.
+The agent provides automated first-pass feedback on pull requests without per-repository setup. It reconciles existing review comments to avoid duplicate threads as pull requests change, giving human reviewers a consistent starting point for their own review.

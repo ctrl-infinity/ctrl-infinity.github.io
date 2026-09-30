@@ -1,0 +1,50 @@
+---
+const stages = [
+  {
+    title: 'Trigger',
+    short: 'One project-wide hook',
+    responsibility: 'A pull-request event starts a central pipeline. The triggering repository is resolved at runtime.',
+    decision: 'Centralize onboarding rather than require every repository to maintain its own review configuration.',
+    boundary: 'Check the event is a real pull request before cloning or reviewing.',
+  },
+  {
+    title: 'Context',
+    short: 'Diff + acceptance criteria',
+    responsibility: 'Gather the change and the linked work item so the review has both code and intent.',
+    decision: 'Cap diff size by bytes and lines instead of letting a large change consume an unbounded run.',
+    boundary: 'An oversized change gets a request to split the PR, not an attempted review without limits.',
+  },
+  {
+    title: 'Review',
+    short: 'Scoped tools, structured output',
+    responsibility: 'Claude Code reviews with a version-controlled ruleset and returns schema-constrained findings.',
+    decision: 'Separate read-only review from publishing. The reviewer can inspect, but cannot commit or push.',
+    boundary: 'Limit turns and log run cost. A failed run recommends human review rather than blocking delivery.',
+  },
+  {
+    title: 'Publish',
+    short: 'Update, do not duplicate',
+    responsibility: 'Publish findings into the pull request through the pipeline.',
+    decision: 'Find the previous summary using a hidden marker and reconcile it in place.',
+    boundary: 'Keep repo, PR, branches, and trigger information attached to each run for diagnosis.',
+  },
+];
+---
+
+<section class="case-section" id="system">
+  <h2>Follow a review through the system.</h2>
+  <p>One central pipeline, with a deliberate boundary between inspecting code and publishing feedback. Open a stage to see the decision behind it.</p>
+  <ol class="system-path" aria-label="Conceptual review pipeline">
+    {stages.map((stage) => <li><strong>{stage.title}</strong><span>{stage.short}</span></li>)}
+  </ol>
+  <div class="stage-details">
+    {stages.map((stage) => (
+      <details>
+        <summary>{stage.title}: {stage.short}</summary>
+        <p>{stage.responsibility}</p>
+        <p><strong>The choice.</strong> {stage.decision}</p>
+        <p><strong>The boundary.</strong> {stage.boundary}</p>
+      </details>
+    ))}
+  </div>
+</section>

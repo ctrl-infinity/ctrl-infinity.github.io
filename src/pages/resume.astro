@@ -3,158 +3,104 @@ import Layout from '../layouts/Layout.astro';
 import resumeData from '../content/resume.json';
 
 const pdfPath = '/resume/vinayak-gupta-resume.pdf';
-
+const sections = ['Experience', 'Projects', 'Skills', 'Education'];
 const formatHighlight = (text: string) => {
   return text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>');
 };
 ---
 
 <Layout title="Resume — Vinayak Gupta" description="Vinayak Gupta's resume. Software Engineer & ML Engineer.">
-  <section class="px-6 md:px-12 max-w-7xl mx-auto py-24">
-    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-20">
+  <div class="site-shell page-content resume-page">
+    <header class="page-heading">
+      <h1>Resume</h1>
+      <div class="actions resume-actions">
+        <a href={pdfPath} download class="button">Download PDF <span aria-hidden="true">&darr;</span></a>
+        <a href="/work" class="text-link">Explore the work &rarr;</a>
+      </div>
+    </header>
+
+    <section class="section-rule editorial-split resume-overview" aria-labelledby="resume-name">
       <div>
-        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-          Resume
-        </h1>
-        <p class="text-gray-500 font-mono text-xs uppercase tracking-widest">
-          {resumeData.basics.location} &middot; {resumeData.basics.email}
-        </p>
-      </div>
-      <a
-        href={pdfPath}
-        download
-        class="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-white text-sm font-medium hover:bg-accent transition-colors duration-300 rounded-none cursor-pointer"
-      >
-        Download PDF ↓
-      </a>
-    </div>
-
-    <div class="max-w-4xl">
-      <!-- About / Summary Section -->
-      <div class="border-t border-black/10 pt-12 pb-12" data-reveal>
-        <p class="text-gray-600 leading-relaxed text-lg max-w-[70ch]" set:html={formatHighlight(resumeData.basics.summary)} />
-      </div>
-
-      <!-- Experience Section -->
-      <div class="border-t border-black/10 pt-16 pb-16">
-        <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-12">Experience</h2>
-        <div class="flex flex-col gap-16">
-          {resumeData.experience.map((job) => (
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4" data-reveal>
-              <div class="md:col-span-4 flex flex-col gap-1">
-                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4]">
-                  {job.startDate} — {job.endDate}
-                </span>
-                <span class="text-sm font-mono tracking-[0.15em] uppercase text-gray-500 font-medium">
-                  {job.company}
-                </span>
-                <span class="text-xs text-gray-400 font-mono">
-                  {job.location}
-                </span>
-              </div>
-              <div class="md:col-span-8">
-                <h3 class="text-xl font-medium text-foreground mb-4">{job.role}</h3>
-                <ul class="flex flex-col gap-3">
-                  {job.highlights.map((highlight) => (
-                    <li class="text-gray-600 leading-relaxed list-none pl-4 relative">
-                      <span class="absolute left-0 text-gray-400 font-mono">—</span>
-                      <span set:html={formatHighlight(highlight)} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
+        <h2 id="resume-name" class="project-title">{resumeData.basics.name}</h2>
+        <div class="metadata resume-contact">
+          <span>{resumeData.basics.location}</span>
+          <a href={`mailto:${resumeData.basics.email}`} class="text-link">{resumeData.basics.email}</a>
         </div>
       </div>
+      <p class="human-note" set:html={formatHighlight(resumeData.basics.summary)} />
+    </section>
 
-      <!-- Projects Section -->
-      <div class="border-t border-black/10 pt-16 pb-16">
-        <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-12">Projects</h2>
-        <div class="flex flex-col gap-16">
-          {resumeData.projects.map((proj) => (
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4" data-reveal>
-              <div class="md:col-span-4 flex flex-col gap-1">
-                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4] mb-2">
-                  Stack
-                </span>
-                <div class="flex flex-wrap gap-1.5">
-                  {proj.technologies.map((tech) => (
-                    <span class="px-2 py-0.5 bg-black/5 text-[10px] text-foreground/70 font-mono rounded-none">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div class="md:col-span-8">
-                <div class="flex items-baseline gap-3 mb-4">
-                  <h3 class="text-xl font-medium text-foreground">{proj.title}</h3>
-                  {proj.github && (
-                    <a
-                      href={proj.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-xs font-mono text-gray-400 hover:text-accent transition-colors duration-300"
-                    >
-                      GitHub &nearr;
-                    </a>
-                  )}
-                </div>
-                <p class="text-gray-600 leading-relaxed" set:html={formatHighlight(proj.description)} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <nav class="text-links resume-sections" aria-label="Resume sections">
+      {sections.map((section) => <a href={`#resume-${section.toLowerCase()}`}>{section} &darr;</a>)}
+    </nav>
 
-      <!-- Skills Section -->
-      <div class="border-t border-black/10 pt-16 pb-16">
-        <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-12">Skills</h2>
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4">
-          {resumeData.skills.map((skillGroup) => (
-            <div class="md:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4 mb-8 last:mb-0" data-reveal>
-              <div class="md:col-span-4">
-                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4]">
-                  {skillGroup.category}
-                </span>
-              </div>
-              <div class="md:col-span-8">
-                <p class="text-gray-600 leading-relaxed">{skillGroup.items.join(' | ')}</p>
-              </div>
+    <section class="section-rule" id="resume-experience" aria-labelledby="experience-title">
+      <div class="section-top"><h2 id="experience-title">Experience</h2></div>
+      <div class="resume-entries">
+        {resumeData.experience.map((job) => (
+          <article class="editorial-card editorial-card--stationary resume-entry">
+            <div class="resume-entry-meta">
+              <p class="resume-company">{job.company}</p>
+              <div class="metadata"><span>{job.startDate} — {job.endDate}</span><span>{job.location}</span></div>
             </div>
-          ))}
-        </div>
+            <div class="resume-entry-body">
+              <h3>{job.role}</h3>
+              <ul class="resume-highlights">
+                {job.highlights.map((highlight) => <li set:html={formatHighlight(highlight)} />)}
+              </ul>
+            </div>
+          </article>
+        ))}
       </div>
+    </section>
 
-      <!-- Education Section -->
-      <div class="border-t border-black/10 pt-16 pb-16">
-        <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-12">Education</h2>
-        <div class="flex flex-col gap-12">
-          {resumeData.education.map((edu) => (
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4" data-reveal>
-              <div class="md:col-span-4 flex flex-col gap-1">
-                <span class="text-xs font-mono tracking-[0.2em] uppercase text-gray-400 leading-[1.4]">
-                  {edu.startDate} — {edu.endDate}
-                </span>
-                <span class="text-xs text-gray-400 font-mono">
-                  {edu.location}
-                </span>
-              </div>
-              <div class="md:col-span-8">
-                <h3 class="text-xl font-medium text-foreground mb-1">{edu.school}</h3>
-                <p class="text-gray-600">
-                  {edu.degree} &middot; <span class="font-mono text-sm text-gray-500">GPA: {edu.gpa}</span>
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+    <section class="section-rule" id="resume-projects" aria-labelledby="projects-title">
+      <div class="section-top"><h2 id="projects-title">Projects</h2><a href="/work">All work &rarr;</a></div>
+      <div class="work-gallery">
+        {resumeData.projects.map((project) => (
+          <article class="editorial-card editorial-card--stationary resume-project project-story">
+            <h3 class="project-title">{project.title}</h3>
+            <div class="metadata" aria-label="Technologies">{project.technologies.join(' / ')}</div>
+            <p set:html={formatHighlight(project.description)} />
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer" class="text-link">
+                View on GitHub <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            )}
+          </article>
+        ))}
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="section-rule" id="resume-skills" aria-labelledby="skills-title">
+      <div class="section-top"><h2 id="skills-title">Skills</h2></div>
+      <dl class="resume-skills">
+        {resumeData.skills.map((group) => (
+          <div class="resume-entry">
+            <dt>{group.category}</dt>
+            <dd>{group.items.join(' / ')}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="section-rule" id="resume-education" aria-labelledby="education-title">
+      <div class="section-top"><h2 id="education-title">Education</h2></div>
+      <div class="resume-entries">
+        {resumeData.education.map((education) => (
+          <article class="editorial-card editorial-card--stationary resume-entry">
+            <div class="resume-entry-meta metadata">
+              <span>{education.startDate} — {education.endDate}</span>
+              <span>{education.location}</span>
+            </div>
+            <div class="resume-entry-body">
+              <h3>{education.school}</h3>
+              <p>{education.degree}</p>
+              <p class="metadata">GPA: {education.gpa}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
 </Layout>
-
-<script>
-  import { setupReveal } from '../scripts/reveal';
-  setupReveal();
-</script>

@@ -6,7 +6,7 @@ category: "professional"
 tags: ["PySpark", "Databricks", "Azure Data Factory", "SQL", "GitHub Actions", "Power BI"]
 client: "Global FMCG Client / Tiger Analytics"
 duration: "2022 - 2023"
-order: 5
+order: 6
 metrics:
   - label: "Pipelines"
     value: "Databricks / ADF"
