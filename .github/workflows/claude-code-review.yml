@@ -42,3 +42,24 @@ jobs:
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
 
+      - name: Report Claude execution error
+        if: ${{ failure() && steps.claude-review.outcome == 'failure' }}
+        env:
+          CLAUDE_EXECUTION_FILE: ${{ steps.claude-review.outputs.execution_file }}
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const file = process.env.CLAUDE_EXECUTION_FILE ||
+            path.join(process.env.RUNNER_TEMP, 'claude-execution-output.json');
+          const messages = JSON.parse(fs.readFileSync(file, 'utf8'));
+          const result = messages.findLast(message => message.type === 'result');
+          if (!result || !result.is_error) {
+            throw new Error('No Claude error result found; inspect the preceding action logs.');
+          }
+          const error = result.result || result.errors?.join('\n');
+          if (!error) {
+            throw new Error('Claude returned an error without an error message.');
+          }
+          console.error(`Claude error: ${JSON.stringify(error)}`);
+          NODE
