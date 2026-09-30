@@ -47,6 +47,40 @@ test('gallery filters and every case study stay reachable', async ({ page }) => 
   }
 });
 
+test('content distinguishes employers, ownership, and qualitative review outcomes', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#about')).toContainText('At SimCorp, I lead DevOps');
+  await expect(page.locator('#about')).toContainText('Earlier, at Tiger Analytics');
+  await page.locator('#currently details').filter({ hasText: 'Multi-Agent Orchestration' }).locator('summary').click();
+  await expect(page.locator('#currently')).toContainText('while contributing to multi-agent planning');
+
+  for (const [slug, client] of [
+    ['mobile-payments-rag', 'Tiger Analytics / Mobile Payments Enterprise'],
+    ['git-llmops-pipeline', 'Tiger Analytics'],
+  ]) {
+    await page.goto(`/work/${slug}`);
+    await expect(page.locator('.case-heading')).toContainText(client);
+    await expect(page.locator('main')).not.toContainText('SimCorp');
+  }
+
+  await page.goto('/work/multi-agent-orchestration-platform');
+  await expect(page.locator('.case-scope')).toContainText('DevOps leadership; contributions to');
+  for (const fact of ['I led DevOps', 'I contributed to multi-agent planning', 'Application Gateway with WAF', 'VNets']) {
+    await expect(page.locator('.case-writing')).toContainText(fact);
+  }
+  await page.goto('/work');
+  const orchestrator = page.locator('.work-card').filter({ hasText: 'Multi-Agent Orchestration Platform' });
+  await expect(orchestrator).toContainText('I led DevOps and secure cloud operations, and contributed to the agent logic.');
+
+  for (const route of ['/', '/work', '/work/code-review-agent', '/resume']) {
+    await page.goto(route);
+    await expect(page.locator('main')).not.toContainText(/70%|400\+|over 400|15\+|35%|100% detection/);
+  }
+  await page.goto('/work/code-review-agent');
+  await expect(page.locator('#reported-results')).toHaveCount(0);
+  await expect(page.locator('.case-writing')).toContainText('giving human reviewers a consistent starting point');
+});
+
 test('case-study stages work with keyboard', async ({ page }) => {
   await page.goto('/work/code-review-agent');
   const detail = page.locator('.stage-details details').first();

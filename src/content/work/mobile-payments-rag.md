@@ -6,10 +6,10 @@ contribution: "Document indexing, prompt orchestration, and deployment."
 outcome: "20% better retrieval accuracy and 60% lower latency, as reported in the project write-up."
 visual: "retrieval"
 status: "production"
-role: "Senior Software Engineer - MLOps"
+role: "Senior Analyst - MLE"
 category: "professional"
 tags: ["Python", "RAG", "Azure ML SDK", "Prompt Flow", "Docker", "Kubernetes", "API Load Balancing"]
-client: "SimCorp / Mobile Payments Enterprise"
+client: "Tiger Analytics / Mobile Payments Enterprise"
 duration: "2024"
 order: 4
 metrics:

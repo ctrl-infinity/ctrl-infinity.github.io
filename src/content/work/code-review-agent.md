@@ -19,15 +19,6 @@ problem: >-
   per-team setup, and it had to be trustworthy enough to run unattended with real write access to
   PR threads.
 order: 1
-metrics:
-  - label: "Turnaround"
-    value: "-70%"
-  - label: "PRs reviewed"
-    value: "400+"
-  - label: "Engineers"
-    value: "15+"
-  - label: "Flagged early"
-    value: "35%"
 ---
 
 ## Running Underneath Every Stage
@@ -39,4 +30,4 @@ metrics:
 
 ## Results
 
-First-review turnaround dropped by **70%**, the agent has reviewed **over 400 pull requests** across **15+ engineers** on the team, and it catches real issues **35%** of the time before a human reviewer even opens the diff.
+The agent provides automated first-pass feedback on pull requests without per-repository setup. It reconciles existing review comments to avoid duplicate threads as pull requests change, giving human reviewers a consistent starting point for their own review.
