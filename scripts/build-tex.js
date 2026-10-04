@@ -5,9 +5,16 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const jsonPath = path.resolve(__dirname, '../src/content/resume.json');
+// Optional variant name (e.g. `node scripts/build-tex.js growth`) builds
+// src/resume/variants/resume-<variant>.json instead of the master resume.
+const variant = process.argv[2];
+const jsonPath = variant
+    ? path.resolve(__dirname, `../src/resume/variants/resume-${variant}.json`)
+    : path.resolve(__dirname, '../src/content/resume.json');
 const templatePath = path.resolve(__dirname, '../src/resume/template.tex');
-const outputPath = path.resolve(__dirname, '../src/resume/resume.tex');
+const outputPath = variant
+    ? path.resolve(__dirname, `../src/resume/variants/resume-${variant}.tex`)
+    : path.resolve(__dirname, '../src/resume/resume.tex');
 
 const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 let template = fs.readFileSync(templatePath, 'utf8');
@@ -36,17 +43,26 @@ const formatBold = (str) => {
 template = template.replace('{{NAME}}', escapeTex(data.basics.name));
 
 const basics = data.basics;
+template = template.replace('{{HEADLINE}}', basics.headline ? `{\\large ${escapeTex(basics.headline)}}\\\\\n` : '');
+
 let contactParts = [];
 if (basics.location) contactParts.push(escapeTex(basics.location));
 if (basics.email) contactParts.push(escapeTex(basics.email));
 if (basics.phone) contactParts.push(escapeTex(basics.phone));
 
 let linkParts = [];
-if (basics.linkedin) {
-  linkParts.push(`\\href{${basics.linkedin}}{\\faLinkedin}`);
-}
-if (basics.github) {
-  linkParts.push(`\\href{${basics.github}}{\\faGithub}`);
+if (Array.isArray(basics.links)) {
+  // Text links stay readable to ATS parsers and on printed copies
+  basics.links.forEach(link => {
+    linkParts.push(`\\href{${link.url}}{${escapeTex(link.label)}}`);
+  });
+} else {
+  if (basics.linkedin) {
+    linkParts.push(`\\href{${basics.linkedin}}{\\faLinkedin}`);
+  }
+  if (basics.github) {
+    linkParts.push(`\\href{${basics.github}}{\\faGithub}`);
+  }
 }
 
 let contactLine = contactParts.join(' | ');
@@ -100,4 +116,4 @@ data.education.forEach(edu => {
 template = template.replace('{{EDUCATION}}', eduTex);
 
 fs.writeFileSync(outputPath, template);
-console.log('LaTeX resume generated at src/resume/resume.tex');
+console.log(`LaTeX resume generated at ${path.relative(path.resolve(__dirname, '..'), outputPath)}`);

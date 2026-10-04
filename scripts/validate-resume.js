@@ -6,8 +6,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.resolve(__dirname, '..');
-const jsonPath = path.join(projectRoot, 'src/content/resume.json');
-const texPath = path.join(projectRoot, 'src/resume/resume.tex');
+// Optional variant name validates src/resume/variants/resume-<variant>.json and its .tex
+const variant = process.argv[2];
+const jsonPath = variant
+  ? path.join(projectRoot, `src/resume/variants/resume-${variant}.json`)
+  : path.join(projectRoot, 'src/content/resume.json');
+const texPath = variant
+  ? path.join(projectRoot, `src/resume/variants/resume-${variant}.tex`)
+  : path.join(projectRoot, 'src/resume/resume.tex');
 
 function logError(msg) {
   console.error(`\x1b[31m[Validation Error] ${msg}\x1b[0m`);

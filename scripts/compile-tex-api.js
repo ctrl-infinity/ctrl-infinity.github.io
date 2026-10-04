@@ -6,16 +6,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.resolve(__dirname, '..');
-const texPath = path.join(projectRoot, 'src/resume/resume.tex');
-const pdfDestPath = path.join(projectRoot, 'public/resume/vinayak-gupta-resume.pdf');
+// Optional variant name compiles src/resume/variants/resume-<variant>.tex. Variant PDFs
+// stay in src/resume/variants/ so they are not published with the site.
+const variant = process.argv[2];
+const texPath = variant
+  ? path.join(projectRoot, `src/resume/variants/resume-${variant}.tex`)
+  : path.join(projectRoot, 'src/resume/resume.tex');
+const pdfDestPath = variant
+  ? path.join(projectRoot, `src/resume/variants/vinayak-gupta-resume-${variant}.pdf`)
+  : path.join(projectRoot, 'public/resume/vinayak-gupta-resume.pdf');
+const texRel = path.relative(projectRoot, texPath);
+const pdfRel = path.relative(projectRoot, pdfDestPath);
 
 try {
   if (!fs.existsSync(texPath)) {
-    console.error('resume.tex not found. Please run "node scripts/build-tex.js" first.');
+    console.error(`${texRel} not found. Please run "node scripts/build-tex.js${variant ? ` ${variant}` : ''}" first.`);
     process.exit(1);
   }
 
-  console.log('Reading src/resume/resume.tex...');
+  console.log(`Reading ${texRel}...`);
   const texContent = fs.readFileSync(texPath, 'utf8');
 
   console.log('Sending request to public LaTeX compilation API (YtoTech)...');
@@ -40,7 +49,7 @@ try {
     throw new Error(`API returned status ${response.status}: ${errText}`);
   }
 
-  console.log('Received PDF response. Writing to public/resume/vinayak-gupta-resume.pdf...');
+  console.log(`Received PDF response. Writing to ${pdfRel}...`);
   const arrayBuffer = await response.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
   

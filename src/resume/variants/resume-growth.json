@@ -1,0 +1,102 @@
+{
+  "basics": {
+    "name": "Vinayak Gupta",
+    "email": "guptavinayak.3004@gmail.com",
+    "phone": "+919896276989",
+    "location": "Noida, India · Open to relocation or remote",
+    "links": [
+      { "label": "ctrl-infinity.github.io", "url": "https://ctrl-infinity.github.io" },
+      { "label": "linkedin.com/in/vinayak-gupta30", "url": "https://www.linkedin.com/in/vinayak-gupta30/" },
+      { "label": "github.com/ctrl-infinity", "url": "https://github.com/ctrl-infinity" }
+    ],
+    "summary": "Product-minded software engineer who measures work by whether people adopt it. Ships a rough first version fast, gets real users on it, and reshapes it around how they actually use it. Took an AI code reviewer from a self-started prototype to every repository in SimCorp's Azure DevOps. Works across frontend, backend and cloud (React, Python, .NET, Azure), using AI daily for code, specs, mockups and data analysis to get ideas live in days."
+  },
+  "skills": [
+    {
+      "category": "Languages",
+      "items": ["Python", "TypeScript", "JavaScript", "C# (.NET)", "SQL"]
+    },
+    {
+      "category": "Web (Full-Stack)",
+      "items": ["React", "Next.js", "Astro", "Tailwind CSS", "Streamlit", "Gradio", "FastAPI", "Django", "Flask"]
+    },
+    {
+      "category": "Product",
+      "items": ["Rapid prototyping & MVPs", "User onboarding & feedback loops", "Usability-focused UI design", "Specs & PRDs", "AI-assisted mockups", "Demos & pitching"]
+    },
+    {
+      "category": "Data & Analytics",
+      "items": ["SQL analysis", "Power BI", "KPI dashboards", "Databricks", "Apache Spark"]
+    },
+    {
+      "category": "AI",
+      "items": ["LLMs", "RAG", "AI agents (A2A, MCP)", "Azure OpenAI", "LLM evaluation", "Claude Code", "GitHub Copilot", "Gemini CLI"]
+    },
+    {
+      "category": "Cloud & Delivery",
+      "items": ["Azure (Container Apps, Cosmos DB, Key Vault)", "Docker", "Kubernetes", "Terraform", "Bicep", "GitHub Actions", "Azure DevOps", "OpenTelemetry"]
+    }
+  ],
+  "experience": [
+    {
+      "company": "SimCorp",
+      "location": "Noida, Uttar Pradesh",
+      "role": "Senior Software Engineer, AI Platform",
+      "startDate": "July 2024",
+      "endDate": "Present",
+      "highlights": [
+        "Spotted PRs waiting hours for a first review and prototyped an AI code reviewer to fix it; piloted it within the team, then rolled it out to every repository in SimCorp's Azure DevOps with zero per-team setup. Iterated on real usage: stopped duplicate comments on updated PRs, added cost tracking and size caps, and let teams customize review behavior without forking the core agent.",
+        "Set up shared AI coding conventions (skill and instruction files) so the team's AI agents produce code that follows team standards; now building a cloud-hosted agent flow that completes small user stories end to end.",
+        "Built evaluation gates for a production multi-agent platform (.NET, Azure OpenAI, A2A) that test every agent and prompt change against real requests before release, plus an MCP gateway to internal APIs.",
+        "Owned the platform's delivery: Bicep-provisioned Azure infrastructure and approval-gated CI/CD from dev to production, with OpenTelemetry tracing across services.",
+        "Advised 10+ teams in an internal AI hackathon (AI Center of Excellence) on turning ideas into working prototypes: architecture, AI design and cloud setup."
+      ]
+    },
+    {
+      "company": "Tiger Analytics",
+      "location": "Chennai, Tamil Nadu",
+      "role": "Senior Analyst - MLE (promoted from Analyst - MLE)",
+      "startDate": "September 2022",
+      "endDate": "June 2024",
+      "highlights": [
+        "Improved a RAG assistant serving a mobile payments company's support engineers and end customers: built a Git-based workflow to test chunking, indexing and prompt variants against an evaluation set and ship the winners (Azure ML, Docker, Kubernetes), lifting retrieval accuracy 20%; load balancing cut response time 60%.",
+        "Built KPI dashboards (Power BI, Databricks) that a global FMCG client's managers used to make product portfolio decisions, fed by automated data pipelines (Azure Data Factory, SQL)."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Semantic Search Engine",
+      "technologies": ["Python", "NLP", "GloVe"],
+      "description": "Ranked documents by meaning rather than keyword match."
+    },
+    {
+      "title": "Vehicle Detection & Number Plate Recognition",
+      "technologies": ["Python", "YOLO", "OpenCV"],
+      "description": "Real-time vehicle detection and number-plate reading for an on-the-go EV wireless-charging concept."
+    },
+    {
+      "title": "Image Segmentation",
+      "technologies": ["Python", "NumPy", "OpenCV"],
+      "description": "Custom segmentation algorithm that groups pixel blocks by color similarity with their 8 neighbors."
+    }
+  ],
+  "education": [
+    {
+      "school": "Indian Institute of Information Technology and Management",
+      "location": "Trivandrum, India",
+      "degree": "MSc Computer Science (Machine Intelligence)",
+      "gpa": "8.02/10",
+      "startDate": "September 2020",
+      "endDate": "June 2022"
+    },
+    {
+      "school": "Deen Dayal Upadhyaya College",
+      "location": "Delhi, India",
+      "degree": "BSc Computer Science",
+      "gpa": "7.67/10",
+      "startDate": "June 2017",
+      "endDate": "July 2020"
+    }
+  ]
+}

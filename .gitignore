@@ -28,3 +28,4 @@ pnpm-debug.log*
 
 # generated resume files
 src/resume/resume.tex
+src/resume/variants/*.tex
