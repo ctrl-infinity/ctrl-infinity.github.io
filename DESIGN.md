@@ -103,7 +103,7 @@ truth boundaries are in [the portfolio brief](docs/portfolio-design.md).
 
 **Key Characteristics:**
 - Monochrome paper and ink; blue identifies interaction.
-- Identity and approach first on Home; artifacts before technical depth in Work.
+- Identity, then evidence, then approach on Home; artifacts before technical depth in Work.
 - Sharp corners, thin rules, and subtly layered editorial cards.
 - Compact editorial rhythm and generous reading measures.
 - Actual project decisions, not adjective badges or invented metrics.
@@ -161,10 +161,10 @@ agent maps wrap their domain agents onto a second row. Below 400px, workflow
 steps stack rather than shrink. Case-study reading navigation becomes a wrapping
 link list on mobile instead of a sticky side rail.
 
-The homepage introduces Vinayak and his approach before two compact project
-previews. Dialogues and system diagrams live in Work, not on Home. Currently
-and Beyond code finish the personal narrative. Work's four visual projects
-lead the gallery, then text-led projects follow.
+The homepage introduces Vinayak as an AI Engineer, preserving the actual SimCorp
+title as a separate fact. Two compact previews lead with reviewer and orchestrator
+evidence, followed by a supporting RAG result. Working principles, Currently, and
+Beyond code follow. Dialogues and system diagrams live in Work, not on Home.
 
 **The Artifact Rule.** A visual must explain the mechanism or interaction. Never
 invent a screenshot just to fill a rectangle. Projects without a suitable visual
@@ -178,7 +178,7 @@ Primary actions are sharp ink rectangles, at least 52px high. Text links carry
 direction through language and arrows. Keyboard focus uses a 2px blue outline
 with 5px offset; a skip link moves directly to main content.
 
-Navigation order: Home, Work, Playground, Resume. Home also contains the former
+Navigation order: Home, Work, Resume, Playground. Home also contains the former
 About and Now content at `/#about` and `/#currently`. Old URLs forward to those
 anchors, with static-build fallback links. Current routes receive
 `aria-current` and an underline. Mobile navigation is a disclosure with expanded
@@ -221,10 +221,16 @@ have separate sections; unpublished measurement methodology is acknowledged.
 
 ### Personal introduction and working principles
 
-Home is person-first: name, actual role, curiosity, and practical learning lead.
+Home leads with name, AI Engineer identity, and the actual employment title.
+The statement is "I build AI agents for real team workflows." The role remains
+18px and visible without scrolling at 390x844; "See the work" is the primary CTA.
+Mobility reads "Noida, India. Open to roles in India and internationally."
+Keep "Curious by default. Useful by intention." in the page title.
+Evidence precedes approach; do not force selected work below a full viewport.
 Use ruled editorial rows, not feature tiles, for working principles. Connect
 curiosity, ownership, and collaboration to behavior, with the existing AI CoE
-advisory example as evidence. Merge overlapping About content rather than
+advisory example, self-initiated reviewer, post-launch feedback, and direct client
+communication as evidence. Merge overlapping About content rather than
 appending the old page or creating a second skills list.
 
 ### Notebook and experiment
@@ -235,6 +241,7 @@ dates, with longer descriptions and links inside. Preserve the anchor and show
 an honest empty-state message if there are no entries. Never compute freshness
 from the deployment date.
 
+Playground is framed as "How I explain a system", not a live-model demo.
 The dispatch experiment uses labeled native checkboxes, a select, a reset button,
 and an atomic live result with a text trace. Its initial result is server-rendered;
 controls activate only after JavaScript is ready. A no-script explanation identifies

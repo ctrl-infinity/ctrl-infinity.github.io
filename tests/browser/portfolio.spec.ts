@@ -230,22 +230,43 @@ test('main page headings and shells share the same design tokens', async ({ page
   for (const measurement of measurements) expect(measurement).toEqual(measurements[0]);
 });
 
-test('homepage introduces Vinayak before its two compact project previews', async ({ page }) => {
+test('homepage leads with evidence and keeps the person', async ({ page }) => {
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Vinayak');
+    await expect(page.locator('.hero-statement')).toHaveText('I build AI agents for real team workflows.');
+    await expect(page.locator('.hero-role')).toHaveText('AI Engineer');
+    await expect(page.locator('.hero-role')).toBeInViewport();
+    await expect(page.locator('.hero-statement')).toBeInViewport({ ratio: 1 });
+    await expect(page.locator('.home-hero')).toContainText('Open to roles in India and internationally.');
+    await expect(page.locator('.home-hero')).toContainText('Senior Software Engineer');
+    await expect(page.locator('.home-hero a.button')).toHaveAttribute('href', '/work');
+    await expect(page.locator('.home-hero a.button')).toHaveText('See the work');
     await expect(page.locator('#about')).toContainText('10 teams');
     await expect(page.locator('.selected-work article')).toHaveCount(2);
     await expect(page.locator('.selected-work .project-visual')).toHaveCount(0);
-    const preview = await page.locator('.selected-work article').first().boundingBox();
-    expect(preview!.y).toBeGreaterThanOrEqual(viewport.height);
     const sections = await page.locator('#about, #selected-work, #currently, #beyond-code').evaluateAll((elements) => elements.map((element) => element.id));
-    expect(sections).toEqual(['about', 'selected-work', 'currently', 'beyond-code']);
+    expect(sections).toEqual(['selected-work', 'about', 'currently', 'beyond-code']);
     const selectedLinks = page.locator('.selected-work article a.text-link');
     await expect(selectedLinks.nth(0)).toHaveAttribute('href', '/work/code-review-agent');
-    await expect(selectedLinks.nth(1)).toHaveAttribute('href', '/work/story-to-pr');
+    await expect(selectedLinks.nth(1)).toHaveAttribute('href', '/work/multi-agent-orchestration-platform');
+    await expect(page.locator('.selected-work article').nth(0)).toContainText('Active team use since July 2026');
+    await expect(page.locator('.selected-work article').nth(0)).toContainText('Approximately 30-40 PRs/month across 5-6 repositories.');
+    await expect(page.locator('.selected-work article').nth(1)).toContainText('In UAT since March 2026');
+    await expect(page.locator('.selected-work article').nth(1)).toContainText('Five agents onboarded.');
+    await expect(page.locator('.selected-work-supporting a')).toHaveAttribute('href', '/work/mobile-payments-rag');
+    await expect(page.locator('.selected-work-supporting')).toContainText('20%');
+    await expect(page.locator('.selected-work-supporting')).toContainText('60%');
+    await expect(page.locator('.selected-work-supporting')).toContainText(/reported/i);
   }
+});
+
+test('playground explains without claiming a live model', async ({ page }) => {
+  await page.goto('/playground');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('How I explain a system');
+  await expect(page.locator('main')).toContainText(/browser/i);
+  await expect(page.locator('main')).toContainText('No AI model, API calls, or production telemetry.');
 });
 
 test('four-page navigation matches on desktop and mobile with correct active states', async ({ page }) => {
@@ -255,7 +276,7 @@ test('four-page navigation matches on desktop and mobile with correct active sta
       await page.goto(route);
       if (width === 390) await page.getByRole('button', { name: 'Open menu' }).click();
       const links = page.locator('#site-nav [data-page-link]:visible');
-      expect(await links.allTextContents()).toEqual(['Home', 'Work', 'Playground', 'Resume']);
+      expect(await links.allTextContents()).toEqual(['Home', 'Work', 'Resume', 'Playground']);
       const current = page.locator('#site-nav [data-page-link][aria-current="page"]:visible');
       await expect(current).toHaveCount(1);
       await expect(current).toHaveAttribute('href', route.startsWith('/work') ? '/work' : route);

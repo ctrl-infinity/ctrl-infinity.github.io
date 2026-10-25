@@ -1,9 +1,11 @@
 {
   "basics": {
     "name": "Vinayak Gupta",
+    "label": "AI Engineer",
     "email": "vinayakgupta.13.6@gmail.com",
     "phone": "+919896276989",
     "location": "Noida, India",
+    "opportunities": "Open to roles in India and internationally.",
     "linkedin": "https://www.linkedin.com/in/vinayak-gupta30/",
     "github": "https://github.com/ctrl-infinity",
     "summary": "Software Engineer and ML Engineer with experience building Python-based Generative AI and Large Language Models (LLMs) applications for enterprise use cases. Delivered Retrieval-Augmented Generation (RAG) solutions, standardized LLMOps practices, and production-grade data and AI workflows across Azure, Docker, Kubernetes, SQL, and GitHub Actions environments. Brings strong problem solving, experimentation, and end-to-end delivery experience across data ingestion, preprocessing, model evaluation, and deployment."
