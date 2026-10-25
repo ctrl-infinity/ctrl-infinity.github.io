@@ -26,7 +26,17 @@ for (const route of routes) {
 test('accessibility of all work with earlier entries open', async ({ page }, info) => {
   await page.goto('/work');
   await page.getByRole('button', { name: 'All work', exact: true }).click();
-  await page.locator('.earlier-work summary').click();
+  await page.locator('.page-content .earlier-work summary').click();
+  await scan(page, info);
+});
+
+test('accessibility of the native fallback when scripts fail', async ({ page }, info) => {
+  await page.route('**/*', async route => {
+    if (route.request().resourceType() === 'script') await route.abort('failed');
+    else await route.continue();
+  });
+  await page.goto('/work');
+  await page.locator('.work-fallback summary').click();
   await scan(page, info);
 });
 

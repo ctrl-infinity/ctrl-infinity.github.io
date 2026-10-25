@@ -46,6 +46,33 @@ test('actual LaTeX generator preserves identity, milestones, links and escaping 
   for (const job of resume.experience) assert.ok(tex.includes(job.role), job.role);
 });
 
+for (const section of ['experience', 'education']) {
+  test(`generator accepts an omitted or null optional ${section} location`, () => {
+    const fixture = mkdtempSync(join(tmpdir(), 'portfolio-resume-generation-'));
+    try {
+      mkdirSync(join(fixture, 'scripts'));
+      mkdirSync(join(fixture, 'src', 'content'), { recursive: true });
+      mkdirSync(join(fixture, 'src', 'resume'));
+      writeFileSync(join(fixture, 'package.json'), '{"type":"module"}');
+      copyFileSync('scripts/build-tex.js', join(fixture, 'scripts', 'build-tex.js'));
+      copyFileSync('src/resume/template.tex', join(fixture, 'src', 'resume', 'template.tex'));
+      for (const location of [undefined, null]) {
+        const data = structuredClone(resume);
+        data[section][0].location = location;
+        writeFileSync(join(fixture, 'src', 'content', 'resume.json'), JSON.stringify(data));
+        const result = spawnSync(process.execPath, [join(fixture, 'scripts', 'build-tex.js')], { encoding: 'utf8' });
+        assert.equal(result.status, 0, result.stderr + result.stdout);
+        const tex = readFileSync(join(fixture, 'src', 'resume', 'resume.tex'), 'utf8');
+        assert.match(tex, /SimCorp/);
+        assert.match(tex, /Selected professional work/);
+        assert.doesNotMatch(tex, /undefined|null|\{\{[A-Z_]+\}\}/);
+      }
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
+  });
+}
+
 test('validator rejects missing identity and malformed or missing HTTPS project URLs', () => {
   const fixture = mkdtempSync(join(tmpdir(), 'portfolio-resume-validation-'));
   try {
@@ -58,6 +85,7 @@ test('validator rejects missing identity and malformed or missing HTTPS project 
     const cases = [
       ['label', ' '], ['opportunities', undefined],
       ['url', undefined], ['url', null], ['url', 'http://example.com'], ['url', 'not a URL'],
+      ['url', 'https:example.com'], ['url', 'https:/example.com'], ['url', 'https:///example.com'],
     ];
     for (const [field, value] of cases) {
       const data = structuredClone(resume);

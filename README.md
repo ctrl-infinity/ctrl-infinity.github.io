@@ -50,7 +50,8 @@ emit meta-refresh pages with fallback links.
 - `src/content/resume.json`: canonical professional and contact details.
 
 Work defaults to Professional. Earlier projects remain available in their
-original categories, with a native "Other work" fallback when JavaScript is off.
+original categories, with a native "Other work" fallback before hydration or
+when JavaScript is unavailable. It retires after hydration without removing focus.
 The web resume and PDF share JSON; see [local PDF generation](src/resume/README.md).
 Regenerate and inspect the PDF when changing resume content: Astro's local build
 does not compile it.

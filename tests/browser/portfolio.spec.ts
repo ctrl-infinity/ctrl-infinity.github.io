@@ -74,11 +74,11 @@ test('gallery filters and every case study stay reachable', async ({ page }) => 
   ]);
   await expect(page.locator('.work-remaining .work-card').first()).toContainText('20% better retrieval accuracy and 60% lower latency');
   await expect(page.locator('.work-remaining')).toContainText('Story-to-PR');
-  await expect(page.locator('.earlier-work')).toHaveCount(0);
+  await expect(page.locator('.page-content .earlier-work')).toHaveCount(0);
   await page.getByRole('button', { name: 'All work', exact: true }).click();
   await expect(page.getByRole('status')).toHaveText('8 projects');
   await expect(cards).toHaveCount(8);
-  const earlier = page.locator('.earlier-work');
+  const earlier = page.locator('.page-content .earlier-work');
   await expect(earlier.locator('summary')).toHaveText('Earlier / academic (2)');
   await expect(earlier).not.toHaveAttribute('open');
   await earlier.locator('summary').focus();
@@ -95,7 +95,7 @@ test('gallery filters and every case study stay reachable', async ({ page }) => 
     await expect(page.getByRole('status')).toHaveText('1 project');
     await expect(earlier).not.toHaveAttribute('open');
     await expect(earlier.locator('.work-card')).toHaveCount(1);
-    await expect(page.locator('a[href*="custom_image_segmentation"]')).toHaveCount(0);
+    await expect(page.locator('.page-content a[href*="custom_image_segmentation"]')).toHaveCount(0);
     await earlier.locator('summary').click();
   }
   await page.getByRole('button', { name: 'All work', exact: true }).click();
@@ -122,15 +122,47 @@ test('gallery hydration preserves the professional server-rendered view', async 
     await expect(professional).toHaveAttribute('aria-pressed', 'true');
     await expect(professional).toBeDisabled();
     await expect(page.locator('.work-featured .work-card')).toHaveCount(2);
+    const fallback = page.locator('.work-fallback');
+    await fallback.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    const earlierLink = fallback.locator('a[href="/work/wireless-charging-anpr"]');
+    await expect(earlierLink).toBeVisible();
+    await expect(fallback.locator('a[href="/work/semantics-ir-system"]')).toBeVisible();
+    await expect(fallback.getByRole('link', { name: 'Image Segmentation', exact: false })).toBeVisible();
+    await earlierLink.focus();
     release();
     await expect(professional).toBeEnabled();
     await expect(page.locator('.work-card')).toHaveCount(6);
+    await expect(earlierLink).toBeFocused();
+    await expect(earlierLink).toBeVisible();
+    await fallback.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('Tab');
+    await expect(fallback).toBeHidden();
+    await expect(page.getByRole('link', { name: 'Get in touch', exact: false })).toBeFocused();
     await page.getByRole('button', { name: 'All work', exact: true }).click();
     await expect(page.getByRole('status')).toHaveText('8 projects');
   } finally {
     release();
     await context.close();
   }
+});
+
+test('earlier work stays reachable when JavaScript requests fail', async ({ page }) => {
+  await page.route('**/*', async route => {
+    if (route.request().resourceType() === 'script') await route.abort('failed');
+    else await route.continue();
+  });
+  await page.goto('/work');
+  await expect(page.getByRole('button', { name: 'Professional', exact: true })).toBeDisabled();
+  const fallback = page.locator('.work-fallback');
+  await fallback.locator('summary').click();
+  for (const slug of ['wireless-charging-anpr', 'semantics-ir-system']) {
+    await expect(fallback.locator(`a[href="/work/${slug}"]`)).toBeVisible();
+  }
+  await fallback.locator('a[href="/work/semantics-ir-system"]').click();
+  await expect(page).toHaveURL(/\/work\/semantics-ir-system$/);
+  await expect(page.locator('main h1')).toBeVisible();
 });
 
 test('compact Work cards do not stretch to fill illustration rows', async ({ page }) => {
@@ -225,10 +257,15 @@ test('keyboard focus keeps its full outline inside the mobile viewport', async (
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await page.evaluate(() => document.fonts.ready);
+  const title = page.locator('.selected-work article .project-title a').last();
   const link = page.locator('.selected-work article a.text-link').last();
-  for (let step = 0; step < 20 && !(await link.evaluate(element => element === document.activeElement)); step++) {
+  for (let step = 0; step < 20 && !(await title.evaluate(element => element === document.activeElement)); step++) {
     await page.keyboard.press('Tab');
   }
+  await expect(title).toBeFocused();
+  // Put the next target at the viewport edge, independent of card copy length.
+  await link.evaluate(element => scrollTo(0, scrollY + element.getBoundingClientRect().bottom - innerHeight));
+  await page.keyboard.press('Tab');
   await expect(link).toBeFocused();
   await expect(link).toHaveCSS('outline-style', 'solid');
   const box = await link.boundingBox();
@@ -246,10 +283,10 @@ test('content and native disclosures remain usable without JavaScript', async ({
   await page.goto('/work');
   await expect(page.locator('.page-content .work-card')).toHaveCount(6);
   for (const filter of await page.locator('.work-filters button').all()) await expect(filter).toBeDisabled();
-  const other = page.locator('.work-noscript details');
+  const other = page.locator('.work-fallback details');
   await expect(other.locator('summary')).toContainText('Other work');
   await other.locator('summary').click();
-  await expect(other.locator('.work-card')).toHaveCount(2);
+  await expect(other.locator('a[href^="/work/"]')).toHaveCount(2);
   for (const slug of ['wireless-charging-anpr', 'semantics-ir-system']) {
     await expect(other.locator(`a.text-link[href="/work/${slug}"]`)).toBeVisible();
   }
@@ -351,8 +388,10 @@ test('homepage leads with evidence and keeps the person', async ({ page }) => {
     await expect(selectedLinks.nth(1)).toHaveAttribute('href', '/work/multi-agent-orchestration-platform');
     await expect(page.locator('.selected-work article').nth(0)).toContainText('Active team use since July 2026');
     await expect(page.locator('.selected-work article').nth(0)).toContainText('Approximately 30-40 PRs/month across 5-6 repositories.');
+    await expect(page.locator('.selected-work article').nth(0)).toContainText('Agent design, project-wide integration, and delivery.');
     await expect(page.locator('.selected-work article').nth(1)).toContainText('In UAT since March 2026');
     await expect(page.locator('.selected-work article').nth(1)).toContainText('Five agents onboarded.');
+    await expect(page.locator('.selected-work article').nth(1)).toContainText('DevOps leadership; contributions to');
     await expect(page.locator('.selected-work-supporting a')).toHaveAttribute('href', '/work/mobile-payments-rag');
     await expect(page.locator('.selected-work-supporting')).toContainText('20%');
     await expect(page.locator('.selected-work-supporting')).toContainText('60%');
@@ -405,7 +444,7 @@ test('editorial cards have paper depth, hover lighting, and keyboard feedback', 
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/work');
   await page.getByRole('button', { name: 'All work', exact: true }).click();
-  await page.locator('.earlier-work summary').click();
+  await page.locator('.page-content .earlier-work summary').click();
   const cards = page.locator('.work-card');
   await expect(cards).toHaveCount(8);
   for (const card of await cards.all()) {

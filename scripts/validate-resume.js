@@ -106,6 +106,7 @@ try {
         hasErrors = true;
       }
       if (typeof proj.url !== 'string' || proj.url !== proj.url.trim() ||
+          !/^https:\/\/[^/\\\s?#]+(?:[/?#]|$)/i.test(proj.url) ||
           !URL.canParse(proj.url) || new URL(proj.url).protocol !== 'https:') {
         logError(`projects[${i}].url must be an absolute HTTPS URL.`);
         hasErrors = true;

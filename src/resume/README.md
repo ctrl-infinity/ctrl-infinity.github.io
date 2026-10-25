@@ -5,9 +5,12 @@
 [build-tex.js](../../scripts/build-tex.js) fills [template.tex](template.tex);
 the generated `src/resume/resume.tex` is ignored.
 
+Employment and education locations are optional; omitted or null values render
+without a location rather than blocking PDF generation.
+
 Keep the AI Engineer identity separate from actual employment titles. The four
 skills groups contain the approved 21 entries. Selected professional work is
-reviewer, orchestrator, then RAG, with absolute HTTPS case-study URLs. Preserve
+reviewer, orchestrator, then RAG, with absolute `https://host/path` case-study URLs. Preserve
 approximate reviewer coverage, the July/March 2026 milestones, five UAT agents,
 and the RAG reported-results qualifier. GPA remains in source data but is not
 displayed on the web or PDF. Earlier projects remain accessible through Work.

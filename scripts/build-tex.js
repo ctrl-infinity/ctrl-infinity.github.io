@@ -60,7 +60,7 @@ template = template.replace('{{SKILLS}}', () => skillsTex);
 let expTex = '';
 data.experience.forEach(job => {
     expTex += `\\begin{minipage}{\\textwidth}\\raggedright\n`;
-    expTex += `\\textbf{${escapeTex(job.company)}} \\hfill ${escapeTex(job.location)}\\\\\n`;
+    expTex += `\\textbf{${escapeTex(job.company)}} \\hfill ${escapeTex(job.location ?? '')}\\\\\n`;
     expTex += `\\textit{${escapeTex(job.role)}} \\hfill ${escapeTex(job.startDate)} - ${escapeTex(job.endDate)}\\\\\n`;
     expTex += `\\begin{itemize}\n`;
     job.highlights.forEach(h => {
@@ -83,7 +83,7 @@ template = template.replace('{{PROJECTS}}', () => projTex);
 // Build Education
 let eduTex = '';
 data.education.forEach(edu => {
-    eduTex += `\\textbf{${escapeTex(edu.school)}}\\hfill ${escapeTex(edu.location)}\\\\\n`;
+    eduTex += `\\textbf{${escapeTex(edu.school)}}\\hfill ${escapeTex(edu.location ?? '')}\\\\\n`;
     eduTex += `${escapeTex(edu.degree)} \\hfill ${escapeTex(edu.startDate)} - ${escapeTex(edu.endDate)}\\\\\n`;
     eduTex += `\\vspace{2mm}\n`;
 });

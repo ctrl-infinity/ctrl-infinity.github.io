@@ -17,7 +17,7 @@ export function WorkPage({ projects, earlierLinks }: WorkPageProps) {
   const links = activeCategory === 'all' ? earlierLinks : [];
 
   return (
-    <section className="site-shell page-content">
+    <section className="site-shell page-content" data-work-ready={ready}>
       <header className="page-heading">
         <h1>Useful ideas.<br />Working systems.</h1>
         <p>Tools for developers. Systems for teams. A closer look at the problems, the decisions, and my part in making them work.</p>

@@ -105,8 +105,10 @@ there is no requirement to keep cards below a full viewport. Keep the old
 - Retain wireless/ANPR and semantic IR under their original categories in the
   earlier disclosure. Category changes collapse it without moving filter focus.
 - Keep Image Segmentation as an ancillary GitHub link in All work, not a new
-  collection entry or part of the count. A no-script "Other work" disclosure
-  outside React exposes both nonprofessional projects and that repository.
+  collection entry or part of the count. A server-rendered "Other work" disclosure
+  outside React links to both nonprofessional projects and that repository,
+  including when scripts fail or stall. Hide it only after hydration succeeds
+  and focus is outside it.
 - Preview the actual mechanism: review dialogue, story-to-PR sequence,
   independently connected agents, or retrieval stages.
 - Separate concise summaries and personal contribution from full descriptions.

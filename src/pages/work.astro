@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { WorkPage } from '../components/WorkPage';
-import { WorkCard } from '../components/WorkCard';
 import { getCollection } from 'astro:content';
 
 const workCollection = await getCollection('work');
@@ -33,18 +32,16 @@ const earlierLinks = [{ title: 'Image Segmentation', href: 'https://github.com/c
 
 <Layout title="Work — Vinayak Gupta" description="Things I've built — professional work, side projects, and open source.">
   <WorkPage projects={sortedWork} earlierLinks={earlierLinks} client:load />
-  <noscript>
-    <section class="site-shell work-noscript">
-      <details class="earlier-work">
-        <summary>Other work ({otherWork.length} projects)</summary>
-        <p>Professional work is shown above. These earlier projects are available without JavaScript.</p>
-        <div class="work-gallery">
-          {otherWork.map((project) => <WorkCard {...project} compact />)}
-        </div>
-        <p class="earlier-links">Also on GitHub: {earlierLinks.map(link => (
-          <a class="text-link" href={link.href} target="_blank" rel="noopener noreferrer">{link.title} &nearr;</a>
-        ))}</p>
-      </details>
-    </section>
-  </noscript>
+  <section class="site-shell work-fallback">
+    <details class="earlier-work">
+      <summary>Other work ({otherWork.length} projects)</summary>
+      <p>Professional work is shown above. Open an earlier case study directly.</p>
+      <ul>
+        {otherWork.map((project) => <li><a class="text-link" href={`/work/${project.slug}`}>{project.title} &rarr;</a></li>)}
+      </ul>
+      <p class="earlier-links">Also on GitHub: {earlierLinks.map(link => (
+        <a class="text-link" href={link.href} target="_blank" rel="noopener noreferrer">{link.title} &nearr;</a>
+      ))}</p>
+    </details>
+  </section>
 </Layout>
