@@ -3,7 +3,7 @@ import { mkdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import resumeData from '../../src/content/resume.json' with { type: 'json' };
 
-const routes = ['/', '/work', '/work/code-review-agent', '/playground', '/resume', '/playground/dispatch-lab'];
+const routes = ['/', '/work', '/work/code-review-agent', '/work/multi-agent-orchestration-platform', '/playground', '/resume', '/playground/dispatch-lab'];
 
 test('project truth is consistent across work and current notes', async ({ page }) => {
   await page.goto('/work/code-review-agent');
@@ -39,7 +39,7 @@ test('project truth is consistent across work and current notes', async ({ page 
   await expect(simcorp).not.toContainText(/across all|production multi-agent/);
 });
 
-for (const width of [320, 390, 768, 1440]) {
+for (const width of [320, 375, 390, 768, 1024, 1440]) {
   test(`routes and layout at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     const errors: string[] = [];
@@ -50,7 +50,7 @@ for (const width of [320, 390, 768, 1440]) {
       await expect(page.locator('main h1')).toHaveCount(1);
       await page.evaluate(() => document.fonts.ready);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), route).toBe(true);
-      if (process.env.SCREENSHOT_DIR && [390, 1440].includes(width)) {
+      if (process.env.SCREENSHOT_DIR && [390, 768, 1440].includes(width)) {
         await mkdir(process.env.SCREENSHOT_DIR, { recursive: true });
         await page.screenshot({
           path: join(process.env.SCREENSHOT_DIR, `${route.replaceAll('/', '-') || 'home'}-${width}.png`),
@@ -133,6 +133,18 @@ test('gallery hydration preserves the professional server-rendered view', async 
   }
 });
 
+test('compact Work cards do not stretch to fill illustration rows', async ({ page }) => {
+  await page.goto('/work');
+  await expect(page.getByRole('button', { name: 'Professional', exact: true })).toBeEnabled();
+  const cards = page.locator('.work-remaining .work-card').filter({ hasNot: page.locator('.project-visual') });
+  await expect(cards).toHaveCount(2);
+  for (const card of await cards.all()) {
+    const technologies = await card.locator('[aria-label="Technologies"]').boundingBox();
+    const link = await card.locator('a.text-link').boundingBox();
+    expect(link!.y - technologies!.y - technologies!.height).toBeLessThanOrEqual(32);
+  }
+});
+
 test('content distinguishes employers, ownership, and qualitative review outcomes', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#about')).toContainText('At SimCorp, I lead DevOps');
@@ -206,6 +218,22 @@ test('mobile menu and reduced motion', async ({ page }) => {
   await page.keyboard.press('Escape');
   await expect(page.locator('#mobile-menu')).toBeHidden();
   await expect(page.getByRole('button', { name: 'Open menu' })).toBeFocused();
+});
+
+test('keyboard focus keeps its full outline inside the mobile viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.evaluate(() => document.fonts.ready);
+  const link = page.locator('.selected-work article a.text-link').last();
+  for (let step = 0; step < 20 && !(await link.evaluate(element => element === document.activeElement)); step++) {
+    await page.keyboard.press('Tab');
+  }
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('outline-style', 'solid');
+  const box = await link.boundingBox();
+  expect(box!.y).toBeGreaterThanOrEqual(7);
+  expect(box!.y + box!.height + 7).toBeLessThanOrEqual(844);
 });
 
 test('content and native disclosures remain usable without JavaScript', async ({ browser }) => {

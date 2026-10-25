@@ -18,7 +18,7 @@ Use Node **22.12 or newer** and install the locked dependencies with `npm ci`.
 | `npm run build` | Generate the static site in `dist` |
 | `npm run check` | Check Astro and TypeScript types |
 | `npm test` | Check dispatch policy, Work partitioning, and resume source/generation |
-| `npm run test:e2e` | Check routes, responsive layouts, and interactions against the running dev server |
+| `npm run test:e2e` | Check routes, responsive layouts, interactions, and axe accessibility against the running server |
 | `npm run preview` | Preview the production build |
 | `npm run validate-resume` | Validate the resume data |
 
@@ -26,8 +26,15 @@ Browser checks use Playwright. Install Chromium once with `npx playwright instal
 chromium`, or use an installed browser: in PowerShell, set
 `$env:PLAYWRIGHT_CHANNEL = 'msedge'` before running `npm run test:e2e`.
 The default test URL is `http://127.0.0.1:4321`; set `BASE_URL` if the server uses
-another port. Set `SCREENSHOT_DIR` to save desktop/mobile captures outside the
+another port. Set `SCREENSHOT_DIR` to save desktop/tablet/mobile captures outside the
 repository. No test calls an external AI service.
+
+Before publication, run the browser checks against a production preview. Run
+`npx --no-install lighthouse <preview-url> --form-factor=mobile --only-categories=performance,accessibility,best-practices --output=json --output-path=<report-path>`
+separately for Home, Work, both featured case studies, and Resume; keep reports
+outside the repository. Each route must reach Performance >=90, Accessibility
+and Best Practices >=95, LCP <2500ms, and CLS <0.1. Set `CHROME_PATH` to an
+installed Chromium browser executable if automatic discovery fails.
 
 ## Content
 

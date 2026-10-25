@@ -33,7 +33,7 @@ export function WorkCard(project: WorkCardProps) {
 
   return (
     <article className={`work-card editorial-card${project.compact ? ' work-card--compact' : ''}`}>
-      {visual && (href ? <a href={href} aria-label={`Explore ${project.title}`}>{visual}</a> : visual)}
+      {visual && (href ? <a href={href}>{visual}</a> : visual)}
       <div className="project-story">
         <div className="metadata">
           {project.client && <span>{project.client}</span>}

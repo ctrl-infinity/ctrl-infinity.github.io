@@ -176,7 +176,8 @@ remain fully discoverable as concise text entries.
 
 Primary actions are sharp ink rectangles, at least 52px high. Text links carry
 direction through language and arrows. Keyboard focus uses a 2px blue outline
-with 5px offset; a skip link moves directly to main content.
+with 5px offset and 1rem block scroll margin to keep the ring inside the viewport;
+a skip link moves directly to main content.
 
 Navigation order: Home, Work, Resume, Playground. Home also contains the former
 About and Now content at `/#about` and `/#currently`. Old URLs forward to those
