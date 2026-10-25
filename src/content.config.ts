@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { WORK_STATUSES } from './lib/work';
 
 const work = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/content/work" }),
@@ -9,8 +10,9 @@ const work = defineCollection({
     summary: z.string().optional(),
     contribution: z.string().optional(),
     outcome: z.string().optional(),
+    evidence: z.string().optional(),
     visual: z.enum(['review', 'workflow', 'orchestration', 'retrieval']).optional(),
-    status: z.enum(['production', 'built', 'experiment']).optional(),
+    status: z.enum(WORK_STATUSES).optional(),
     role: z.string(),
     category: z.enum(['professional', 'side-project', 'open-source']),
     tags: z.array(z.string()),

@@ -190,6 +190,13 @@ results. All project content is server-rendered before React hydration.
 
 ### Project artifacts and case studies
 
+Deployment maturity and current activity are separate. The reviewer is in
+active team use since July 2026 (approximately 30-40 PRs/month, 5-6 repositories).
+The platform is in UAT since March 2026, with five agents onboarded, not in
+production. Reuse the typed status labels and Work collection evidence across
+cards, case headers and linked current notes. Usage scope is not an impact
+measurement and does not belong in a measured-results grid.
+
 Project cards on Home and Work, resume entries, and Playground
 cards share `.editorial-card`. Each has its own closed border and 28px inset
 (16px on mobile), so text-only projects remain distinct from the page.

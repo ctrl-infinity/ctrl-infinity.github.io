@@ -50,6 +50,15 @@ boundaries are recorded in [the portfolio design brief](docs/portfolio-design.md
 
 ## Evidence on Hand
 
+- Confirmed on 25 October 2026: the self-initiated code reviewer has been in
+  active team use since July 2026, reviewing approximately 30-40 PRs/month
+  across 5-6 repositories. These are coverage figures, not measured savings.
+- The orchestration platform has been in UAT since March 2026, with five
+  agents onboarded. It is not a launched production service.
+- These facts supersede earlier organization-wide and production assertions;
+  the approved evidence-first update is specified in
+  [the positioning design](docs/superpowers/specs/2026-10-25-portfolio-positioning-design.md).
+
 - Case studies and project write-ups in `src/content/work/`.
 - A person-first Home merges About and a compact Currently notebook. Navigation
   is Home, Work, Playground, Resume; old About/Now links remain compatible.

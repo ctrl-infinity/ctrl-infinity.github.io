@@ -5,6 +5,40 @@ import resumeData from '../../src/content/resume.json' with { type: 'json' };
 
 const routes = ['/', '/work', '/work/code-review-agent', '/playground', '/resume', '/playground/dispatch-lab'];
 
+test('project truth is consistent across work and current notes', async ({ page }) => {
+  await page.goto('/work/code-review-agent');
+  await expect(page.locator('.case-heading')).toContainText('Active team use since July 2026');
+  await expect(page.locator('.case-scope')).toContainText('Approximately 30-40 PRs/month across 5-6 repositories.');
+  await expect(page.locator('main')).not.toContainText(/org-wide|across all|2024/);
+  await expect(page.locator('meta[name="description"]')).not.toHaveAttribute('content', /org-wide|across all|2024/);
+
+  await page.goto('/work/multi-agent-orchestration-platform');
+  await expect(page.locator('.case-heading')).toContainText('In UAT since March 2026');
+  await expect(page.locator('.case-scope')).toContainText('Five agents onboarded.');
+  await expect(page.locator('.case-scope')).toContainText('DevOps leadership; contributions to');
+  await expect(page.locator('main')).not.toContainText(/production multi-agent|live entry point|In production/);
+  await expect(page.locator('.case-writing')).toContainText('user acceptance testing');
+
+  await page.goto('/');
+  const reviewer = page.locator('#currently details').filter({ hasText: 'Code Review Agent for Azure DevOps' });
+  const orchestrator = page.locator('#currently details').filter({ hasText: 'Multi-Agent Orchestration Platform' });
+  await reviewer.locator('summary').click();
+  await orchestrator.locator('summary').click();
+  await expect(reviewer).toContainText('Active team use since July 2026');
+  await expect(orchestrator).toContainText('In UAT since March 2026');
+  await expect(orchestrator).not.toContainText('Building & operating');
+  await expect(reviewer.locator('time')).toHaveAttribute('datetime', '2026-10-25');
+  await expect(reviewer.locator('time')).toHaveText('Reviewed Oct 2026');
+
+  await page.goto('/resume');
+  const simcorp = page.locator('#resume-experience article').filter({ hasText: 'SimCorp' });
+  await expect(simcorp).toContainText('July 2026');
+  await expect(simcorp).toContainText('March 2026');
+  await expect(simcorp).toContainText('30-40');
+  await expect(simcorp).toContainText('5-6');
+  await expect(simcorp).not.toContainText(/across all|production multi-agent/);
+});
+
 for (const width of [320, 390, 768, 1440]) {
   test(`routes and layout at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -239,10 +273,10 @@ test('old About and Now routes lead to accessible homepage sections', async ({ b
   }
   const entries = page.locator('#currently details');
   await expect(entries).toHaveCount(2);
-  await expect(page.locator('#currently time').first()).toHaveAttribute('datetime', '2026-09-27');
+  await expect(page.locator('#currently time').first()).toHaveAttribute('datetime', '2026-10-25');
   await entries.first().locator('summary').click();
   await expect(entries.first()).toHaveAttribute('open', '');
-  await expect(entries.first()).toContainText('Operating and extending');
+  await expect(entries.first()).toContainText('Maintaining the internal AI reviewer');
   await expect(entries.first().getByRole('link')).toHaveAttribute('href', '/work/code-review-agent');
   await context.close();
 });

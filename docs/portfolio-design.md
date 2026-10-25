@@ -159,6 +159,12 @@ quick navigation through the page.
 
 ## Truth and content boundaries
 
+- Confirmed on 25 October 2026: the reviewer is a self-initiated internal tool,
+  actively used since July 2026 for approximately 30-40 PRs/month across 5-6
+  repositories. Team feedback followed launch; no measured savings are claimed.
+- The orchestrator has been in UAT since March 2026 with five agents onboarded.
+  Production/staging environment architecture is not proof of a production
+  launch. Preserve DevOps ownership versus contributions to the wider system.
 - Existing Markdown and resume data are the source for project and contact facts.
 - The story-to-PR project is based on Vinayak's own description: an automatic
   workflow takes trivial, refined stories and raises PRs. Its exact stack,
