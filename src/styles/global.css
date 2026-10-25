@@ -246,6 +246,7 @@
 .lab-disclaimer { display: block; font-size: .8125rem; line-height: 1.6; color: var(--color-graphite); margin-top: 1.5rem; }
 
 .resume-actions { justify-content: flex-end; }
+.resume-role { margin-top: .75rem; font-size: 1.125rem; font-weight: 500; }
 .resume-contact { flex-direction: column; align-items: start; gap: .5rem; margin-top: 1.25rem; }
 .resume-contact a { overflow-wrap: anywhere; max-width: 100%; }
 .resume-sections { padding-bottom: 1.5rem; }

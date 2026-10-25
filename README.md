@@ -17,7 +17,7 @@ Use Node **22.12 or newer** and install the locked dependencies with `npm ci`.
 | `npm run astro -- dev stop` | Stop the background server |
 | `npm run build` | Generate the static site in `dist` |
 | `npm run check` | Check Astro and TypeScript types |
-| `npm test` | Check the deterministic dispatch policy |
+| `npm test` | Check dispatch policy, Work partitioning, and resume source/generation |
 | `npm run test:e2e` | Check routes, responsive layouts, and interactions against the running dev server |
 | `npm run preview` | Preview the production build |
 | `npm run validate-resume` | Validate the resume data |
@@ -31,8 +31,9 @@ repository. No test calls an external AI service.
 
 ## Content
 
-Navigation is **Home, Work, Playground, Resume**. Home introduces Vinayak, merges
-the former About content, and includes a compact Currently notebook. Old `/about`
+Navigation is **Home, Work, Resume, Playground**. Home introduces Vinayak as an
+AI Engineer, leads with selected evidence, then explains his approach and current
+work. Old `/about`
 and `/now` links forward to the corresponding homepage anchors; static builds
 emit meta-refresh pages with fallback links.
 
@@ -40,6 +41,12 @@ emit meta-refresh pages with fallback links.
 - `src/content/now`: homepage Currently notes, with explicit editorial update dates.
 - `src/content/playground`: experiments and their explanations.
 - `src/content/resume.json`: canonical professional and contact details.
+
+Work defaults to Professional. Earlier projects remain available in their
+original categories, with a native "Other work" fallback when JavaScript is off.
+The web resume and PDF share JSON; see [local PDF generation](src/resume/README.md).
+Regenerate and inspect the PDF when changing resume content: Astro's local build
+does not compile it.
 
 The portfolio's illustrative conversations and local simulations are explicitly
 labeled. They make no external AI calls and are not production telemetry.

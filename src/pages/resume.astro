@@ -3,13 +3,18 @@ import Layout from '../layouts/Layout.astro';
 import resumeData from '../content/resume.json';
 
 const pdfPath = '/resume/vinayak-gupta-resume.pdf';
-const sections = ['Experience', 'Projects', 'Skills', 'Education'];
+const sections = [
+  { label: 'Experience', id: 'resume-experience' },
+  { label: 'Selected professional work', id: 'resume-projects' },
+  { label: 'Skills', id: 'resume-skills' },
+  { label: 'Education', id: 'resume-education' },
+];
 const formatHighlight = (text: string) => {
   return text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>');
 };
 ---
 
-<Layout title="Resume — Vinayak Gupta" description="Vinayak Gupta's resume. Software Engineer & ML Engineer.">
+<Layout title="Resume — Vinayak Gupta" description="Vinayak Gupta, AI Engineer. Experience, selected professional work and a downloadable PDF. Open to roles in India and internationally.">
   <div class="site-shell page-content resume-page">
     <header class="page-heading">
       <h1>Resume</h1>
@@ -22,8 +27,10 @@ const formatHighlight = (text: string) => {
     <section class="section-rule editorial-split resume-overview" aria-labelledby="resume-name">
       <div>
         <h2 id="resume-name" class="project-title">{resumeData.basics.name}</h2>
+        <p class="resume-role">{resumeData.basics.label}</p>
         <div class="metadata resume-contact">
           <span>{resumeData.basics.location}</span>
+          <span>{resumeData.basics.opportunities}</span>
           <a href={`mailto:${resumeData.basics.email}`} class="text-link">{resumeData.basics.email}</a>
         </div>
       </div>
@@ -31,7 +38,7 @@ const formatHighlight = (text: string) => {
     </section>
 
     <nav class="text-links resume-sections" aria-label="Resume sections">
-      {sections.map((section) => <a href={`#resume-${section.toLowerCase()}`}>{section} &darr;</a>)}
+      {sections.map((section) => <a href={`#${section.id}`}>{section.label} &darr;</a>)}
     </nav>
 
     <section class="section-rule" id="resume-experience" aria-labelledby="experience-title">
@@ -55,18 +62,14 @@ const formatHighlight = (text: string) => {
     </section>
 
     <section class="section-rule" id="resume-projects" aria-labelledby="projects-title">
-      <div class="section-top"><h2 id="projects-title">Projects</h2><a href="/work">All work &rarr;</a></div>
+      <div class="section-top"><h2 id="projects-title">Selected professional work</h2><a href="/work">All work &rarr;</a></div>
       <div class="work-gallery">
         {resumeData.projects.map((project) => (
           <article class="editorial-card editorial-card--stationary resume-project project-story">
             <h3 class="project-title">{project.title}</h3>
             <div class="metadata" aria-label="Technologies">{project.technologies.join(' / ')}</div>
             <p set:html={formatHighlight(project.description)} />
-            {project.github && (
-              <a href={project.github} target="_blank" rel="noopener noreferrer" class="text-link">
-                View on GitHub <span aria-hidden="true">&nearr;</span><span class="sr-only"> (opens in a new tab)</span>
-              </a>
-            )}
+            <a href={project.url} class="text-link">Read the case study &rarr;</a>
           </article>
         ))}
       </div>
@@ -96,7 +99,6 @@ const formatHighlight = (text: string) => {
             <div class="resume-entry-body">
               <h3>{education.school}</h3>
               <p>{education.degree}</p>
-              <p class="metadata">GPA: {education.gpa}</p>
             </div>
           </article>
         ))}

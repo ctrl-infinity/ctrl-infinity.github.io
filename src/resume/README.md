@@ -1,65 +1,53 @@
-# Resume Generation & PDF Build Flow
+# Resume generation
 
-This directory manages the resume template, dynamic LaTeX generation, and the compilation pipeline.
+[resume.json](../content/resume.json) supplies both the
+[web resume](../pages/resume.astro) and the downloadable PDF.
+[build-tex.js](../../scripts/build-tex.js) fills [template.tex](template.tex);
+the generated `src/resume/resume.tex` is ignored.
 
-## Architecture
+Keep the AI Engineer identity separate from actual employment titles. The four
+skills groups contain the approved 21 entries. Selected professional work is
+reviewer, orchestrator, then RAG, with absolute HTTPS case-study URLs. Preserve
+approximate reviewer coverage, the July/March 2026 milestones, five UAT agents,
+and the RAG reported-results qualifier. GPA remains in source data but is not
+displayed on the web or PDF. Earlier projects remain accessible through Work.
 
-We use a single-source-of-truth JSON format that automatically updates both the web-native portfolio page and the downloadable PDF.
+## Local build
 
-```mermaid
-graph TD
-    JSON[src/content/resume.json] -->|Imported by Astro| Web[src/pages/resume.astro]
-    JSON -->|Parsed by Node Script| TeX[src/resume/resume.tex]
-    Template[src/resume/template.tex] -->|Placeholders Replaced| TeX
-    TeX -->|Compiled via LaTeX engine| PDF[public/resume/vinayak-gupta-resume.pdf]
+From the repository root:
+
+```powershell
+npm test
+node scripts\build-tex.js
+npm run validate-resume
+pdflatex -interaction=nonstopmode -halt-on-error -output-directory=src\resume src\resume\resume.tex
+Copy-Item src\resume\resume.pdf public\resume\vinayak-gupta-resume.pdf
 ```
 
-1. **JSON Source of Truth**: [resume.json](file:///E:/Vinayak's%20Lab/ctrl-infinity.github.io/.worktrees/resume-section/src/content/resume.json) contains all resume fields (basics, experience, skills, projects, and education).
-2. **LaTeX Template**: [template.tex](file:///E:/Vinayak's%20Lab/ctrl-infinity.github.io/.worktrees/resume-section/src/resume/template.tex) defines the custom layout, font packages, margins, and LaTeX macros for formatting the document.
-3. **Build Script**: [build-tex.js](file:///E:/Vinayak's%20Lab/ctrl-infinity.github.io/.worktrees/resume-section/scripts/build-tex.js) escapes special LaTeX characters, formats bold items (`**bold**` $\rightarrow$ `\textbf{bold}`), and generates [resume.tex](file:///E:/Vinayak's%20Lab/ctrl-infinity.github.io/.worktrees/resume-section/src/resume/resume.tex).
-4. **Local Dev & CI Build**: compiles the generated `resume.tex` into the static binary PDF served at [public/resume/vinayak-gupta-resume.pdf](file:///E:/Vinayak's%20Lab/ctrl-infinity.github.io/.worktrees/resume-section/public/resume/vinayak-gupta-resume.pdf).
+Tectonic is an alternative local TeX engine:
 
----
-
-## Commands
-
-### 1. Generate `resume.tex` from JSON
-Any time you update [resume.json](file:///E:/Vinayak's%20Lab/ctrl-infinity.github.io/.worktrees/resume-section/src/content/resume.json), run this script to regenerate the LaTeX source file:
-```bash
-node scripts/build-tex.js
+```powershell
+tectonic --keep-logs --outdir src\resume src\resume\resume.tex
 ```
 
-### 2. Compile LaTeX to PDF
+Use a trusted local installation or the existing GitHub Actions build. Do not
+send the resume to an external compilation API. Tectonic may download TeX
+packages, but compilation itself is local.
 
-#### Method A: Online API Compiler (Recommended for Local Dev)
-If you don't have a LaTeX distribution (like MacTeX or TeXLive) installed locally, use the helper script to compile via a free public API:
-```bash
-node scripts/compile-tex-api.js
-```
-This sends a request to the LaTeX-on-HTTP endpoint and automatically saves the resulting PDF into `public/resume/vinayak-gupta-resume.pdf`.
+The template uses 11pt sans-serif text on A4. Inspect **every generated page**
+before copying it to the public path: at most two pages, no clipped or
+overlapping text, all selected-project links clickable, and content consistent
+with JSON. Check the actual PDF, not just generated TeX. Do not add an automatic
+"updated" date based on build time.
 
-#### Method B: Local LaTeX Compiler
-If you have `pdflatex` installed in your terminal, compile using the following command sequence:
-```bash
-# Compile to PDF (creates src/resume/resume.pdf)
-pdflatex -output-directory=src/resume/ src/resume/resume.tex
+## CI and publication
 
-# Create public destination folder if it doesn't exist
-mkdir -p public/resume/
+The existing [Pages workflow](../../.github/workflows/deploy.yml) generates TeX,
+validates source and placeholders, compiles with `xu-cheng/latex-action`, copies
+the PDF into `public/resume`, then builds Astro. Its configured branch triggers
+remain unchanged; only `main` deploys. A local `npm run build` **does not compile
+the PDF**, so regenerate the committed public artifact when resume data changes.
 
-# Move and rename to destination
-mv src/resume/resume.pdf public/resume/vinayak-gupta-resume.pdf
-```
-
----
-
-## CI/CD Automation (GitHub Actions)
-
-When you push changes to `main`, the GitHub Actions workflow [.github/workflows/deploy.yml](file:///E:/Vinayak's%20Lab/ctrl-infinity.github.io/.worktrees/resume-section/.github/workflows/deploy.yml) handles the compilation automatically:
-
-1. Installs Node and project dependencies.
-2. Runs `node scripts/build-tex.js` to create `src/resume/resume.tex`.
-3. Runs `xu-cheng/latex-action@v3` to compile the LaTeX file inside a container containing the TeX environment.
-4. Moves the resulting PDF into `public/resume/vinayak-gupta-resume.pdf` right before running `astro build`.
-
-This guarantees that the PDF is always compiled fresh from your JSON updates on every deployment without requiring binaries to be checked into your git history.
+The public URL stays `/resume/vinayak-gupta-resume.pdf`. Browser tests compare the
+download against this actual file. Never push or deploy solely to obtain a PDF
+without authorization.

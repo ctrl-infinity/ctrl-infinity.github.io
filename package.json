@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
-    "test": "node --experimental-strip-types --test tests/dispatch.test.ts tests/work.test.ts",
+    "test": "node --experimental-strip-types --test tests/dispatch.test.ts tests/work.test.ts tests/resume.test.mjs",
     "test:e2e": "playwright test",
     "validate-resume": "node scripts/validate-resume.js",
     "preview": "astro preview",

@@ -264,8 +264,13 @@ labels. Skills remain a ruled definition list rather than a badge wall.
 
 Desktop experience and education pair a narrow metadata column with a readable
 detail column; mobile stacks these in source order. Section links work without
-JavaScript. Resume data, all highlights, and the existing downloadable PDF are
-preserved. No reveal animation delays access to professional information.
+JavaScript. JSON supplies the AI Engineer identity, broad mobility statement,
+21 skills in four groups, and three selected professional projects with absolute
+case links. Preserve actual employment titles and education; suppress GPA.
+Keep `#resume-projects` while labeling it "Selected professional work".
+The same JSON generates the PDF via LaTeX at its existing download URL. Inspect
+the actual PDF at at most two legible A4 pages; do not treat generated TeX as a
+verified PDF. No reveal animation delays access to professional information.
 
 ### Motion
 

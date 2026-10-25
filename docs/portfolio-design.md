@@ -160,15 +160,22 @@ intelligence, and delivery without a second skills list or fabricated timeline.
 
 ### Resume: a utility surface
 
-Keep existing experience, education, downloadable PDF, and factual claims intact.
+Keep existing experience, education, the PDF URL, and confirmed factual claims.
 Shared navigation, typography, focus treatment, and contact details should remain
 consistent with the rest of the portfolio.
 
 The Resume page now uses the shared main-page heading, shell, and primary action,
 with editorial paper cards for experience, projects, and education. Keep dense
 reading cards stationary, metadata legible, and skills in a ruled list. All
-source content remains visible without JavaScript; native section links support
-quick navigation through the page.
+published content remains visible without JavaScript; native section links support
+quick navigation through the page. The identity is AI Engineer, with broad India/
+international mobility. Use the approved four skills groups and 21 entries.
+Replace academic resume projects with reviewer, orchestrator and RAG, preserving
+their truthful milestones, scope and reported-results qualifiers.
+Label `#resume-projects` "Selected professional work", and use absolute case-study
+URLs in both web and PDF. Do not display GPA. Regenerate the actual PDF locally
+or through authorized existing CI, then inspect all pages and links; the target
+is at most two legible A4 pages. Do not use an external compilation API.
 
 ## Truth and content boundaries
 

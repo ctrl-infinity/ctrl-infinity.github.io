@@ -237,6 +237,10 @@ test('content and native disclosures remain usable without JavaScript', async ({
 
 test('resume preserves source content and downloads the existing PDF', async ({ page }) => {
   await page.goto('/resume');
+  await expect(page.locator('.resume-overview')).toContainText('AI Engineer');
+  await expect(page.locator('.resume-overview')).toContainText(resumeData.basics.opportunities);
+  await expect(page.locator('main')).not.toContainText('GPA');
+  await expect(page.locator('#projects-title')).toHaveText('Selected professional work');
   await expect(page.locator('#resume-experience article')).toHaveCount(resumeData.experience.length);
   await expect(page.locator('#resume-projects article')).toHaveCount(resumeData.projects.length);
   await expect(page.locator('#resume-education article')).toHaveCount(resumeData.education.length);
@@ -252,7 +256,7 @@ test('resume preserves source content and downloads the existing PDF', async ({ 
     const article = page.locator('#resume-projects article').filter({ has: page.getByRole('heading', { name: project.title, exact: true }) });
     await expect(article).toContainText(plain(project.description));
     for (const technology of project.technologies) await expect(article).toContainText(technology);
-    if (project.github) await expect(article.getByRole('link')).toHaveAttribute('href', project.github);
+    await expect(article.getByRole('link')).toHaveAttribute('href', project.url);
   }
   for (const group of resumeData.skills) {
     const row = page.locator('.resume-skills > div').filter({ hasText: group.category });
@@ -260,8 +264,13 @@ test('resume preserves source content and downloads the existing PDF', async ({ 
   }
   for (const education of resumeData.education) {
     const article = page.locator('#resume-education article').filter({ hasText: education.school });
-    for (const text of Object.values(education)) await expect(article).toContainText(text);
+    for (const [key, text] of Object.entries(education)) {
+      if (key !== 'gpa') await expect(article).toContainText(text);
+    }
   }
+  await page.getByRole('navigation', { name: 'Resume sections' }).getByRole('link', { name: 'Selected professional work' }).click();
+  await expect(page).toHaveURL(/#resume-projects$/);
+  await expect(page.locator('#projects-title')).toBeInViewport();
   await page.getByRole('navigation', { name: 'Resume sections' }).getByRole('link', { name: 'Education' }).click();
   await expect(page).toHaveURL(/#resume-education$/);
   await expect(page.locator('#education-title')).toBeInViewport();
