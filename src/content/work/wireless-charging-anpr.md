@@ -7,6 +7,7 @@ tags: ["Python", "TensorFlow", "OpenCV", "YOLO", "SketchUp"]
 client: "IIITM Research Project"
 duration: "2022"
 order: 7
+earlier: true
 metrics:
   - label: "Object Detection"
     value: "YOLO / TensorFlow"

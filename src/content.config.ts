@@ -22,6 +22,7 @@ const work = defineCollection({
     duration: z.string().optional(),
     problem: z.string().optional(),
     featured: z.boolean().default(false),
+    earlier: z.boolean().default(false),
     order: z.number().default(99),
     metrics: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
     facts: z.array(z.object({ label: z.string(), value: z.string() })).optional(),

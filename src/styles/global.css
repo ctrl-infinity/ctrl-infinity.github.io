@@ -62,7 +62,7 @@
 .project-story { display: flex; flex-direction: column; gap: 1.25rem; }
 .project-title { font-size: clamp(1.875rem, 2.7vw, 2.5rem); line-height: 1.15; letter-spacing: -.035em; font-weight: 600; }
 .project-story > p { font-size: 1.0625rem; line-height: 1.65; color: var(--color-graphite); }
-.project-story .project-outcome { color: var(--color-foreground); font-weight: 500; }
+.project-story .project-outcome, .project-story .project-contribution { color: var(--color-foreground); font-weight: 500; }
 .project-story .project-evidence { color: var(--color-foreground); font-size: .9375rem; }
 .metadata { font-size: .875rem; line-height: 1.6; color: var(--color-graphite); display: flex; gap: .5rem 1rem; flex-wrap: wrap; }
 .project-visual { padding: 1.75rem; min-width: 0; overflow-wrap: anywhere; }
@@ -126,6 +126,7 @@
 .work-filters button { min-height: 44px; padding: .6rem 1rem; color: var(--color-graphite); }
 .work-filters button[aria-pressed="true"] { background: var(--color-foreground); color: white; }
 .work-filters button:hover { text-decoration: underline; text-underline-offset: .3em; }
+.work-filters button:disabled { cursor: not-allowed; }
 .editorial-card {
   position: relative;
   min-width: 0;
@@ -169,9 +170,18 @@
   }
 }
 .work-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3.5rem 2.5rem; }
+.work-featured + .work-remaining { margin-top: 3rem; }
+.earlier-work { border-top: 1px solid var(--color-rule); margin-top: 3rem; padding-top: 1.5rem; }
+.earlier-work summary { min-height: 44px; font-size: 1.125rem; font-weight: 500; }
+.earlier-work[open] summary { text-decoration: underline; text-underline-offset: .3em; margin-bottom: 1.5rem; }
+.earlier-work > p { color: var(--color-graphite); line-height: 1.7; margin-block: 1.5rem; }
+.earlier-links .text-link { margin-left: .5rem; }
 .work-card { min-width: 0; display: flex; flex-direction: column; gap: 1.25rem; }
 .work-card .project-title { font-size: 1.75rem; }
 .work-card .project-visual { min-height: 20rem; }
+.work-card--compact .project-visual { min-height: 0; padding: 1rem; }
+.work-card--compact .project-title { font-size: 1.5rem; }
+.work-card--compact .project-story > p { font-size: .9375rem; }
 .work-card .project-story { flex: 1; gap: .875rem; }
 .work-card .project-story .text-link { align-self: start; margin-top: auto; }
 .work-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }

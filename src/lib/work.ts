@@ -16,3 +16,20 @@ export function formatWorkStatus(status: WorkStatus, duration?: string): string 
     ? `${label} since ${duration}`
     : `${label} (${duration})`;
 }
+
+export function partitionWork<T extends { category: string; featured?: boolean; earlier?: boolean }>(
+  projects: T[],
+  category: string,
+): { featured: T[]; remaining: T[]; earlier: T[]; count: number } {
+  const result: { featured: T[]; remaining: T[]; earlier: T[]; count: number } = {
+    featured: [], remaining: [], earlier: [], count: 0,
+  };
+  for (const project of projects) {
+    if (category !== 'all' && project.category !== category) continue;
+    result.count++;
+    if (project.earlier) result.earlier.push(project);
+    else if (project.featured) result.featured.push(project);
+    else result.remaining.push(project);
+  }
+  return result;
+}

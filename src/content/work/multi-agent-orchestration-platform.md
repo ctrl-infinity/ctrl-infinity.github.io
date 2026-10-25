@@ -12,7 +12,8 @@ category: "professional"
 tags: [".NET", "Azure OpenAI", "Agent2Agent (A2A)", "Azure Container Apps", "Bicep", "Azure DevOps"]
 client: "SimCorp / Enterprise Team"
 duration: "March 2026"
-order: 3
+order: 2
+featured: true
 facts:
   - label: "Protocol"
     value: "Agent2Agent (A2A)"

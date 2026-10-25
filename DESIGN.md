@@ -186,7 +186,14 @@ state; Escape closes it and returns focus to the toggle.
 
 Work filters are native buttons with `aria-pressed`, at least 44px high. The
 selected filter is ink/white, not a sliding background. A live count announces
-results. All project content is server-rendered before React hydration.
+results, including matching entries in a closed disclosure. Professional is
+selected during SSR and hydration; controls enable only when ready. Reviewer and
+orchestrator are featured, followed by compact RAG, LLMOps, FMCG and Story-to-PR
+cards. Two earlier entries retain their original categories in a native
+"Earlier / academic" disclosure, reset on category changes. Image Segmentation
+is an ancillary GitHub link in All work, excluded from project counts.
+Without JavaScript, an "Other work" disclosure outside the React island exposes
+nonprofessional projects and that repository link without duplicating professionals.
 
 ### Project artifacts and case studies
 

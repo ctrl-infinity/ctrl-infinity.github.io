@@ -18,6 +18,7 @@ problem: >-
   pipeline avoids per-repository setup, while a deliberate boundary separates
   read-only inspection from publishing feedback to PR threads.
 order: 1
+featured: true
 ---
 
 ## Running Underneath Every Stage

@@ -7,6 +7,7 @@ tags: ["Python", "NLP", "GloVe Embeddings", "Vector Similarity"]
 client: "Open Source Research"
 duration: "2022"
 order: 8
+earlier: true
 metrics:
   - label: "Vector Space"
     value: "GloVe Embeddings"

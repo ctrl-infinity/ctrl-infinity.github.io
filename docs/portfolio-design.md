@@ -95,6 +95,18 @@ there is no requirement to keep cards below a full viewport. Keep the old
 ### Work: a gallery of useful systems
 
 - Preserve professional / side-project / open-source filtering.
+- Professional is the initial server-rendered and hydrated selection (six
+  projects). All work includes eight collection entries, including the two in
+  the closed "Earlier / academic" disclosure. Keep all four filters even for
+  an empty collection; enable them only after hydration.
+- Feature reviewer and orchestrator; follow with compact RAG, Git LLMOps, FMCG
+  and Story-to-PR. Keep existing illustrations and display qualified outcomes
+  separately from contribution and usage scope.
+- Retain wireless/ANPR and semantic IR under their original categories in the
+  earlier disclosure. Category changes collapse it without moving filter focus.
+- Keep Image Segmentation as an ancillary GitHub link in All work, not a new
+  collection entry or part of the count. A no-script "Other work" disclosure
+  outside React exposes both nonprofessional projects and that repository.
 - Preview the actual mechanism: review dialogue, story-to-PR sequence,
   independently connected agents, or retrieval stages.
 - Separate concise summaries and personal contribution from full descriptions.

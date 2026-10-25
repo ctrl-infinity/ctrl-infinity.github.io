@@ -66,18 +66,70 @@ for (const width of [320, 390, 768, 1440]) {
 test('gallery filters and every case study stay reachable', async ({ page }) => {
   await page.goto('/work');
   const cards = page.locator('.work-card');
-  const all = await cards.count();
-  expect(all).toBeGreaterThan(4);
-  const links = await cards.locator('a.text-link[href^="/work/"]').evaluateAll((elements) => elements.map((element) => element.getAttribute('href')!));
-  expect(links).toHaveLength(all);
-  await page.getByRole('button', { name: 'Professional', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Professional', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  expect(await cards.count()).toBeLessThan(all);
+  await expect(cards).toHaveCount(6);
+  await expect(page.getByRole('status')).toHaveText('6 projects');
+  expect(await page.locator('.work-featured .project-title').allTextContents()).toEqual([
+    'Code Review Agent for Azure DevOps', 'Multi-Agent Orchestration Platform',
+  ]);
+  await expect(page.locator('.work-remaining .work-card').first()).toContainText('20% better retrieval accuracy and 60% lower latency');
+  await expect(page.locator('.work-remaining')).toContainText('Story-to-PR');
+  await expect(page.locator('.earlier-work')).toHaveCount(0);
   await page.getByRole('button', { name: 'All work', exact: true }).click();
-  await expect(cards).toHaveCount(all);
+  await expect(page.getByRole('status')).toHaveText('8 projects');
+  await expect(cards).toHaveCount(8);
+  const earlier = page.locator('.earlier-work');
+  await expect(earlier.locator('summary')).toHaveText('Earlier / academic (2)');
+  await expect(earlier).not.toHaveAttribute('open');
+  await earlier.locator('summary').focus();
+  await page.keyboard.press('Enter');
+  await expect(earlier).toHaveAttribute('open', '');
+  await expect(earlier.locator('.work-card')).toHaveCount(2);
+  await expect(earlier.getByRole('link', { name: 'Image Segmentation', exact: false })).toHaveAttribute('href', 'https://github.com/ctrl-infinity/custom_image_segmentation');
+  const links = await cards.locator('a.text-link[href^="/work/"]').evaluateAll((elements) => elements.map((element) => element.getAttribute('href')!));
+  expect(links).toHaveLength(8);
+  for (const category of ['Side projects', 'Open source']) {
+    const filter = page.getByRole('button', { name: category, exact: true });
+    await filter.click();
+    await expect(filter).toBeFocused();
+    await expect(page.getByRole('status')).toHaveText('1 project');
+    await expect(earlier).not.toHaveAttribute('open');
+    await expect(earlier.locator('.work-card')).toHaveCount(1);
+    await expect(page.locator('a[href*="custom_image_segmentation"]')).toHaveCount(0);
+    await earlier.locator('summary').click();
+  }
+  await page.getByRole('button', { name: 'All work', exact: true }).click();
+  await expect(earlier).not.toHaveAttribute('open');
   for (const href of links) {
     expect((await page.goto(href))?.status(), href).toBe(200);
     await expect(page.locator('main h1')).toHaveCount(1);
+  }
+});
+
+test('gallery hydration preserves the professional server-rendered view', async ({ browser }) => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  let release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/*', async route => {
+    if (route.request().resourceType() === 'script') await gate;
+    await route.continue();
+  });
+  try {
+    await page.goto('/work', { waitUntil: 'commit' });
+    await expect(page.locator('.work-card')).toHaveCount(6);
+    const professional = page.getByRole('button', { name: 'Professional', exact: true });
+    await expect(professional).toHaveAttribute('aria-pressed', 'true');
+    await expect(professional).toBeDisabled();
+    await expect(page.locator('.work-featured .work-card')).toHaveCount(2);
+    release();
+    await expect(professional).toBeEnabled();
+    await expect(page.locator('.work-card')).toHaveCount(6);
+    await page.getByRole('button', { name: 'All work', exact: true }).click();
+    await expect(page.getByRole('status')).toHaveText('8 projects');
+  } finally {
+    release();
+    await context.close();
   }
 });
 
@@ -164,7 +216,16 @@ test('content and native disclosures remain usable without JavaScript', async ({
   await expect(page.getByLabel('Primary agent')).toBeDisabled();
   await expect(page.getByText('Static example.', { exact: false })).toBeVisible();
   await page.goto('/work');
-  expect(await page.locator('.work-card').count()).toBeGreaterThan(4);
+  await expect(page.locator('.page-content .work-card')).toHaveCount(6);
+  for (const filter of await page.locator('.work-filters button').all()) await expect(filter).toBeDisabled();
+  const other = page.locator('.work-noscript details');
+  await expect(other.locator('summary')).toContainText('Other work');
+  await other.locator('summary').click();
+  await expect(other.locator('.work-card')).toHaveCount(2);
+  for (const slug of ['wireless-charging-anpr', 'semantics-ir-system']) {
+    await expect(other.locator(`a.text-link[href="/work/${slug}"]`)).toBeVisible();
+  }
+  await expect(other.getByRole('link', { name: 'Image Segmentation', exact: false })).toHaveAttribute('href', 'https://github.com/ctrl-infinity/custom_image_segmentation');
   await page.goto('/work/code-review-agent');
   await page.locator('.stage-details summary').first().click();
   await expect(page.locator('.stage-details details').first()).toHaveAttribute('open', '');
@@ -306,6 +367,8 @@ test('editorial cards have paper depth, hover lighting, and keyboard feedback', 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/work');
+  await page.getByRole('button', { name: 'All work', exact: true }).click();
+  await page.locator('.earlier-work summary').click();
   const cards = page.locator('.work-card');
   await expect(cards).toHaveCount(8);
   for (const card of await cards.all()) {
@@ -332,7 +395,9 @@ test('editorial cards have paper depth, hover lighting, and keyboard feedback', 
   await expect.poll(() => card.evaluate((element) => getComputedStyle(element, '::after').opacity)).toBe('1');
   await save('cards-hover');
   await page.mouse.move(0, 0);
-  await card.locator('a.text-link').focus();
+  await card.locator('.project-title a').focus();
+  await page.keyboard.press('Tab');
+  await expect(card.locator('a.text-link')).toBeFocused();
   await expect(card).toHaveCSS('border-top-color', 'rgb(75, 85, 99)');
   await expect(card.locator('a.text-link')).toHaveCSS('outline-style', 'solid');
   await page.emulateMedia({ reducedMotion: 'reduce' });

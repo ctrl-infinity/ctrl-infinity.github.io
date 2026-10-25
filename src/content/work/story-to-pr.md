@@ -9,7 +9,7 @@ status: "built"
 role: "Software Engineer"
 category: "professional"
 tags: ["AI agents", "Developer tooling", "Workflow automation"]
-order: 2
+order: 6
 problem: "Small, well-refined implementation tasks still consume developer attention. I wanted to make that repetitive work easier without treating every engineering problem as an automation candidate."
 ---
 
