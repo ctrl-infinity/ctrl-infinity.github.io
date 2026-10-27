@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
-    "test": "node --experimental-strip-types --test tests/dispatch.test.ts",
+    "test": "node --experimental-strip-types --test tests/dispatch.test.ts tests/work.test.ts tests/resume.test.mjs",
     "test:e2e": "playwright test",
     "validate-resume": "node scripts/validate-resume.js",
     "preview": "astro preview",
@@ -30,8 +30,10 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.0.0",
+    "lighthouse": "^12.8.2",
     "typescript": "~5.9.3"
   },
   "allowScripts": {

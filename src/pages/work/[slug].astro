@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import ReviewSystem from '../../components/work/ReviewSystem.astro';
 import { ProjectVisual } from '../../components/work/ProjectVisual';
+import { formatWorkStatus } from '../../lib/work';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -15,7 +16,7 @@ export async function getStaticPaths() {
 interface Props { entry: CollectionEntry<'work'>; }
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
-const { title, description, summary, contribution, visual, status, role, client, duration, tags, metrics, facts, problem, outcome } = entry.data;
+const { title, description, summary, contribution, evidence, visual, status, role, client, duration, tags, metrics, facts, problem, outcome } = entry.data;
 const isReview = entry.id === 'code-review-agent';
 ---
 
@@ -33,8 +34,7 @@ const isReview = entry.id === 'code-review-agent';
       <div class="metadata mt-5">
         {isReview && <span>{title}</span>}
         {client && <span>{client}</span>}
-        {duration && <span>{duration}</span>}
-        {status && <span>{status === 'production' ? 'In production' : status === 'built' ? 'Built for the team' : 'Experiment'}</span>}
+        {status ? <span>{formatWorkStatus(status, duration)}</span> : duration && <span>{duration}</span>}
       </div>
     </header>
 
@@ -45,6 +45,7 @@ const isReview = entry.id === 'code-review-agent';
         <dl>
           <div><dt>My scope</dt><dd>{contribution ?? role}</dd></div>
           {outcome && <div><dt>The useful change</dt><dd>{outcome}</dd></div>}
+          {evidence && <div><dt>Current scope</dt><dd>{evidence}</dd></div>}
           <div><dt>Built with</dt><dd>{tags.join(' / ')}</dd></div>
         </dl>
       </div>
@@ -76,6 +77,6 @@ const isReview = entry.id === 'code-review-agent';
         <dl class="results-list">{metrics.map((metric) => <div><dt>{metric.label}</dt><dd>{metric.value}</dd></div>)}</dl>
       </section>
     )}
-    <div class="section-rule text-links"><a href="/work">Explore more work &rarr;</a><a href="/playground">Try a small experiment &rarr;</a></div>
+    <div class="section-rule text-links"><a href="/work">Explore more work &rarr;</a><a href="/playground">See how I explain a system &rarr;</a></div>
   </article>
 </Layout>

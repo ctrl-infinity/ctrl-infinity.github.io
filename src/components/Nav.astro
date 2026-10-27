@@ -2,8 +2,8 @@
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/work', label: 'Work' },
-  { href: '/playground', label: 'Playground' },
   { href: '/resume', label: 'Resume' },
+  { href: '/playground', label: 'Playground' },
 ];
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => currentPath === href || (href !== '/' && currentPath.startsWith(`${href}/`));

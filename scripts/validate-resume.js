@@ -41,9 +41,9 @@ try {
     logError('basics section is missing.');
     hasErrors = true;
   } else {
-    const requiredBasics = ['name', 'email', 'summary'];
+    const requiredBasics = ['name', 'email', 'summary', 'label', 'opportunities'];
     requiredBasics.forEach(field => {
-      if (!data.basics[field] || typeof data.basics[field] !== 'string') {
+      if (typeof data.basics[field] !== 'string' || !data.basics[field].trim()) {
         logError(`basics.${field} must be a non-empty string.`);
         hasErrors = true;
       }
@@ -103,6 +103,12 @@ try {
       }
       if (!proj.description || typeof proj.description !== 'string') {
         logError(`projects[${i}].description must be a non-empty string.`);
+        hasErrors = true;
+      }
+      if (typeof proj.url !== 'string' || proj.url !== proj.url.trim() ||
+          !/^https:\/\/[^/\\\s?#]+(?:[/?#]|$)/i.test(proj.url) ||
+          !URL.canParse(proj.url) || new URL(proj.url).protocol !== 'https:') {
+        logError(`projects[${i}].url must be an absolute HTTPS URL.`);
         hasErrors = true;
       }
     });

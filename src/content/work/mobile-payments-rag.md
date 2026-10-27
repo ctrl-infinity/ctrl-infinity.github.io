@@ -11,7 +11,7 @@ category: "professional"
 tags: ["Python", "RAG", "Azure ML SDK", "Prompt Flow", "Docker", "Kubernetes", "API Load Balancing"]
 client: "Tiger Analytics / Mobile Payments Enterprise"
 duration: "2024"
-order: 4
+order: 3
 metrics:
   - label: "Retrieval Accuracy"
     value: "+20%"

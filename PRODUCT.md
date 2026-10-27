@@ -12,26 +12,26 @@ Primarily recruiters and hiring managers evaluating Vinayak for a role — skimm
 
 ## Product Purpose
 
-A personal developer portfolio whose primary goal is landing a job or role. It exists to convince a hiring manager, within seconds, that Vinayak ships real production work and owns problems end-to-end — while doubling as an honest, current log of what he's building. Success looks like a recruiter or hiring manager reaching out convinced, not just impressed.
+A personal developer portfolio whose primary goal is landing an AI engineering role. Within seconds, a hiring manager should understand Vinayak's work, its actual maturity, and his contribution. Success looks like an informed recruiter reaching out, not merely an impressed visitor.
 
 ## Positioning
 
-Judge me by what's live right now. This isn't a static resume dressed up as a website — `/now` and `/playground` prove an actively building engineer, not a portfolio that stopped updating the day it shipped.
-
-**I build AI tools that help people.** A self-directed engineer who spots useful
+**I build AI agents for real team workflows.** A self-directed engineer who spots useful
 opportunities, learns what is needed, and takes ownership of an end-to-end result.
 Show the connection between user needs, technical decisions, collaboration, and
-delivery; do not advertise an aspirational title or self-rated aptitude.
+delivery. AI Engineer is the professional identity; actual employment titles
+remain unchanged. State active team use, UAT, and production distinctly.
+Mobility stays broad: open to roles in India and internationally.
 
 The agreed page-by-page narrative, visual evidence strategy, and content
 boundaries are recorded in [the portfolio design brief](docs/portfolio-design.md).
 
 ## Operating Context
 
-- **Primary CTA:** Email / Get in touch.
-- **Secondary Path:** "See what I've built → `/work`".
+- **Primary Home CTA:** See the work -> `/work`.
+- **Contact path:** Get in touch, with email in the Hero and shared footer.
 - **Belief Ladder:**
-  1. This is real, shipped production work, not toy demos or vague claims.
+  1. The selected work has concrete evidence, honest maturity, and clear ownership.
   2. Beyond writing code, Vinayak takes end-to-end ownership, thinking in terms of the whole problem rather than his assigned slice.
   3. He is building right now, not just listing past credentials.
   4. Reaching out is worth a hiring manager's time.
@@ -39,7 +39,8 @@ boundaries are recorded in [the portfolio design brief](docs/portfolio-design.md
 ## Capabilities and Constraints
 
 - Unified `src/content/work/` collection rendered on `/work` with category filtering (professional / side-project / open-source).
-- Key site sections include `/work`, `/now`, `/playground`, and `/about`.
+- Navigation is Home, Work, Resume, Playground. Home includes About and Currently;
+  `/about` and `/now` remain compatible entry points.
 - Technical stack: Astro (no generic SaaS / AI aesthetic).
 - **Anti-references:** Consultant sales-deck framing (stats-grid "engineer spec" sections, "Book a call" CTAs, service tiers), purple gradients, glassmorphism as decoration, hero-metric templates, stiff formal resume PDF energy.
 
@@ -50,9 +51,18 @@ boundaries are recorded in [the portfolio design brief](docs/portfolio-design.md
 
 ## Evidence on Hand
 
+- Confirmed on 25 October 2026: the self-initiated code reviewer has been in
+  active team use since July 2026, reviewing approximately 30-40 PRs/month
+  across 5-6 repositories. These are coverage figures, not measured savings.
+- The orchestration platform has been in UAT since March 2026, with five
+  agents onboarded. It is not a launched production service.
+- These facts supersede earlier organization-wide and production assertions;
+  the approved evidence-first update is specified in
+  [the positioning design](docs/superpowers/specs/2026-10-25-portfolio-positioning-design.md).
+
 - Case studies and project write-ups in `src/content/work/`.
-- A person-first Home merges About and a compact Currently notebook. Navigation
-  is Home, Work, Playground, Resume; old About/Now links remain compatible.
+- Home introduces Vinayak, then the reviewer and orchestrator, a compact RAG
+  result, working principles, Currently, and Beyond code.
 - Active building proof via the homepage Currently section and `/playground`.
 - Vinayak confirmed an interactive developer experience for the review agent and
   a story-to-PR workflow for trivial, refined user stories. The latter's exact
@@ -63,10 +73,10 @@ boundaries are recorded in [the portfolio design brief](docs/portfolio-design.md
 
 ## Product Principles
 
-1. **Show, don't pitch:** `/now` and `/playground` demonstrate ongoing activity in real time rather than asserting it in prose.
+1. **Show, don't pitch:** dated current notes and labeled explanatory experiments support concrete project evidence; neither implies a live telemetry feed.
 2. **Ownership over task-listing:** Content foregrounds end-to-end thinking rather than a stacked list of responsibilities.
 3. **Practice what you preach:** The site itself reads as fast, honest, and unglossy — the same ship-quality claimed for its author.
-4. **Focused call to action:** Email is the primary ask, `/work` is the main supporting path.
+4. **Focused call to action:** Work is the primary Home path; email remains easy to find.
 5. **Human voice:** Reads like Vinayak speaking directly to the visitor.
 
 ## Accessibility & Inclusion

@@ -3,9 +3,43 @@ import { mkdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import resumeData from '../../src/content/resume.json' with { type: 'json' };
 
-const routes = ['/', '/work', '/work/code-review-agent', '/playground', '/resume', '/playground/dispatch-lab'];
+const routes = ['/', '/work', '/work/code-review-agent', '/work/multi-agent-orchestration-platform', '/playground', '/resume', '/playground/dispatch-lab'];
 
-for (const width of [320, 390, 768, 1440]) {
+test('project truth is consistent across work and current notes', async ({ page }) => {
+  await page.goto('/work/code-review-agent');
+  await expect(page.locator('.case-heading')).toContainText('Active team use since July 2026');
+  await expect(page.locator('.case-scope')).toContainText('Approximately 30-40 PRs/month across 5-6 repositories.');
+  await expect(page.locator('main')).not.toContainText(/org-wide|across all|2024/);
+  await expect(page.locator('meta[name="description"]')).not.toHaveAttribute('content', /org-wide|across all|2024/);
+
+  await page.goto('/work/multi-agent-orchestration-platform');
+  await expect(page.locator('.case-heading')).toContainText('In UAT since March 2026');
+  await expect(page.locator('.case-scope')).toContainText('Five agents onboarded.');
+  await expect(page.locator('.case-scope')).toContainText('DevOps leadership; contributions to');
+  await expect(page.locator('main')).not.toContainText(/production multi-agent|live entry point|In production/);
+  await expect(page.locator('.case-writing')).toContainText('user acceptance testing');
+
+  await page.goto('/');
+  const reviewer = page.locator('#currently details').filter({ hasText: 'Code Review Agent for Azure DevOps' });
+  const orchestrator = page.locator('#currently details').filter({ hasText: 'Multi-Agent Orchestration Platform' });
+  await reviewer.locator('summary').click();
+  await orchestrator.locator('summary').click();
+  await expect(reviewer).toContainText('Active team use since July 2026');
+  await expect(orchestrator).toContainText('In UAT since March 2026');
+  await expect(orchestrator).not.toContainText('Building & operating');
+  await expect(reviewer.locator('time')).toHaveAttribute('datetime', '2026-10-25');
+  await expect(reviewer.locator('time')).toHaveText('Reviewed Oct 2026');
+
+  await page.goto('/resume');
+  const simcorp = page.locator('#resume-experience article').filter({ hasText: 'SimCorp' });
+  await expect(simcorp).toContainText('July 2026');
+  await expect(simcorp).toContainText('March 2026');
+  await expect(simcorp).toContainText('30-40');
+  await expect(simcorp).toContainText('5-6');
+  await expect(simcorp).not.toContainText(/across all|production multi-agent/);
+});
+
+for (const width of [320, 375, 390, 768, 1024, 1440]) {
   test(`routes and layout at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     const errors: string[] = [];
@@ -16,7 +50,7 @@ for (const width of [320, 390, 768, 1440]) {
       await expect(page.locator('main h1')).toHaveCount(1);
       await page.evaluate(() => document.fonts.ready);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), route).toBe(true);
-      if (process.env.SCREENSHOT_DIR && [390, 1440].includes(width)) {
+      if (process.env.SCREENSHOT_DIR && [390, 768, 1440].includes(width)) {
         await mkdir(process.env.SCREENSHOT_DIR, { recursive: true });
         await page.screenshot({
           path: join(process.env.SCREENSHOT_DIR, `${route.replaceAll('/', '-') || 'home'}-${width}.png`),
@@ -32,18 +66,114 @@ for (const width of [320, 390, 768, 1440]) {
 test('gallery filters and every case study stay reachable', async ({ page }) => {
   await page.goto('/work');
   const cards = page.locator('.work-card');
-  const all = await cards.count();
-  expect(all).toBeGreaterThan(4);
-  const links = await cards.locator('a.text-link[href^="/work/"]').evaluateAll((elements) => elements.map((element) => element.getAttribute('href')!));
-  expect(links).toHaveLength(all);
-  await page.getByRole('button', { name: 'Professional', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Professional', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  expect(await cards.count()).toBeLessThan(all);
+  await expect(cards).toHaveCount(6);
+  await expect(page.getByRole('status')).toHaveText('6 projects');
+  expect(await page.locator('.work-featured .project-title').allTextContents()).toEqual([
+    'Code Review Agent for Azure DevOps', 'Multi-Agent Orchestration Platform',
+  ]);
+  await expect(page.locator('.work-remaining .work-card').first()).toContainText('20% better retrieval accuracy and 60% lower latency');
+  await expect(page.locator('.work-remaining')).toContainText('Story-to-PR');
+  await expect(page.locator('.page-content .earlier-work')).toHaveCount(0);
   await page.getByRole('button', { name: 'All work', exact: true }).click();
-  await expect(cards).toHaveCount(all);
+  await expect(page.getByRole('status')).toHaveText('8 projects');
+  await expect(cards).toHaveCount(8);
+  const earlier = page.locator('.page-content .earlier-work');
+  await expect(earlier.locator('summary')).toHaveText('Earlier / academic (2)');
+  await expect(earlier).not.toHaveAttribute('open');
+  await earlier.locator('summary').focus();
+  await page.keyboard.press('Enter');
+  await expect(earlier).toHaveAttribute('open', '');
+  await expect(earlier.locator('.work-card')).toHaveCount(2);
+  await expect(earlier.getByRole('link', { name: 'Image Segmentation', exact: false })).toHaveAttribute('href', 'https://github.com/ctrl-infinity/custom_image_segmentation');
+  const links = await cards.locator('a.text-link[href^="/work/"]').evaluateAll((elements) => elements.map((element) => element.getAttribute('href')!));
+  expect(links).toHaveLength(8);
+  for (const category of ['Side projects', 'Open source']) {
+    const filter = page.getByRole('button', { name: category, exact: true });
+    await filter.click();
+    await expect(filter).toBeFocused();
+    await expect(page.getByRole('status')).toHaveText('1 project');
+    await expect(earlier).not.toHaveAttribute('open');
+    await expect(earlier.locator('.work-card')).toHaveCount(1);
+    await expect(page.locator('.page-content a[href*="custom_image_segmentation"]')).toHaveCount(0);
+    await earlier.locator('summary').click();
+  }
+  await page.getByRole('button', { name: 'All work', exact: true }).click();
+  await expect(earlier).not.toHaveAttribute('open');
   for (const href of links) {
     expect((await page.goto(href))?.status(), href).toBe(200);
     await expect(page.locator('main h1')).toHaveCount(1);
+  }
+});
+
+test('gallery hydration preserves the professional server-rendered view', async ({ browser }) => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  let release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/*', async route => {
+    if (route.request().resourceType() === 'script') await gate;
+    await route.continue();
+  });
+  try {
+    await page.goto('/work', { waitUntil: 'commit' });
+    await expect(page.locator('.work-card')).toHaveCount(6);
+    const professional = page.getByRole('button', { name: 'Professional', exact: true });
+    await expect(professional).toHaveAttribute('aria-pressed', 'true');
+    await expect(professional).toBeDisabled();
+    await expect(page.locator('.work-featured .work-card')).toHaveCount(2);
+    const fallback = page.locator('.work-fallback');
+    await fallback.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    const earlierLink = fallback.locator('a[href="/work/wireless-charging-anpr"]');
+    await expect(earlierLink).toBeVisible();
+    await expect(fallback.locator('a[href="/work/semantics-ir-system"]')).toBeVisible();
+    await expect(fallback.getByRole('link', { name: 'Image Segmentation', exact: false })).toBeVisible();
+    await earlierLink.focus();
+    release();
+    await expect(professional).toBeEnabled();
+    await expect(page.locator('.work-card')).toHaveCount(6);
+    await expect(earlierLink).toBeFocused();
+    await expect(earlierLink).toBeVisible();
+    await fallback.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('Tab');
+    await expect(fallback).toBeHidden();
+    await expect(page.getByRole('link', { name: 'Get in touch', exact: false })).toBeFocused();
+    await page.getByRole('button', { name: 'All work', exact: true }).click();
+    await expect(page.getByRole('status')).toHaveText('8 projects');
+  } finally {
+    release();
+    await context.close();
+  }
+});
+
+test('earlier work stays reachable when JavaScript requests fail', async ({ page }) => {
+  await page.route('**/*', async route => {
+    if (route.request().resourceType() === 'script') await route.abort('failed');
+    else await route.continue();
+  });
+  await page.goto('/work');
+  await expect(page.getByRole('button', { name: 'Professional', exact: true })).toBeDisabled();
+  const fallback = page.locator('.work-fallback');
+  await fallback.locator('summary').click();
+  for (const slug of ['wireless-charging-anpr', 'semantics-ir-system']) {
+    await expect(fallback.locator(`a[href="/work/${slug}"]`)).toBeVisible();
+  }
+  await fallback.locator('a[href="/work/semantics-ir-system"]').click();
+  await expect(page).toHaveURL(/\/work\/semantics-ir-system$/);
+  await expect(page.locator('main h1')).toBeVisible();
+});
+
+test('compact Work cards do not stretch to fill illustration rows', async ({ page }) => {
+  await page.goto('/work');
+  await expect(page.getByRole('button', { name: 'Professional', exact: true })).toBeEnabled();
+  const cards = page.locator('.work-remaining .work-card').filter({ hasNot: page.locator('.project-visual') });
+  await expect(cards).toHaveCount(2);
+  for (const card of await cards.all()) {
+    const technologies = await card.locator('[aria-label="Technologies"]').boundingBox();
+    const link = await card.locator('a.text-link').boundingBox();
+    expect(link!.y - technologies!.y - technologies!.height).toBeLessThanOrEqual(32);
   }
 });
 
@@ -122,6 +252,27 @@ test('mobile menu and reduced motion', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Open menu' })).toBeFocused();
 });
 
+test('keyboard focus keeps its full outline inside the mobile viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.evaluate(() => document.fonts.ready);
+  const title = page.locator('.selected-work article .project-title a').last();
+  const link = page.locator('.selected-work article a.text-link').last();
+  for (let step = 0; step < 20 && !(await title.evaluate(element => element === document.activeElement)); step++) {
+    await page.keyboard.press('Tab');
+  }
+  await expect(title).toBeFocused();
+  // Put the next target at the viewport edge, independent of card copy length.
+  await link.evaluate(element => scrollTo(0, scrollY + element.getBoundingClientRect().bottom - innerHeight));
+  await page.keyboard.press('Tab');
+  await expect(link).toBeFocused();
+  await expect(link).toHaveCSS('outline-style', 'solid');
+  const box = await link.boundingBox();
+  expect(box!.y).toBeGreaterThanOrEqual(7);
+  expect(box!.y + box!.height + 7).toBeLessThanOrEqual(844);
+});
+
 test('content and native disclosures remain usable without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
@@ -130,7 +281,16 @@ test('content and native disclosures remain usable without JavaScript', async ({
   await expect(page.getByLabel('Primary agent')).toBeDisabled();
   await expect(page.getByText('Static example.', { exact: false })).toBeVisible();
   await page.goto('/work');
-  expect(await page.locator('.work-card').count()).toBeGreaterThan(4);
+  await expect(page.locator('.page-content .work-card')).toHaveCount(6);
+  for (const filter of await page.locator('.work-filters button').all()) await expect(filter).toBeDisabled();
+  const other = page.locator('.work-fallback details');
+  await expect(other.locator('summary')).toContainText('Other work');
+  await other.locator('summary').click();
+  await expect(other.locator('a[href^="/work/"]')).toHaveCount(2);
+  for (const slug of ['wireless-charging-anpr', 'semantics-ir-system']) {
+    await expect(other.locator(`a.text-link[href="/work/${slug}"]`)).toBeVisible();
+  }
+  await expect(other.getByRole('link', { name: 'Image Segmentation', exact: false })).toHaveAttribute('href', 'https://github.com/ctrl-infinity/custom_image_segmentation');
   await page.goto('/work/code-review-agent');
   await page.locator('.stage-details summary').first().click();
   await expect(page.locator('.stage-details details').first()).toHaveAttribute('open', '');
@@ -142,6 +302,10 @@ test('content and native disclosures remain usable without JavaScript', async ({
 
 test('resume preserves source content and downloads the existing PDF', async ({ page }) => {
   await page.goto('/resume');
+  await expect(page.locator('.resume-overview')).toContainText('AI Engineer');
+  await expect(page.locator('.resume-overview')).toContainText(resumeData.basics.opportunities);
+  await expect(page.locator('main')).not.toContainText('GPA');
+  await expect(page.locator('#projects-title')).toHaveText('Selected professional work');
   await expect(page.locator('#resume-experience article')).toHaveCount(resumeData.experience.length);
   await expect(page.locator('#resume-projects article')).toHaveCount(resumeData.projects.length);
   await expect(page.locator('#resume-education article')).toHaveCount(resumeData.education.length);
@@ -157,7 +321,7 @@ test('resume preserves source content and downloads the existing PDF', async ({ 
     const article = page.locator('#resume-projects article').filter({ has: page.getByRole('heading', { name: project.title, exact: true }) });
     await expect(article).toContainText(plain(project.description));
     for (const technology of project.technologies) await expect(article).toContainText(technology);
-    if (project.github) await expect(article.getByRole('link')).toHaveAttribute('href', project.github);
+    await expect(article.getByRole('link')).toHaveAttribute('href', project.url);
   }
   for (const group of resumeData.skills) {
     const row = page.locator('.resume-skills > div').filter({ hasText: group.category });
@@ -165,8 +329,13 @@ test('resume preserves source content and downloads the existing PDF', async ({ 
   }
   for (const education of resumeData.education) {
     const article = page.locator('#resume-education article').filter({ hasText: education.school });
-    for (const text of Object.values(education)) await expect(article).toContainText(text);
+    for (const [key, text] of Object.entries(education)) {
+      if (key !== 'gpa') await expect(article).toContainText(text);
+    }
   }
+  await page.getByRole('navigation', { name: 'Resume sections' }).getByRole('link', { name: 'Selected professional work' }).click();
+  await expect(page).toHaveURL(/#resume-projects$/);
+  await expect(page.locator('#projects-title')).toBeInViewport();
   await page.getByRole('navigation', { name: 'Resume sections' }).getByRole('link', { name: 'Education' }).click();
   await expect(page).toHaveURL(/#resume-education$/);
   await expect(page.locator('#education-title')).toBeInViewport();
@@ -196,22 +365,45 @@ test('main page headings and shells share the same design tokens', async ({ page
   for (const measurement of measurements) expect(measurement).toEqual(measurements[0]);
 });
 
-test('homepage introduces Vinayak before its two compact project previews', async ({ page }) => {
+test('homepage leads with evidence and keeps the person', async ({ page }) => {
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Vinayak');
+    await expect(page.locator('.hero-statement')).toHaveText('I build AI agents for real team workflows.');
+    await expect(page.locator('.hero-role')).toHaveText('AI Engineer');
+    await expect(page.locator('.hero-role')).toBeInViewport();
+    await expect(page.locator('.hero-statement')).toBeInViewport({ ratio: 1 });
+    await expect(page.locator('.home-hero')).toContainText('Open to roles in India and internationally.');
+    await expect(page.locator('.home-hero')).toContainText('Senior Software Engineer');
+    await expect(page.locator('.home-hero a.button')).toHaveAttribute('href', '/work');
+    await expect(page.locator('.home-hero a.button')).toHaveText('See the work');
     await expect(page.locator('#about')).toContainText('10 teams');
     await expect(page.locator('.selected-work article')).toHaveCount(2);
     await expect(page.locator('.selected-work .project-visual')).toHaveCount(0);
-    const preview = await page.locator('.selected-work article').first().boundingBox();
-    expect(preview!.y).toBeGreaterThanOrEqual(viewport.height);
     const sections = await page.locator('#about, #selected-work, #currently, #beyond-code').evaluateAll((elements) => elements.map((element) => element.id));
-    expect(sections).toEqual(['about', 'selected-work', 'currently', 'beyond-code']);
+    expect(sections).toEqual(['selected-work', 'about', 'currently', 'beyond-code']);
     const selectedLinks = page.locator('.selected-work article a.text-link');
     await expect(selectedLinks.nth(0)).toHaveAttribute('href', '/work/code-review-agent');
-    await expect(selectedLinks.nth(1)).toHaveAttribute('href', '/work/story-to-pr');
+    await expect(selectedLinks.nth(1)).toHaveAttribute('href', '/work/multi-agent-orchestration-platform');
+    await expect(page.locator('.selected-work article').nth(0)).toContainText('Active team use since July 2026');
+    await expect(page.locator('.selected-work article').nth(0)).toContainText('Approximately 30-40 PRs/month across 5-6 repositories.');
+    await expect(page.locator('.selected-work article').nth(0)).toContainText('Agent design, project-wide integration, and delivery.');
+    await expect(page.locator('.selected-work article').nth(1)).toContainText('In UAT since March 2026');
+    await expect(page.locator('.selected-work article').nth(1)).toContainText('Five agents onboarded.');
+    await expect(page.locator('.selected-work article').nth(1)).toContainText('DevOps leadership; contributions to');
+    await expect(page.locator('.selected-work-supporting a')).toHaveAttribute('href', '/work/mobile-payments-rag');
+    await expect(page.locator('.selected-work-supporting')).toContainText('20%');
+    await expect(page.locator('.selected-work-supporting')).toContainText('60%');
+    await expect(page.locator('.selected-work-supporting')).toContainText(/reported/i);
   }
+});
+
+test('playground explains without claiming a live model', async ({ page }) => {
+  await page.goto('/playground');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('How I explain a system');
+  await expect(page.locator('main')).toContainText(/browser/i);
+  await expect(page.locator('main')).toContainText('No AI model, API calls, or production telemetry.');
 });
 
 test('four-page navigation matches on desktop and mobile with correct active states', async ({ page }) => {
@@ -221,7 +413,7 @@ test('four-page navigation matches on desktop and mobile with correct active sta
       await page.goto(route);
       if (width === 390) await page.getByRole('button', { name: 'Open menu' }).click();
       const links = page.locator('#site-nav [data-page-link]:visible');
-      expect(await links.allTextContents()).toEqual(['Home', 'Work', 'Playground', 'Resume']);
+      expect(await links.allTextContents()).toEqual(['Home', 'Work', 'Resume', 'Playground']);
       const current = page.locator('#site-nav [data-page-link][aria-current="page"]:visible');
       await expect(current).toHaveCount(1);
       await expect(current).toHaveAttribute('href', route.startsWith('/work') ? '/work' : route);
@@ -239,10 +431,10 @@ test('old About and Now routes lead to accessible homepage sections', async ({ b
   }
   const entries = page.locator('#currently details');
   await expect(entries).toHaveCount(2);
-  await expect(page.locator('#currently time').first()).toHaveAttribute('datetime', '2026-09-27');
+  await expect(page.locator('#currently time').first()).toHaveAttribute('datetime', '2026-10-25');
   await entries.first().locator('summary').click();
   await expect(entries.first()).toHaveAttribute('open', '');
-  await expect(entries.first()).toContainText('Operating and extending');
+  await expect(entries.first()).toContainText('Maintaining the internal AI reviewer');
   await expect(entries.first().getByRole('link')).toHaveAttribute('href', '/work/code-review-agent');
   await context.close();
 });
@@ -251,6 +443,8 @@ test('editorial cards have paper depth, hover lighting, and keyboard feedback', 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/work');
+  await page.getByRole('button', { name: 'All work', exact: true }).click();
+  await page.locator('.page-content .earlier-work summary').click();
   const cards = page.locator('.work-card');
   await expect(cards).toHaveCount(8);
   for (const card of await cards.all()) {
@@ -277,7 +471,9 @@ test('editorial cards have paper depth, hover lighting, and keyboard feedback', 
   await expect.poll(() => card.evaluate((element) => getComputedStyle(element, '::after').opacity)).toBe('1');
   await save('cards-hover');
   await page.mouse.move(0, 0);
-  await card.locator('a.text-link').focus();
+  await card.locator('.project-title a').focus();
+  await page.keyboard.press('Tab');
+  await expect(card.locator('a.text-link')).toBeFocused();
   await expect(card).toHaveCSS('border-top-color', 'rgb(75, 85, 99)');
   await expect(card.locator('a.text-link')).toHaveCSS('outline-style', 'solid');
   await page.emulateMedia({ reducedMotion: 'reduce' });

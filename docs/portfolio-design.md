@@ -1,8 +1,9 @@
 # Portfolio direction: initiative, made useful
 
-Agreed with Vinayak on 27 September 2026. This is the implementation brief for the
-Paper exploration and the subsequent discussion; it is not a claim that every
-illustrated interaction is a production screenshot.
+Notebook identity agreed with Vinayak on 27 September 2026; evidence-first
+positioning updated on 25 October 2026. The approved
+[positioning design](superpowers/specs/2026-10-25-portfolio-positioning-design.md)
+governs this update. Illustrations are not production screenshots.
 
 ## The impression to earn
 
@@ -13,11 +14,10 @@ is needed, and owns the path from idea to a working solution. Show a growing
 ability to connect user needs, technical choices, team workflows, and operational
 concerns without advertising an aspirational job title.
 
-The narrative thread is **I build AI tools that help people.** Following the
-approved person-first consolidation, the homepage leads with Vinayak's identity
-and approach rather than treating that project-oriented statement as its required
-headline. The professional title remains Senior Software Engineer (MLOps), not
-an invented title.
+The narrative thread is **I build AI agents for real team workflows.**
+AI Engineer is the professional identity. The actual SimCorp employment title,
+Senior Software Engineer - MLOps, remains a separate fact. Introduce the person,
+show the evidence, then explain the approach.
 
 | Trait | Evidence and expression |
 | --- | --- |
@@ -26,7 +26,7 @@ an invented title.
 | Ownership beyond role boundaries | Make contributions to implementation, integration, infrastructure, and delivery explicit. |
 | User focus | Lead with developer friction and the useful change, not a list of frameworks. |
 | Reasoning and aptitude | Expose constraints, decisions, tradeoffs, and failure paths. Avoid self-rated intelligence claims. |
-| AI engineering | Feature the interactive review agent, story-to-PR workflow, and orchestration platform. |
+| AI engineering | Feature the reviewer and orchestration platform, with RAG as supporting evidence. |
 | Collaboration | Show developer dialogue and describe helping teammates find a path forward. |
 | Resourcefulness | Demonstrate small, well-scoped automation that leaves people time for higher-value work. |
 
@@ -57,7 +57,7 @@ and reduced-motion preferences.
 
 ### Navigation and consolidation
 
-Approved on 27 September: **Home -> Work -> Playground -> Resume**. Use this
+Approved on 25 October: **Home -> Work -> Resume -> Playground**. Use this
 order in both desktop and mobile navigation. Home absorbs About and a compact
 Now section; it is not a concatenation of the three existing pages.
 
@@ -66,20 +66,20 @@ Update internal links to the new homepage anchors. Preserve incoming `/about`
 and `/now` URLs by forwarding them to `/#about` and `/#currently`, respectively,
 including a usable link for visitors who do not follow an automatic redirect.
 
-### Home: meet the person before inspecting the work
+### Home: introduce, show evidence, explain the approach
 
 The approved section order is:
 
-1. **Meet Vinayak:** name, actual role, and a concise personal introduction,
-   with contact and a secondary Work link. No project artifact, diagram, or
-   project card in the first screen at the reference desktop/mobile sizes.
-2. **How I think and work** (`#about`): combine the strongest Home/About
+1. **Meet Vinayak:** name, AI Engineer identity, actual role, and a concise
+   introduction. "See the work" is primary; email remains available. Include
+   "Noida, India. Open to roles in India and internationally."
+2. **Selected work:** two compact editorial cards for the reviewer and
+   orchestrator, with canonical maturity, usage scope, summaries and case links.
+   Follow with a compact RAG link and its qualified reported outcome.
+   No embedded dialogue, architecture diagram, full case study, or metric grid.
+3. **How I think and work** (`#about`): combine the strongest Home/About
    material about curiosity, ownership, reasoning, and collaboration without
    repeated introductions. Retain the factual AI CoE / 10+ teams example.
-3. **Selected work:** two compact editorial cards for the review agent and
-   story-to-PR workflow, each with a short summary and real case-study link.
-   No embedded dialogue, architecture diagram, full case study, or metric grid.
-   Link to the complete Work gallery for the orchestration project and others.
 4. **Currently** (`#currently`): a small dated section sourced from the existing
    Now collection, linking to the relevant work. Retain honest status/date
    semantics and keep the longer notes accessible through native disclosures
@@ -88,12 +88,27 @@ The approved section order is:
    contact footer.
 
 Preserve the newspaper-card material and typography system. The first screen
-must communicate identity and approach; project evidence supports the
-introduction further down rather than dominating it.
+must communicate identity. Evidence follows immediately, ahead of principles;
+there is no requirement to keep cards below a full viewport. Keep the old
+"Curious by default. Useful by intention." tagline in the Home page title.
 
 ### Work: a gallery of useful systems
 
 - Preserve professional / side-project / open-source filtering.
+- Professional is the initial server-rendered and hydrated selection (six
+  projects). All work includes eight collection entries, including the two in
+  the closed "Earlier / academic" disclosure. Keep all four filters even for
+  an empty collection; enable them only after hydration.
+- Feature reviewer and orchestrator; follow with compact RAG, Git LLMOps, FMCG
+  and Story-to-PR. Keep existing illustrations and display qualified outcomes
+  separately from contribution and usage scope.
+- Retain wireless/ANPR and semantic IR under their original categories in the
+  earlier disclosure. Category changes collapse it without moving filter focus.
+- Keep Image Segmentation as an ancillary GitHub link in All work, not a new
+  collection entry or part of the count. A server-rendered "Other work" disclosure
+  outside React links to both nonprofessional projects and that repository,
+  including when scripts fail or stall. Hide it only after hydration succeeds
+  and focus is outside it.
 - Preview the actual mechanism: review dialogue, story-to-PR sequence,
   independently connected agents, or retrieval stages.
 - Separate concise summaries and personal contribution from full descriptions.
@@ -136,7 +151,7 @@ intelligence, and delivery without a second skills list or fabricated timeline.
 - Handle an empty collection by omitting entry controls and displaying an honest
   "No current notes published" message at the retained `#currently` anchor.
 
-### Playground: learn by changing something
+### Playground: how I explain a system
 
 - Ship a small deterministic, browser-only experiment rather than placeholder
   cards or a fake live AI chat.
@@ -147,18 +162,31 @@ intelligence, and delivery without a second skills list or fabricated timeline.
 
 ### Resume: a utility surface
 
-Keep existing experience, education, downloadable PDF, and factual claims intact.
+Keep existing experience, education, the PDF URL, and confirmed factual claims.
 Shared navigation, typography, focus treatment, and contact details should remain
 consistent with the rest of the portfolio.
 
 The Resume page now uses the shared main-page heading, shell, and primary action,
 with editorial paper cards for experience, projects, and education. Keep dense
 reading cards stationary, metadata legible, and skills in a ruled list. All
-source content remains visible without JavaScript; native section links support
-quick navigation through the page.
+published content remains visible without JavaScript; native section links support
+quick navigation through the page. The identity is AI Engineer, with broad India/
+international mobility. Use the approved four skills groups and 21 entries.
+Replace academic resume projects with reviewer, orchestrator and RAG, preserving
+their truthful milestones, scope and reported-results qualifiers.
+Label `#resume-projects` "Selected professional work", and use absolute case-study
+URLs in both web and PDF. Do not display GPA. Regenerate the actual PDF locally
+or through authorized existing CI, then inspect all pages and links; the target
+is at most two legible A4 pages. Do not use an external compilation API.
 
 ## Truth and content boundaries
 
+- Confirmed on 25 October 2026: the reviewer is a self-initiated internal tool,
+  actively used since July 2026 for approximately 30-40 PRs/month across 5-6
+  repositories. Team feedback followed launch; no measured savings are claimed.
+- The orchestrator has been in UAT since March 2026 with five agents onboarded.
+  Production/staging environment architecture is not proof of a production
+  launch. Preserve DevOps ownership versus contributions to the wider system.
 - Existing Markdown and resume data are the source for project and contact facts.
 - The story-to-PR project is based on Vinayak's own description: an automatic
   workflow takes trivial, refined stories and raises PRs. Its exact stack,
@@ -187,6 +215,7 @@ publish or change the deployed site as part of this task.
 For the consolidation, also verify identical four-item navigation on desktop
 and mobile, Home active state, all old About/Now entry paths, working section
 anchors below the fixed header, and no-JavaScript access to the current notes.
-At 1440x900 and 390x844, the first viewport must introduce Vinayak with no project
-cards visible. The homepage contains exactly two compact selected-work cards.
+At 1440x900 and 390x844, the first viewport must introduce Vinayak, with the
+AI Engineer role and workflow statement visible. The homepage contains exactly
+two compact selected-work cards and one supporting RAG entry.
 Work, Playground, Resume, all case studies, and the PDF retain their behavior.

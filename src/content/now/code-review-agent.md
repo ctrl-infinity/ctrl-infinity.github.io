@@ -1,10 +1,9 @@
 ---
-title: "Autonomous Code Review Agent (Claude Code)"
-description: "Operating and extending the org-wide, webhook-triggered AI code reviewer for Azure DevOps — schema-constrained findings, least-privilege tool access, and idempotent PR comment reconciliation across every repo."
+title: "Code Review Agent for Azure DevOps"
+description: "Maintaining the internal AI reviewer I initiated to help with our team's review bottleneck. Teammates provided feedback after it went live, and I worked on the fixes."
 status: "active"
 tags: ["Claude Code", "Azure DevOps", "LLM Agents", "CI/CD"]
-startDate: "2024"
-updated: "2026-09-27"
+updated: "2026-10-25"
 link: "/work/code-review-agent"
 order: 1
 ---

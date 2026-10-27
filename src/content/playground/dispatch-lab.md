@@ -19,7 +19,7 @@ fallback, or make the failure explicit when none is available.
 ## What this deliberately leaves out
 
 There is no model, network request, real tenant, or backend. The example does not
-measure agent quality or reproduce the production platform's full retry,
+measure agent quality or reproduce the platform's full retry,
 discovery, and circuit-breaker behavior. It is a deterministic teaching model of
 a few boundaries.
 

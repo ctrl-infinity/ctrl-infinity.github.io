@@ -103,7 +103,7 @@ truth boundaries are in [the portfolio brief](docs/portfolio-design.md).
 
 **Key Characteristics:**
 - Monochrome paper and ink; blue identifies interaction.
-- Identity and approach first on Home; artifacts before technical depth in Work.
+- Identity, then evidence, then approach on Home; artifacts before technical depth in Work.
 - Sharp corners, thin rules, and subtly layered editorial cards.
 - Compact editorial rhythm and generous reading measures.
 - Actual project decisions, not adjective badges or invented metrics.
@@ -161,10 +161,10 @@ agent maps wrap their domain agents onto a second row. Below 400px, workflow
 steps stack rather than shrink. Case-study reading navigation becomes a wrapping
 link list on mobile instead of a sticky side rail.
 
-The homepage introduces Vinayak and his approach before two compact project
-previews. Dialogues and system diagrams live in Work, not on Home. Currently
-and Beyond code finish the personal narrative. Work's four visual projects
-lead the gallery, then text-led projects follow.
+The homepage introduces Vinayak as an AI Engineer, preserving the actual SimCorp
+title as a separate fact. Two compact previews lead with reviewer and orchestrator
+evidence, followed by a supporting RAG result. Working principles, Currently, and
+Beyond code follow. Dialogues and system diagrams live in Work, not on Home.
 
 **The Artifact Rule.** A visual must explain the mechanism or interaction. Never
 invent a screenshot just to fill a rectangle. Projects without a suitable visual
@@ -176,9 +176,10 @@ remain fully discoverable as concise text entries.
 
 Primary actions are sharp ink rectangles, at least 52px high. Text links carry
 direction through language and arrows. Keyboard focus uses a 2px blue outline
-with 5px offset; a skip link moves directly to main content.
+with 5px offset and 1rem block scroll margin to keep the ring inside the viewport;
+a skip link moves directly to main content.
 
-Navigation order: Home, Work, Playground, Resume. Home also contains the former
+Navigation order: Home, Work, Resume, Playground. Home also contains the former
 About and Now content at `/#about` and `/#currently`. Old URLs forward to those
 anchors, with static-build fallback links. Current routes receive
 `aria-current` and an underline. Mobile navigation is a disclosure with expanded
@@ -186,9 +187,23 @@ state; Escape closes it and returns focus to the toggle.
 
 Work filters are native buttons with `aria-pressed`, at least 44px high. The
 selected filter is ink/white, not a sliding background. A live count announces
-results. All project content is server-rendered before React hydration.
+results, including matching entries in a closed disclosure. Professional is
+selected during SSR and hydration; controls enable only when ready. Reviewer and
+orchestrator are featured, followed by compact RAG, LLMOps, FMCG and Story-to-PR
+cards. Two earlier entries retain their original categories in a native
+"Earlier / academic" disclosure, reset on category changes. Image Segmentation
+is an ancillary GitHub link in All work, excluded from project counts.
+Without JavaScript, an "Other work" disclosure outside the React island exposes
+nonprofessional projects and that repository link without duplicating professionals.
 
 ### Project artifacts and case studies
+
+Deployment maturity and current activity are separate. The reviewer is in
+active team use since July 2026 (approximately 30-40 PRs/month, 5-6 repositories).
+The platform is in UAT since March 2026, with five agents onboarded, not in
+production. Reuse the typed status labels and Work collection evidence across
+cards, case headers and linked current notes. Usage scope is not an impact
+measurement and does not belong in a measured-results grid.
 
 Project cards on Home and Work, resume entries, and Playground
 cards share `.editorial-card`. Each has its own closed border and 28px inset
@@ -214,10 +229,16 @@ have separate sections; unpublished measurement methodology is acknowledged.
 
 ### Personal introduction and working principles
 
-Home is person-first: name, actual role, curiosity, and practical learning lead.
+Home leads with name, AI Engineer identity, and the actual employment title.
+The statement is "I build AI agents for real team workflows." The role remains
+18px and visible without scrolling at 390x844; "See the work" is the primary CTA.
+Mobility reads "Noida, India. Open to roles in India and internationally."
+Keep "Curious by default. Useful by intention." in the page title.
+Evidence precedes approach; do not force selected work below a full viewport.
 Use ruled editorial rows, not feature tiles, for working principles. Connect
 curiosity, ownership, and collaboration to behavior, with the existing AI CoE
-advisory example as evidence. Merge overlapping About content rather than
+advisory example, self-initiated reviewer, post-launch feedback, and direct client
+communication as evidence. Merge overlapping About content rather than
 appending the old page or creating a second skills list.
 
 ### Notebook and experiment
@@ -228,6 +249,7 @@ dates, with longer descriptions and links inside. Preserve the anchor and show
 an honest empty-state message if there are no entries. Never compute freshness
 from the deployment date.
 
+Playground is framed as "How I explain a system", not a live-model demo.
 The dispatch experiment uses labeled native checkboxes, a select, a reset button,
 and an atomic live result with a text trace. Its initial result is server-rendered;
 controls activate only after JavaScript is ready. A no-script explanation identifies
@@ -243,8 +265,13 @@ labels. Skills remain a ruled definition list rather than a badge wall.
 
 Desktop experience and education pair a narrow metadata column with a readable
 detail column; mobile stacks these in source order. Section links work without
-JavaScript. Resume data, all highlights, and the existing downloadable PDF are
-preserved. No reveal animation delays access to professional information.
+JavaScript. JSON supplies the AI Engineer identity, broad mobility statement,
+21 skills in four groups, and three selected professional projects with absolute
+case links. Preserve actual employment titles and education; suppress GPA.
+Keep `#resume-projects` while labeling it "Selected professional work".
+The same JSON generates the PDF via LaTeX at its existing download URL. Inspect
+the actual PDF at at most two legible A4 pages; do not treat generated TeX as a
+verified PDF. No reveal animation delays access to professional information.
 
 ### Motion
 

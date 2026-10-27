@@ -1,37 +1,31 @@
 {
   "basics": {
     "name": "Vinayak Gupta",
+    "label": "AI Engineer",
     "email": "vinayakgupta.13.6@gmail.com",
     "phone": "+919896276989",
     "location": "Noida, India",
+    "opportunities": "Open to roles in India and internationally.",
     "linkedin": "https://www.linkedin.com/in/vinayak-gupta30/",
     "github": "https://github.com/ctrl-infinity",
-    "summary": "Software Engineer and ML Engineer with experience building Python-based Generative AI and Large Language Models (LLMs) applications for enterprise use cases. Delivered Retrieval-Augmented Generation (RAG) solutions, standardized LLMOps practices, and production-grade data and AI workflows across Azure, Docker, Kubernetes, SQL, and GitHub Actions environments. Brings strong problem solving, experimentation, and end-to-end delivery experience across data ingestion, preprocessing, model evaluation, and deployment."
+    "summary": "AI Engineer building practical agents and AI systems. Initiated an internal code reviewer now in active team use; lead DevOps for a multi-agent platform in UAT. Earlier at Tiger Analytics, delivered RAG and data workflows while working directly with client teams."
   },
   "skills": [
     {
-      "category": "Programming Languages",
-      "items": ["Python", "JavaScript", "Go", "C#"]
+      "category": "Programming",
+      "items": ["Python"]
     },
     {
-      "category": "Generative AI & ML",
-      "items": ["Large Language Models (LLMs)", "Retrieval-Augmented Generation (RAG)", "Multi-Agent Systems (Agent2Agent / A2A)", "Autonomous AI Agents (Claude Code)", "Azure OpenAI", "Prompt Flow", "TensorFlow", "Random Forest", "SVM", "CNN", "RNN"]
+      "category": "Agents & evaluation",
+      "items": ["Claude Code", "Azure OpenAI", "Microsoft Agent Framework", "A2A", "MCP", "RAG", "evaluation regression gates"]
     },
     {
-      "category": "Data Engineering",
-      "items": ["SQL", "NumPy", "Databricks", "Azure Data Factory", "Power BI", "Excel", "Apache Spark"]
+      "category": "Cloud & delivery",
+      "items": ["Azure", "Container Apps", "Bicep", "Terraform", "Docker", "Kubernetes", "Azure DevOps", "GitHub Actions", "OpenTelemetry"]
     },
     {
-      "category": "Cloud / LLMOps",
-      "items": ["Azure", "Azure DevOps", "Azure ML SDK", "Microsoft Agent Framework", "Azure Container Apps", "Cosmos DB", "OpenTelemetry", "Docker", "Kubernetes", "Git", "GitHub Actions", "Terraform", "Bicep"]
-    },
-    {
-      "category": "Web Technologies",
-      "items": ["Django", "Flask", "ReactJS", "Markdown"]
-    },
-    {
-      "category": "Soft Skills",
-      "items": ["Collaboration", "Communication", "Problem Solving", "Logical Thinking"]
+      "category": "Data",
+      "items": ["SQL", "Databricks", "Azure Data Factory", "Apache Spark"]
     }
   ],
   "experience": [
@@ -42,8 +36,8 @@
       "startDate": "July 2024",
       "endDate": "Present",
       "highlights": [
-        "Architected and deployed a zero-configuration AI code reviewer across all Azure DevOps repositories. Triggered via webhooks, the system enriches PR diffs with work item acceptance criteria and file context to output structured, severity-ranked reviews. Designed with strict security governance (read-only access) and smart comment fingerprinting to update existing discussion threads idempotently without spamming PRs.",
-        "Contributed to a production multi-agent orchestration system (Microsoft Agent Framework, .NET, Azure OpenAI), including multi-agent planning, an MCP gateway for internal APIs, and evaluation regression gates. The platform routes end-user requests to independently built domain agents through the open Agent2Agent (A2A) protocol.",
+        "Initiated and built an internal AI code reviewer to address the team's review bottleneck. In active team use since July 2026, it reviews approximately 30-40 PRs per month across 5-6 repositories. The webhook-triggered pipeline enriches diffs with acceptance criteria and file context, separates read-only review from publishing, and reconciles comments idempotently. Iterated on fixes from team feedback after launch.",
+        "Contributed to a multi-agent orchestration system in UAT since March 2026 (Microsoft Agent Framework, .NET, Azure OpenAI), including planning, an MCP gateway for internal APIs, and evaluation regression gates. Five agents have been onboarded through the open Agent2Agent (A2A) protocol.",
         "Led DevOps for the orchestrator, owning Bicep-provisioned Azure Container Apps, Cosmos DB, Key Vault, and multi-environment, approval-gated Azure DevOps CI/CD. Delivered secure infrastructure designed for high availability through Azure Front Door, Application Gateway (WAF), and VNets, alongside end-to-end Azure AD B2C identity propagation, per-tenant isolation, and cross-service OpenTelemetry tracing.",
         "Member of the AI Center of Excellence; tasked as an advisor to 10+ participating teams in an internal AI hackathon, guiding their solutions on cloud infrastructure and AI/ML design decisions."
       ]
@@ -74,20 +68,22 @@
   ],
   "projects": [
     {
-      "title": "Wireless Charging System",
-      "technologies": ["Python", "SketchUp", "YOLO", "OpenCV"],
-      "description": "Worked on a wireless charging system that will charge electric vehicles on the go. Conceptualized and designed the whole charging process which was based on the principles of electromagnetic induction. Implemented Object Detection to create an Autonomous Vehicle Driving System using TensorFlow and OpenCV. Developed an Automatic Number Plate Recognition (ANPR) system to read a vehicle’s number plate in real time."
+      "title": "Code Review Agent for Azure DevOps",
+      "technologies": ["Claude Code", "Azure DevOps", "CI/CD"],
+      "url": "https://ctrl-infinity.github.io/work/code-review-agent",
+      "description": "Self-initiated internal reviewer in active team use since July 2026, reviewing approximately 30-40 PRs/month across 5-6 repositories. Built context enrichment, a read-only review boundary and idempotent publishing; iterated on fixes from post-launch team feedback."
     },
     {
-      "title": "Image Segmentation",
-      "technologies": ["Python", "NumPy", "OpenCV"],
-      "github": "https://github.com/ctrl-infinity/custom_image_segmentation",
-      "description": "Implemented an 8-neighboring algorithm for image segmentation. Dividing the image into pixel blocks, it compared each block's color features with its 8 surrounding neighbors. Based on similarity scores, colors were assigned to each block, effectively segmenting the image based on color patterns."
+      "title": "Multi-Agent Orchestration Platform",
+      "technologies": ["Microsoft Agent Framework", "Azure", "A2A", "MCP"],
+      "url": "https://ctrl-infinity.github.io/work/multi-agent-orchestration-platform",
+      "description": "In UAT since March 2026. Five agents onboarded. Led DevOps and secure cloud infrastructure; contributed to multi-agent planning, the MCP gateway and evaluation regression gates. Agent discovery supports onboarding without an orchestrator redeploy."
     },
     {
-      "title": "Semantics-based IR System",
-      "technologies": ["Python", "NLP", "GloVe Embeddings"],
-      "description": "Built a semantics-driven information retrieval system in Python that preprocesses search queries and documents, assigns relevance scores, and returns the most relevant documents based on semantic similarity rather than keyword matching."
+      "title": "Enterprise Mobile Payments RAG Engine",
+      "technologies": ["Python", "RAG", "Azure ML", "Prompt Flow"],
+      "url": "https://ctrl-infinity.github.io/work/mobile-payments-rag",
+      "description": "Delivered custom document indexing, prompt orchestration and API load balancing at Tiger Analytics. Reported outcomes: 20% better retrieval accuracy and 60% lower latency, as documented in the project write-up."
     }
   ],
   "education": [
